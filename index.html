@@ -7,6 +7,30 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>nEaR</title>
 
+    <style>
+        
+        .card_holder__container{
+            display: flex;
+            flex-flow: wrap;
+        }
+
+        .card_holder{
+
+        }
+
+        .card_holder__item{
+            width: 300px;
+            max-height: 500px;
+            border-radius: 15px;
+            border: 1px solid;
+            padding: 15px;
+            overflow: auto;
+        }
+
+       
+    
+    </style>
+
 
 </head>
 
@@ -15,7 +39,17 @@
     <div id="app-5">
         <!-- <p>{{ message }}</p> -->
         <button v-on:click="reverseMessage">Start nEaR</button>
+        
+        <section class="card_holder__container">
+            <div v-for="item in extract" class="card_holder">
+                <div class="card_holder__item"> {{item}}</div>
+            </div>
+        </section>
+        
+
     </div>
+
+    
 
     <div id="app-7">
         <ol v-if="answer">

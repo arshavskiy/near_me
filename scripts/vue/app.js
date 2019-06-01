@@ -1,30 +1,28 @@
 
-  let app5 = new Vue({
+  let app = new Vue({
     el: '#app-5',
     data: {
       message: 'Hello Vue.js!',
-      geoData: []
+      Tlatitude : 0, 
+      Tlongitude : 0,
+      latitude : 0,
+      longitude : 0,  
+      geoData : [],
+      extract: []
     },
     methods: {
-     
 
       reverseMessage: function () {
-        let self = this;
-        self.Tlatitude = 0; 
-        self.Tlongitude = 0;
-        self.latitude = 0;
-        self.longitude = 0;  
-        self.geoData = [];
 
-        let updateGpsData = (gpsData)=>{
-          if (self.latitude != gpsData.coords.latitude && self.longitude != gpsData.coords.longitude){
-            self.latitude = gpsData.coords.latitude; 
-            self.longitude = gpsData.coords.longitude; 
+        function updateGpsData (gpsData){
+          if (app.latitude != gpsData.coords.latitude && app.longitude != gpsData.coords.longitude){
+            app.latitude = gpsData.coords.latitude; 
+            app.longitude = gpsData.coords.longitude; 
           }
-          return self.Tlatitude != gpsData.coords.latitude && self.Tlongitude != gpsData.coords.longitude;
+          return app.Tlatitude != gpsData.coords.latitude && app.Tlongitude != gpsData.coords.longitude;
         };
 
-        self.getFromWiki = ()=>{
+        function getFromWiki(){
           axios.get('https://en.wikipedia.org/w/api.php', {
             params: {
               // headers: {
@@ -34,22 +32,17 @@
               action : 'query',
               list : 'geosearch',
               gsradius : 1000,
-              gscoord: self.latitude + '|' + self.longitude,
+              gscoord: app.latitude + '|' + app.longitude,
               format: 'json',
               origin: '*',
             }
           })
           .then(function (response) {
             console.log('respons: ', response.data.query);
-            if (response.data.query.geosearch.length === 1 ){
-              self.geoData.push(response.data.query.geosearch[0].title);
-            } if ( response.data.query.geosearch.length > 1 ) {
-                response.data.query.geosearch.forEach(element => {
-                  self.geoData.push(element.title);
-                });
-            }
+
+            registerDataFromWiki(response);
+
             
-            console.log('self.geoData: ', self.geoData);
           })
           .catch(function (error) {
             console.error(error);
@@ -58,21 +51,77 @@
             // always executed
           });  
         }
+        
+        function registerDataFromWiki(response) {
+          if (response.data.query.geosearch.length === 1 ){
+            app.geoData.push(response.data.query.geosearch[0].title);
+          } if ( response.data.query.geosearch.length > 1 ) {
+              response.data.query.geosearch.forEach(element => {
+                app.geoData.push(element.title);
+                getDataOnLocations(element.title);
+              });
+          }
+          console.log('app.geoData: ', app.geoData);
 
-        let handle = (gpsData)=>{
+          getDataOnLocations();
+        }
+
+        function handle(gpsData){
           let shouldUpdate = updateGpsData(gpsData);
 
-          self.Tlatitude = self.latitude;
-          self.Tlongitude = self.longitude;
+          app.Tlatitude = app.latitude;
+          app.Tlongitude = app.longitude;
           
           if ( shouldUpdate ){
-            self.getFromWiki();
+            getFromWiki();
           }
          
         }
 
+        function getDataOnLocations(title) {
+        
+            axios.get('https://en.wikipedia.org/w/api.php', {
+              params: {
+                action : 'query',
+                prop : 'extracts|info|images|categories',
+                inprop: 'url|talkid',
+                // rvprop : 'content',
+                explaintext:1,
+                titles: title,
+                format: 'json',
+                origin: '*',
+              }
+            })
+            .then(function (response) {
+              console.log('respons: ', response.data.query.pages);
+
+              let page =  response.data.query.pages;
+              let pageId = Object.keys(response.data.query.pages)[0];
+              let url = page[pageId].fullurl;
+              app.extract.push(page[pageId].extract);
+
+              // axios.get(url,{
+              //   params: {
+              //     'origin': '*',
+              //     'Access-Control-Allow-Origin':'*'
+              //   }
+              // }).then((html)=>{
+              //   console.log('html: ', html);
+              // })
+
+              // let content = page[pageId].revisions[0].slots.main['*'];
+
+            })
+            .catch(function (error) {
+              console.error(error);
+            })
+            .then(function () {
+              // always executed
+            });  
+        }
+
         if (window.navigator && window.navigator.geolocation){
-          window.navigator.geolocation.getCurrentPosition(handle);
+          window.navigator.geolocation.getCurrentPosition( handle );
       
           
           setInterval(()=>{
@@ -89,21 +138,3 @@
 
 
   });
-
-  Vue.component('todo-item', {
-    props: ['todo'],
-    template: '<li>{{ todo.text }}</li>'
-  })
-  
-  let app7 = new Vue({
-    el: '#app-7',
-    data: {
-      answer: false,
-      groceryList: [
-        { id: 0, text: 'Vegetables' },
-        { id: 1, text: 'Cheese' },
-        { id: 2, text: 'Whatever else humans are supposed to eat' }
-      ]
-    }
-  })
-  
