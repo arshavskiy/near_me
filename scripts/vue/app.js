@@ -135,12 +135,13 @@
               }
             })
             .then(function (response) {
-              console.log('respons: ', response.data.query.pages);
-
-              let page =  response.data.query.pages;
-              let pageId = Object.keys(response.data.query.pages)[0];
-              let url = page[pageId].fullurl;
-              app.extract.push(page[pageId].extract);
+              if (response.data.query) {
+                console.log('respons: ', response.data.query.pages);
+                let page =  response.data.query.pages;
+                let pageId = Object.keys(response.data.query.pages)[0];
+                let url = page[pageId].fullurl;
+                app.extract.push(page[pageId].extract);
+              }
 
               // axios.get(url,{
               //   params: {
