@@ -7,6 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>nEaR</title>
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
+
     <style>
         
         .card_holder__container{
@@ -14,19 +17,33 @@
             flex-flow: wrap;
         }
 
-        .card_holder{
-
-        }
-
         .card_holder__item{
             width: 300px;
-            max-height: 500px;
-            border-radius: 15px;
-            border: 1px solid;
+            max-height: 200px;
             padding: 15px;
             overflow: auto;
+            border-bottom: 1px solid #aaa;
+            text-align: justify;
         }
 
+        #app-5 button{
+            position: fixed;
+            top: 10px;
+            /* left: calc(50% - 40px); */
+            right: 40px;
+            z-index: 999;
+            padding: 10px;
+            background: green;
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+
+        #mapid { 
+            height: 50vh;
+        }
        
     
     </style>
@@ -35,6 +52,8 @@
 </head>
 
 <body>
+
+    <div id="mapid"></div>
 
     <div id="app-5">
         <!-- <p>{{ message }}</p> -->
@@ -45,11 +64,7 @@
                 <div class="card_holder__item"> {{item}}</div>
             </div>
         </section>
-        
-
     </div>
-
-    
 
     <div id="app-7">
         <ol v-if="answer">
@@ -62,6 +77,8 @@
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="scripts/main.js"></script>
     <script src="scripts/vue/app.js"></script>
+
+   
 
 </body>
 

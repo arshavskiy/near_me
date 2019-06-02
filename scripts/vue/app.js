@@ -8,7 +8,8 @@
       latitude : 0,
       longitude : 0,  
       geoData : [],
-      extract: []
+      extract: [],
+      geoDataFull: {}
     },
     methods: {
 
@@ -22,7 +23,8 @@
           return app.Tlatitude != gpsData.coords.latitude && app.Tlongitude != gpsData.coords.longitude;
         };
 
-        function getFromWiki(){
+        function getFromWiki(mapGeo){
+
           axios.get('https://en.wikipedia.org/w/api.php', {
             params: {
               // headers: {
@@ -32,7 +34,7 @@
               action : 'query',
               list : 'geosearch',
               gsradius : 1000,
-              gscoord: app.latitude + '|' + app.longitude,
+              gscoord: mapGeo ? mapGeo.lat + '|' + mapGeo.lng : app.latitude + '|' + app.longitude,
               format: 'json',
               origin: '*',
             }
@@ -58,8 +60,15 @@
           } if ( response.data.query.geosearch.length > 1 ) {
               response.data.query.geosearch.forEach(element => {
                 app.geoData.push(element.title);
+
+                app.geoDataFull[element.title] = { 'lat':element.lat, 'lon':element.lon };
+
+                L.marker([element.lat,element.lon]).addTo(mymap)
+                .bindPopup("<b>" + element.title + "</b>").openPopup();
+
                 getDataOnLocations(element.title);
               });
+
           }
           console.log('app.geoData: ', app.geoData);
 
@@ -71,11 +80,44 @@
 
           app.Tlatitude = app.latitude;
           app.Tlongitude = app.longitude;
-          
+
           if ( shouldUpdate ){
+            let mapGeo;
             getFromWiki();
+            InitMap();
           }
          
+        }
+
+        function InitMap() {
+
+          mymap = L.map('mapid').setView([app.latitude,app.longitude], 15);
+          // mymap.center([app.latitude,app.longitude],15);
+          
+          L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+              '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+              'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            id: 'mapbox.streets'
+          }).addTo(mymap);
+
+          L.marker([app.latitude,app.longitude]).addTo(mymap)
+            .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+
+          var popup = L.popup();
+
+          function onMapClick(e) {
+
+            getFromWiki(e.latlng);
+
+            popup
+              .setLatLng(e.latlng)
+              // .setContent("You clicked the map at " + e.latlng.toString())
+              // .openOn(mymap);
+          }
+
+          mymap.on('click', onMapClick);
         }
 
         function getDataOnLocations(title) {
