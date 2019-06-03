@@ -24,7 +24,6 @@
         };
 
         function getFromWiki(mapGeo){
-
           axios.get('https://en.wikipedia.org/w/api.php', {
             params: {
               // headers: {
@@ -41,10 +40,7 @@
           })
           .then(function (response) {
             console.log('respons: ', response.data.query);
-
             registerDataFromWiki(response);
-
-            
           })
           .catch(function (error) {
             console.error(error);
@@ -58,21 +54,21 @@
           if (response.data.query.geosearch.length === 1 ){
             app.geoData.push(response.data.query.geosearch[0].title);
           } if ( response.data.query.geosearch.length > 1 ) {
-              response.data.query.geosearch.forEach(element => {
-                app.geoData.push(element.title);
 
-                app.geoDataFull[element.title] = { 'lat':element.lat, 'lon':element.lon };
+            response.data.query.geosearch.forEach(element => {
+                //if not allready exists 
+                if (!app.geoDataFull[element.title]){
+                  app.geoData.push(element.title);
+                  app.geoDataFull[element.title] = { 'lat':element.lat, 'lon':element.lon };
 
-                L.marker([element.lat,element.lon]).addTo(mymap)
-                .bindPopup("<b>" + element.title + "</b>").openPopup();
-
-                getDataOnLocations(element.title);
+                
+                  getDataOnLocations(element.title);
+                }
               });
 
           }
-          console.log('app.geoData: ', app.geoData);
-
-          getDataOnLocations();
+          console.log('app.geoData: ', app.geoDataFull);
+          // getDataOnLocations();
         }
 
         function handle(gpsData){
@@ -91,26 +87,13 @@
 
         function InitMap() {
 
-          mymap = L.map('mapid').setView([app.latitude,app.longitude], 15);
-          // mymap.center([app.latitude,app.longitude],15);
-          
-          L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-            maxZoom: 18,
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-              '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-              'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            id: 'mapbox.streets'
-          }).addTo(mymap);
-
           L.marker([app.latitude,app.longitude]).addTo(mymap)
-            .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+            .bindPopup("<b>Hello world!</b><br />You Are here!").openPopup();
 
           var popup = L.popup();
 
           function onMapClick(e) {
-
             getFromWiki(e.latlng);
-
             popup
               .setLatLng(e.latlng)
               // .setContent("You clicked the map at " + e.latlng.toString())
@@ -125,11 +108,11 @@
             axios.get('https://en.wikipedia.org/w/api.php', {
               params: {
                 action : 'query',
-                prop : 'extracts|info|images|categories',
+                titles: title, 
+                prop : 'extracts|info|images|categories|pageimages',
                 inprop: 'url|talkid',
-                // rvprop : 'content',
                 explaintext:1,
-                titles: title,
+                pithumbsize:100,
                 format: 'json',
                 origin: '*',
               }
@@ -139,7 +122,30 @@
                 console.log('respons: ', response.data.query.pages);
                 let page =  response.data.query.pages;
                 let pageId = Object.keys(response.data.query.pages)[0];
-                let url = page[pageId].fullurl;
+                let dataObject = page[pageId];
+                let url = dataObject.fullurl;
+
+                app.geoDataFull[dataObject.title].extract = dataObject.extract;
+
+                if (dataObject.thumbnail){
+                  app.geoDataFull[dataObject.title].img = dataObject.thumbnail.source;
+
+                  let myIcon = L.icon({
+                    iconUrl: app.geoDataFull[dataObject.title].img,
+                    iconSize: [50, 50],
+                    iconAnchor: [10, 10],
+                    popupAnchor: [20, -5],
+                  });
+
+                  L.marker([app.geoDataFull[dataObject.title].lat, app.geoDataFull[dataObject.title].lon],{ icon:myIcon } ).addTo(mymap)
+                  .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
+                } else {
+                  L.marker([app.geoDataFull[dataObject.title].lat, app.geoDataFull[dataObject.title].lon] ).addTo(mymap)
+                  .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
+                }
+
+              
+
                 app.extract.push(page[pageId].extract);
               }
 
