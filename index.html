@@ -15,6 +15,11 @@
         crossorigin=""></script>
 
     <style>
+
+        body{
+            margin: 0;
+        }
+
         .card_holder__container {
             display: flex;
             flex-flow: wrap;
@@ -55,6 +60,24 @@
         .leaflet-marker-pane img{
             border-radius: 50%;
         }
+
+        .btn_holder{
+            display: flex;
+            flex-direction: row-reverse;
+            position: relative;
+        }
+
+        .btn{
+            padding: 5px;
+            border: 1px solid;  
+            top: -24px;
+            position: absolute;
+            background: #fff;
+        }
+
+        .btn:first-child{
+            right: 40px;
+        }
     </style>
 
 
@@ -77,11 +100,14 @@
                             {{value.extract}}
                         </div>
                     </div>
+                    <div class="btn_holder">
+                        <span class="btn" v-on:click="readText(value.extract)">play</span>
+                        <span class="btn" v-on:click="stopText">stop</span>
+                    </div>
                 </div>
             </section>
             <section class="card_holder__container">
-                <div v-for="item in extract" class="card_holder">
-                </div>
+                <div v-for="item in extract" class="card_holder"></div>
             </section>
         </div>
 

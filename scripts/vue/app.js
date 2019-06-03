@@ -13,6 +13,25 @@
     },
     methods: {
 
+      stopText: function(){
+        window.speechSynthesis.cancel();
+      },
+
+      readText: function(text){
+
+        let sayit = new SpeechSynthesisUtterance(text);
+
+        if('speechSynthesis' in window){
+          if (window.speechSynthesis.speaking){
+            window.speechSynthesis.cancel();
+          }
+         
+          sayit.lang = 'en-US';
+          window.speechSynthesis.speak(sayit);
+
+        }
+      },
+
       run: function () {
 
         function updateGpsData (gpsData){
@@ -21,7 +40,7 @@
             app.longitude = gpsData.coords.longitude; 
           }
           return app.Tlatitude != gpsData.coords.latitude && app.Tlongitude != gpsData.coords.longitude;
-        };
+        }
 
         function getFromWiki(mapGeo){
           axios.get('https://en.wikipedia.org/w/api.php', {
