@@ -22,11 +22,14 @@
 
         .card_holder__container {
             display: flex;
-            flex-flow: wrap;
+            /* flex-flow: wrap; */
+            width: 100%;
+            overflow-x: scroll;
         }
 
         .card_holder__item {
-            max-height: 200px;
+            max-height: 300px;
+            width: 50vw;
             padding: 15px;
             overflow: auto;
             border-bottom: 1px solid #aaa;
@@ -55,6 +58,8 @@
         .float_image_with_text img {
             float: left;
             margin-right: 0.5rem;
+            font-size: 1rem;
+            line-height: 1;
         }
         
         .leaflet-marker-pane img{
@@ -68,17 +73,17 @@
         }
 
         .btn{
-            padding: 5px 6px;
+            padding: 7px 9px;
             border: 1px solid;
-            top: -24px;
-            position: absolute;
+            /* top: -24px;
+            position: absolute; */
             background: black;
             color: #fff;
             border-radius: 8px;
         }
 
         .btn:first-child{
-            right: 40px;
+            right: 52px;
         }
     </style>
 
@@ -108,7 +113,7 @@
                     </div>
                 </div>
             </section>
-            <section class="card_holder__container">
+            <section>
                 <div v-for="item in extract" class="card_holder"></div>
             </section>
         </div>
