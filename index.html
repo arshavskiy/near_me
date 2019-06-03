@@ -36,10 +36,10 @@
         #app-5 button {
             position: fixed;
             top: 10px;
-            /* left: calc(50% - 40px); */
+            left: calc(50% - 40px);
             right: 40px;
             z-index: 999;
-            padding: 10px;
+            padding: 10px 20px;
             background: green;
             border: none;
             border-radius: 10px;
@@ -68,11 +68,13 @@
         }
 
         .btn{
-            padding: 5px;
-            border: 1px solid;  
+            padding: 5px 6px;
+            border: 1px solid;
             top: -24px;
             position: absolute;
-            background: #fff;
+            background: black;
+            color: #fff;
+            border-radius: 8px;
         }
 
         .btn:first-child{
@@ -101,8 +103,8 @@
                         </div>
                     </div>
                     <div class="btn_holder">
-                        <span class="btn" v-on:click="readText(value.extract)">play</span>
-                        <span class="btn" v-on:click="stopText">stop</span>
+                        <span class="btn" v-on:click="readText(value.extract)">Play</span>
+                        <span class="btn" v-on:click="stopText">Stop</span>
                     </div>
                 </div>
             </section>
