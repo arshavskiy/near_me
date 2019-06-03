@@ -28,15 +28,16 @@
 
           let placeInDom = node.getBoundingClientRect();
           let view = window.innerWidth;
+          let index;
 
-          array.push(view = placeInDom.left);
+          array.push( (view - placeInDom.left) > placeInDom.width) ;
          
         });
 
         max = Math.max(...array);
-        let index = array.reduce((i, item)=>{
+        array.forEach((item, i)=>{
           if (item === max){
-            return i; 
+            index = i; 
           }
         })
 
