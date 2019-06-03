@@ -13,7 +13,7 @@
     },
     methods: {
 
-      reverseMessage: function () {
+      run: function () {
 
         function updateGpsData (gpsData){
           if (app.latitude != gpsData.coords.latitude && app.longitude != gpsData.coords.longitude){
@@ -139,6 +139,7 @@
 
                   L.marker([app.geoDataFull[dataObject.title].lat, app.geoDataFull[dataObject.title].lon],{ icon:myIcon } ).addTo(mymap)
                   .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
+                  
                 } else {
                   L.marker([app.geoDataFull[dataObject.title].lat, app.geoDataFull[dataObject.title].lon] ).addTo(mymap)
                   .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
