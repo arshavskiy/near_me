@@ -19,6 +19,30 @@
 
       readText: function(text){
 
+        let all = document.querySelectorAll('.card_holder__item');
+
+        let array = [];
+        let max;
+
+        all.forEach(node=>{
+
+          let placeInDom = node.getBoundingClientRect();
+          let view = window.innerWidth;
+
+          array.push(view = placeInDom.left);
+         
+        });
+
+        max = Math.max(...array);
+        let index = array.reduce((i, item)=>{
+          if (item === max){
+            return i; 
+          }
+        })
+
+
+
+
         let sayit = new SpeechSynthesisUtterance(text);
 
         if('speechSynthesis' in window){
@@ -105,6 +129,17 @@
         }
 
         function InitMap() {
+
+          if (!mymap in window) {
+            mymap = L.map('mapid').setView([app.latitude,app.longitude], 15);
+            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+              maxZoom: 18,
+              attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+              id: 'mapbox.streets'
+            }).addTo(mymap);
+          }
 
           L.marker([app.latitude,app.longitude]).addTo(mymap)
             .bindPopup("<b>Hello world!</b><br />You Are here!").openPopup();

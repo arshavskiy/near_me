@@ -28,7 +28,7 @@
         }
 
         .card_holder__item {
-            max-height: 300px;
+            max-height: 25vh;
             width: 50vw;
             padding: 15px;
             overflow: auto;
@@ -68,8 +68,9 @@
 
         .btn_holder{
             display: flex;
-            flex-direction: row-reverse;
-            position: relative;
+            /* flex-direction: row-reverse; */
+            /* position: relative; */
+            justify-content: center
         }
 
         .btn{
@@ -107,12 +108,22 @@
                             {{value.extract}}
                         </div>
                     </div>
-                    <div class="btn_holder">
+                    <!-- <div class="btn_holder">
                         <span class="btn" v-on:click="readText(value.extract)">Play</span>
                         <span class="btn" v-on:click="stopText">Stop</span>
-                    </div>
+                    </div> -->
                 </div>
+
+                
+
             </section>
+
+            <div class="btn_holder">
+                    <span class="btn" v-on:click="readText">Play</span>
+                    <span class="btn" v-on:click="stopText">Stop</span>
+                </div>
+                
+
             <section>
                 <div v-for="item in extract" class="card_holder"></div>
             </section>
