@@ -92,7 +92,7 @@ let app = new Vue({
 
                             voices.forEach(voice=>{
                                 if (voice.lang == app.localPC || voice.lang == app.local){
-                                    filterdVoice.push(voice) 
+                                    filterdVoice.push(voice);
                                 }
                             })
 
@@ -113,7 +113,7 @@ let app = new Vue({
 
         run: function () {
 
-            if ( typeof mymap === undefined ||  typeof mymap === null) initLeafMap();
+            if ( typeof mymap == 'undefined' ||  typeof mymap == 'null') initLeafMap();
 
             function updateGpsData(gpsData) {
                 if (app.latitude != gpsData.coords.latitude && app.longitude != gpsData.coords.longitude) {
