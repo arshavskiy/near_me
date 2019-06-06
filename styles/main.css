@@ -1,0 +1,109 @@
+body{
+    margin: 0;
+}
+
+.card_holder__container {
+    display: flex;
+    /* flex-flow: wrap; */
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.card_holder__item {
+    max-height: 25vh;
+    width: 50vw;
+    padding: 15px;
+    overflow: auto;
+    border-bottom: 1px solid #aaa;
+    text-align: justify;
+    overflow-x: hidden;
+}
+
+.vs__dropdown-toggle{
+    border: none;
+    
+}
+
+#app-5 button.enter {
+    position: fixed;
+    top: 10px;
+    left: 188px;
+    z-index: 999;
+    padding: 8px 10px;
+    background: green;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+}
+
+
+#mapid {
+    height: 50vh;
+}
+
+.float_image_with_text img {
+    float: left;
+    margin-right: 0.5rem;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.leaflet-marker-pane img{
+    border-radius: 50%;
+}
+
+.btn_holder{
+    display: flex;
+    /* flex-direction: row-reverse; */
+    /* position: relative; */
+    justify-content: center;
+    margin: auto 0;
+    margin-top: 1rem;
+}
+
+.float_image_with_text{
+    font-size: 0.8rem;
+}
+
+.btn{
+    padding: 7px 20px;
+    border: 1px solid;
+    /* top: -24px;
+    position: absolute; */
+    background: black;
+    color: #fff;
+    border-radius: 8px;
+}
+.btn:last-child {
+    margin-left: 1rem;
+}
+
+.btn:first-child{
+    right: 52px;
+}
+
+h1,.muted {
+     color: #2c3e5099;
+}
+
+h1 {
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.v-select{
+    position: fixed;
+    top: 10px;
+    left: 50px;
+    z-index: 999;
+    width: 327px;
+    height: 32px;
+    background: #fff;
+    border: 1px solid rgba(60,60,60,.26);
+    border-radius: 4px;
+    font-family: sans-serif;
+}
+
+#editing-view-port::after{
+    content: 'language';
+}

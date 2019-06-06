@@ -21,6 +21,11 @@ let app = new Vue({
         localPC: 'en-US',
 
     },
+
+    created() {
+        console.log('created called.');
+              },
+
     methods: {
         doSomething: function (e){
           console.table(e);
@@ -111,7 +116,7 @@ let app = new Vue({
 
         },
 
-        run: function () {
+        run: window.run = function () {
 
             if ( typeof mymap == 'undefined' ||  typeof mymap == 'null') initLeafMap();
 
