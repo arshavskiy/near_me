@@ -14,7 +14,9 @@ body{
     width: 50vw;
     padding: 15px;
     overflow: auto;
-    border-bottom: 1px solid #aaa;
+    border-right: 1px solid #000;
+    border-right-style: dashed;
+    border-right-width: thin;
     text-align: justify;
     overflow-x: hidden;
 }
@@ -94,9 +96,9 @@ h1 {
 .v-select{
     position: fixed;
     top: 10px;
-    left: 50px;
+    left: calc(50% - 100px);
     z-index: 999;
-    width: 327px;
+    width: 200px;
     height: 32px;
     background: #fff;
     border: 1px solid rgba(60,60,60,.26);
