@@ -113,8 +113,8 @@ let app = new Vue({
             function getFromWiki(mapGeo) {
 
                 const LANGUAGE_LINK = app.lang;
-                
-                axios.get('https:// ' + LANGUAGE_LINK +'.wikipedia.org/w/api.php', {
+
+                axios.get('https://' + LANGUAGE_LINK +'.wikipedia.org/w/api.php', {
                         params: {
                             // headers: {
                             //   'Origin': 'https://5a6b54b1.ngrok.io/',
@@ -223,7 +223,7 @@ let app = new Vue({
 
                 const LANGUAGE_LINK = app.lang;
 
-                axios.get('https:// ' + LANGUAGE_LINK +'.wikipedia.org/w/api.php', {
+                axios.get('https://' + LANGUAGE_LINK +'.wikipedia.org/w/api.php', {
                         params: {
                             action: 'query',
                             titles: title,
