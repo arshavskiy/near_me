@@ -21,9 +21,9 @@ let app = new Vue({
     },
     methods: {
         doSomething: function (e){
-          console.log(e); 
+          console.table(e);
           app.lang = e.code;
-          app.local = e.local; 
+          app.local = e.local;
         },
         stopText: function () {
             window.speechSynthesis.cancel();
@@ -31,13 +31,15 @@ let app = new Vue({
 
         readText: function (text) {
 
+            window.speechSynthesis.cancel();
+
             let all = document.querySelectorAll('.card_holder__item');
             let array = [];
             let max;
 
             all.forEach(node => {
 
-                const {top,right,bottom,left,width,height} = node.getBoundingClientRect();
+                const {top,right,bottom,left,width} = node.getBoundingClientRect();
                 const intersection = {
                     t: bottom,
                     r: window.innerWidth - left,
@@ -45,21 +47,48 @@ let app = new Vue({
                     l: right
                 };
 
-                let inview = left >= 0 && right < (window.innerWidth + width / 10);
+                let inview = left >= (0 - width/10) && right < (window.innerWidth + width / 10);
 
                 if (inview) {
 
                     if ('speechSynthesis' in window) {
-                            // window.speechSynthesis.onvoiceschanged = function() {
-                            let sayit = new SpeechSynthesisUtterance(node.innerText);
+                        const voiceIndex = 0;
 
-                            if (window.speechSynthesis.speaking) {
-                                window.speechSynthesis.cancel();
+                        const speak = async (text) => {
+                            if (!speechSynthesis) {
+                                return
                             }
-                                
-                            sayit.lang = app.local;
-                            window.speechSynthesis.speak(sayit);
-                            // };
+                            let message = new SpeechSynthesisUtterance(text);
+                            message.voice = await chooseVoice();
+                            message.lang = message.voice.lang;
+                            speechSynthesis.speak(message);
+                            console.table(message);
+                        }
+
+                        const getVoices = () => {
+                            return new Promise((resolve) => {
+                                let voices = speechSynthesis.getVoices()
+                                if (voices.length) {
+                                    resolve(voices)
+                                    return
+                                }
+                                speechSynthesis.onvoiceschanged = () => {
+                                    voices = speechSynthesis.getVoices();
+                                    resolve(voices);
+                                }
+                            })
+                        }
+
+                        const chooseVoice = async () => {
+                            const voices = (await getVoices()).filter((voice) => voice.lang == app.local);
+
+                            return new Promise((resolve) => {
+                                resolve(voices[voiceIndex])
+                            })
+                        }
+
+                        speak(node.innerText);
+
                     }
                 }
 
@@ -96,7 +125,7 @@ let app = new Vue({
                         }
                     })
                     .then(function (response) {
-                        console.log('respons: ', response.data.query);
+                        console.table('respons: ', response.data.query);
                         registerDataFromWiki(response);
                     })
                     .catch(function (error) {
@@ -118,11 +147,13 @@ let app = new Vue({
                         'lang': app.lang,
                     };
 
+                    getDataOnLocations(locationsData[0].title);
+
                 } else if (locationsData.length > 1) {
 
                     locationsData.forEach(element => {
-                        //if not allready exists 
-                        if (!app.geoDataFull[element.title]) {
+                        //if not allready exists
+                        if (!app.geoDataFull[element.title] && element.title) {
                             app.geoData.push(element.title);
                             app.geoDataFull[element.title] = {
                                 'lat': element.lat,
@@ -134,8 +165,10 @@ let app = new Vue({
                         }
                     });
 
+                } else {
+
                 }
-                console.log('app.geoData: ', app.geoDataFull);
+                console.table('app.geoData: ', app.geoDataFull);
                 // getDataOnLocations();
             }
 
@@ -191,14 +224,14 @@ let app = new Vue({
                             prop: 'extracts|info|images|categories|pageimages',
                             inprop: 'url|talkid',
                             explaintext: 1,
-                            pithumbsize: 100,
+                            pithumbsize: 110,
                             format: 'json',
                             origin: '*',
                         }
                     })
                     .then(function (response) {
                         if (response.data.query) {
-                            console.log('respons: ', response.data.query.pages);
+                            console.table('respons: ', response.data.query.pages);
                             let page = response.data.query.pages;
                             let pageId = Object.keys(response.data.query.pages)[0];
                             let dataObject = page[pageId];
@@ -237,7 +270,7 @@ let app = new Vue({
                         //     'Access-Control-Allow-Origin':'*'
                         //   }
                         // }).then((html)=>{
-                        //   console.log('html: ', html);
+                        //   console.table('html: ', html);
                         // })
 
                         // let content = page[pageId].revisions[0].slots.main['*'];
@@ -255,9 +288,9 @@ let app = new Vue({
                 window.navigator.geolocation.getCurrentPosition(handle);
 
 
-                setInterval(() => {
-                    navigator.geolocation.getCurrentPosition(handle);
-                }, 30000);
+                // setInterval(() => {
+                //     navigator.geolocation.getCurrentPosition(handle);
+                // }, 30000);
             }
         },
 

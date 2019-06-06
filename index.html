@@ -37,6 +37,11 @@
             overflow: auto;
             border-bottom: 1px solid #aaa;
             text-align: justify;
+            overflow-x: hidden;
+        }
+
+        .card_holder{
+         
         }
 
         #app-5 button.enter {
@@ -71,17 +76,26 @@
             display: flex;
             /* flex-direction: row-reverse; */
             /* position: relative; */
-            justify-content: center
+            justify-content: center;
+            margin: auto 0;
+            margin-top: 1rem;
         }
 
+        .float_image_with_text{
+            font-size: 0.8rem;
+        }
+        
         .btn{
-            padding: 7px 9px;
+            padding: 7px 20px;
             border: 1px solid;
             /* top: -24px;
             position: absolute; */
             background: black;
             color: #fff;
             border-radius: 8px;
+        }
+        .btn:last-child {
+            margin-left: 1rem;
         }
 
         .btn:first-child{
