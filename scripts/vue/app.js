@@ -12,12 +12,12 @@ let app = new Vue({
         extract: [],
         geoDataFull: {},
         options:  [
-                    {language: 'Hebrew', code: 'he', local:'he-IL'},
-                    {language: 'English', code: 'en',  local:'en-US'},
-                    {language: 'Russian', code: 'ru', local:'ru-RU'},
+                    {language: 'Hebrew', code: 'he', local:'he_IL', localPC:'he_IL'},
+                    {language: 'English', code: 'en',  local:'en_US', localPC:'en-US'},
+                    {language: 'Russian', code: 'ru', local:'ru_RU', localPC:'ru-RU'},
                 ],
         lang : 'en',
-        local: 'en-US'
+        local: 'en_US'
     },
     methods: {
         doSomething: function (e){
