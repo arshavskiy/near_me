@@ -12,13 +12,13 @@ let app = new Vue({
         extract: [],
         geoDataFull: {},
         options:  [
-                    {language: 'Hebrew', code: 'he', local:'he_IL', localPC:'he_IL'},
+                    {language: 'Hebrew', code: 'he', local:'he_IL', localPC:'he-IL'},
                     {language: 'English', code: 'en',  local:'en_US', localPC:'en-US'},
                     {language: 'Russian', code: 'ru', local:'ru_RU', localPC:'ru-RU'},
                 ],
         lang : 'en',
-        local: 'en-US',
-        localPC: 'en_US',
+        local: 'en_US',
+        localPC: 'en-US',
 
     },
     methods: {
@@ -69,7 +69,7 @@ let app = new Vue({
                             console.table(message);
                         }
 
-                        const getVoices = () => {
+                        let getVoices = () => {
                             return new Promise((resolve) => {
                                 let voices = speechSynthesis.getVoices()
                                 if (voices.length) {
@@ -83,13 +83,21 @@ let app = new Vue({
                             })
                         }
 
-                        const chooseVoice = async () => {
-                            const voices = (await getVoices()).filter((voice) => { 
-                                voice.lang == mobilecheck ? app.local : app.localPC
-                            });
+                        let chooseVoice = async () => {
+                            // let voices = (await getVoices()).filter((voice) => { 
+                            //     voice.lang == app.local || voice.lang == app.localPC; 
+                            // });
+                            let voices = await getVoices();
+                            let filterdVoice = [];
+
+                            voices.forEach(voice=>{
+                                if (voice.lang == app.localPC || voice.lang == app.local){
+                                    filterdVoice.push(voice) 
+                                }
+                            })
 
                             return new Promise((resolve) => {
-                                resolve(voices[voiceIndex])
+                               resolve(filterdVoice[voiceIndex]);
                             })
                         }
 
@@ -105,7 +113,7 @@ let app = new Vue({
 
         run: function () {
 
-            if (!mymap) initLeafMap();
+            if ( typeof mymap === undefined ||  typeof mymap === null) initLeafMap();
 
             function updateGpsData(gpsData) {
                 if (app.latitude != gpsData.coords.latitude && app.longitude != gpsData.coords.longitude) {
