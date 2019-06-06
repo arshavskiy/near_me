@@ -17,13 +17,16 @@ let app = new Vue({
                     {language: 'Russian', code: 'ru', local:'ru_RU', localPC:'ru-RU'},
                 ],
         lang : 'en',
-        local: 'en_US'
+        local: 'en-US',
+        localPC: 'en_US',
+
     },
     methods: {
         doSomething: function (e){
           console.table(e);
           app.lang = e.code;
           app.local = e.local;
+          app.localPC = e.localPC;
         },
 
         stopText: function () {
@@ -82,7 +85,7 @@ let app = new Vue({
 
                         const chooseVoice = async () => {
                             const voices = (await getVoices()).filter((voice) => { 
-                                voice.lang == app.local
+                                voice.lang == mobilecheck ? app.local : app.localPC
                             });
 
                             return new Promise((resolve) => {
