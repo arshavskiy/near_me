@@ -13,7 +13,7 @@ let app = new Vue({
         geoDataFull: {},
         options:  [
                     {language: 'Hebrew', code: 'he', local:'he-IL'},
-                    {language: 'English', code: 'en',  local:'en-GB'},
+                    {language: 'English', code: 'en',  local:'en-US'},
                     {language: 'Russian', code: 'ru', local:'ru-RU'},
                 ],
         lang : 'en',
@@ -81,7 +81,9 @@ let app = new Vue({
                         }
 
                         const chooseVoice = async () => {
-                            const voices = (await getVoices()).filter((voice) => voice.lang == app.local);
+                            const voices = (await getVoices()).filter((voice) => { 
+                                voice.lang == app.local
+                            });
 
                             return new Promise((resolve) => {
                                 resolve(voices[voiceIndex])
