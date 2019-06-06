@@ -25,6 +25,7 @@ let app = new Vue({
           app.lang = e.code;
           app.local = e.local;
         },
+
         stopText: function () {
             window.speechSynthesis.cancel();
         },
@@ -98,6 +99,8 @@ let app = new Vue({
         },
 
         run: function () {
+
+            if (!mymap) initLeafMap();
 
             function updateGpsData(gpsData) {
                 if (app.latitude != gpsData.coords.latitude && app.longitude != gpsData.coords.longitude) {
