@@ -118,14 +118,14 @@ let app = new Vue({
                             //   },
                             action: 'query',
                             list: 'geosearch',
-                            gsradius: 1000,
+                            gsradius: 2000,
                             gscoord: mapGeo ? mapGeo.lat + '|' + mapGeo.lng : app.latitude + '|' + app.longitude,
                             format: 'json',
                             origin: '*',
                         }
                     })
                     .then(function (response) {
-                        console.table('respons: ', response.data.query);
+                        console.log(response.data.query);
                         registerDataFromWiki(response);
                     })
                     .catch(function (error) {
@@ -189,7 +189,7 @@ let app = new Vue({
             function InitMap() {
 
                 if (!mymap in window) {
-                    mymap = L.map('mapid').setView([app.latitude, app.longitude], 15);
+                    mymap = L.map('mapid').setView([app.latitude, app.longitude], 13);
                     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
                         maxZoom: 18,
                         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
