@@ -8,11 +8,22 @@ let initLeafMap = () => {
         'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       id: 'mapbox.streets'
     }).addTo(mymap);
+
+    mymap.on('click', function (e,a,b) {
+
+      console.table(e,a,b);
+      // map.removeLayer(marker);
+    });
+
+    
+
     window.run();
   });
 }
 
 window.onload = initLeafMap;
+
+
 
 window.mobilecheck = () => { 
   if( navigator.userAgent.match(/Android/i)

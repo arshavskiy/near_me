@@ -14,8 +14,7 @@
         integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
         crossorigin=""></script>
 
-        <script src="https://unpkg.com/vue-select@3.0.0"></script>
-        <link rel="stylesheet" href="https://unpkg.com/vue-select@3.0.0/dist/vue-select.css">
+      
 
 
 
@@ -32,7 +31,7 @@
             <!-- <p>{{ message }}</p> -->
             <section>
                     <!-- <button class="enter" v-on:click="run">Start nEaR</button> -->
-                    <v-select value="English" :options="options" label="language" :reduce="language => language" @input="doSomething"/>
+                    <v-select value="English" :options="options" label="language" :reduce="language => language" @input="onLanguageUpdate"/>
             </section>
            
             <section class="card_holder__container">
@@ -69,6 +68,8 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/vue-select@3.0.0"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vue-select@3.0.0/dist/vue-select.css">
 
     <script src="scripts/main.js"></script>
     <script src="scripts/vue/app.js"></script>

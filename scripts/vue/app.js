@@ -1,8 +1,9 @@
-Vue.component('v-select', VueSelect.VueSelect)
+Vue.component('v-select', VueSelect.VueSelect);
 
 let app = new Vue({
     el: '#app-5',
-    data: {
+    data() {
+        return {
         message: 'Hello Vue.js!',
         Tlatitude: 0,
         Tlongitude: 0,
@@ -10,7 +11,7 @@ let app = new Vue({
         longitude: 0,
         geoData: [],
         extract: [],
-        geoDataFull: {},
+        geoDataFull: [],
         options:  [
                     {language: 'Hebrew', code: 'he', local:'he_IL', localPC:'he-IL'},
                     {language: 'English', code: 'en',  local:'en_US', localPC:'en-US'},
@@ -19,24 +20,50 @@ let app = new Vue({
         lang : 'en',
         local: 'en_US',
         localPC: 'en-US',
+            }
 
     },
 
     created() {
         console.log('created called.');
-              },
+    },
+
+    filters : {
+        reverse: function (value) {
+          return value.reverse();
+          }
+      },
 
     methods: {
-        doSomething: function (e){
+        onLanguageUpdate: function (e){
           console.table(e);
           app.lang = e.code;
           app.local = e.local;
           app.localPC = e.localPC;
+          app.removeMarkers();
+       
+          app.run();
+        },
+
+        removeMarkers : function(){
+
+            app.geoDataFull.forEach(item=>{
+                let m = L.marker([item.lat, item.lon]);
+                m.remove(mymap);
+                mymap.removeLayer(m);
+            });
+
+            // return ()=>{
+            //     app.geoData = []; 
+            //     app.geoDataFull = [];
+            // }
         },
 
         stopText: function () {
             window.speechSynthesis.cancel();
         },
+
+        
 
         readText: function (text) {
 
@@ -162,7 +189,7 @@ let app = new Vue({
                 let locationsData = response.data.query.geosearch;
 
                 if (locationsData.length === 1) {
-                    app.geoData.push(locationsData[0].title);
+                    app.geoData.unshift(locationsData[0].title);
                     app.geoDataFull[locationsData[0].title] = {
                         'lat': locationsData[0].lat,
                         'lon': locationsData[0].lon,
@@ -176,7 +203,7 @@ let app = new Vue({
                     locationsData.forEach(element => {
                         //if not allready exists
                         if (!app.geoDataFull[element.title] && element.title) {
-                            app.geoData.push(element.title);
+                            app.geoData.unshift(element.title);
                             app.geoDataFull[element.title] = {
                                 'lat': element.lat,
                                 'lon': element.lon,
@@ -221,7 +248,7 @@ let app = new Vue({
                     }).addTo(mymap);
                 }
 
-                L.marker([app.latitude, app.longitude]).addTo(mymap)
+                homeMarker = L.marker([app.latitude, app.longitude]).addTo(mymap)
                     .bindPopup("<b>Hello world!</b><br />You Are here!").openPopup();
 
                 var popup = L.popup();
@@ -283,9 +310,8 @@ let app = new Vue({
                                     .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
                             }
 
-
-
-                            app.extract.push(page[pageId].extract);
+                            app.extract.unshift(page[pageId].extract);
+                            // app.extract = app.extract.reverse();
                         }
 
                         // axios.get(url,{
