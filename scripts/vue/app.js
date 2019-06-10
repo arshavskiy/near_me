@@ -12,6 +12,7 @@ let app = new Vue({
         geoData: [],
         extract: [],
         geoDataFull: {},
+        voices: [],
         options:  [
                     {language: 'Hebrew', code: 'he', local:'he_IL', localPC:'he-IL'},
                     {language: 'English', code: 'en',  local:'en_US', localPC:'en-US'},
@@ -68,6 +69,8 @@ let app = new Vue({
 
                 let inview = left >= (0 - width/10) && right < (window.innerWidth + width / 10);
 
+                let local = node.getAttribute('data-local');
+
                 if (inview) {
 
                     if ('speechSynthesis' in window) {
@@ -84,16 +87,26 @@ let app = new Vue({
                             console.table(message);
                         }
 
+                        let voices = app.voices;
+                        
                         let getVoices = () => {
                             return new Promise((resolve) => {
-                                let voices = speechSynthesis.getVoices()
+                                voices = app.voices = speechSynthesis.getVoices()
                                 if (voices.length) {
                                     resolve(voices)
-                                    return
+                                    return;
                                 }
-                                speechSynthesis.onvoiceschanged = () => {
-                                    voices = speechSynthesis.getVoices();
-                                    resolve(voices);
+                                if (speechSynthesis.onvoiceschanged !== undefined) {
+                                    // Chrome gets the voices asynchronously so this is needed
+                                    speechSynthesis.onvoiceschanged = () => {
+                                        voices = app.voices = speechSynthesis.getVoices();
+                                        resolve(voices);
+                                    }
+                                } else {
+                                    speechSynthesis.onvoiceschanged = () => {
+                                        voices = app.voices = speechSynthesis.getVoices();
+                                        resolve(voices);
+                                    }
                                 }
                             })
                         }
@@ -102,11 +115,16 @@ let app = new Vue({
                             // let voices = (await getVoices()).filter((voice) => { 
                             //     voice.lang == app.local || voice.lang == app.localPC; 
                             // });
-                            let voices = await getVoices();
+                            if (voices.length === 0 ){
+                                voices = await getVoices();
+                            } else {
+                                voices = app.voices;
+                            }
+                           
                             let filterdVoice = [];
 
                             voices.forEach(voice=>{
-                                if (voice.lang == app.localPC || voice.lang == app.local){
+                                if (voice.lang == app.localPC || voice.lang == local){
                                     filterdVoice.push(voice);
                                 }
                             })
@@ -117,6 +135,7 @@ let app = new Vue({
                         }
 
                         speak(node.innerText);
+                        return;
 
                     }
                 }
@@ -177,6 +196,7 @@ let app = new Vue({
                         'lat': locationsData[0].lat,
                         'lon': locationsData[0].lon,
                         'lang': app.lang,
+                        'local': app.local
                     };
 
                     getDataOnLocations(locationsData[0].title);
@@ -191,6 +211,7 @@ let app = new Vue({
                                 'lat': element.lat,
                                 'lon': element.lon,
                                 'lang': app.lang,
+                                'local': app.local
                             };
 
                             getDataOnLocations(element.title);

@@ -36,7 +36,7 @@
            
             <section class="card_holder__container">
                 <div v-for="(value, name) in geoDataFull" class="card_holder">
-                    <div class="card_holder__item">
+                    <div class="card_holder__item" v-bind:data-local="value.local" v-bind:data-lang="value.lang">
                         <div class="float_image_with_text">
                             <img :src=value.img v-if="value.img">
                             {{value.extract}}
