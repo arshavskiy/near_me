@@ -2,6 +2,23 @@ body{
     margin: 0;
 }
 
+::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #859ddf;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #355cc9;
+  }
+
+
 .card_holder__container {
     display: flex;
     /* flex-flow: wrap; */
@@ -10,13 +27,13 @@ body{
 }
 
 .card_holder__item {
-    max-height: 25vh;
-    width: 50vw;
+    max-height: 45vh;
+    width: 80vw;
     padding: 15px;
     overflow: auto;
-    border-right: 1px solid #000;
+    /* border-right: 1px solid #000;
     border-right-style: dashed;
-    border-right-width: thin;
+    border-right-width: thin; */
     text-align: justify;
     overflow-x: hidden;
 }
@@ -40,7 +57,7 @@ body{
 
 
 #mapid {
-    height: 50vh;
+    height: 40vh;
 }
 
 .float_image_with_text img {

@@ -299,7 +299,7 @@ let app = new Vue({
 
                                 let myIcon = L.icon({
                                     iconUrl: app.geoDataFull[dataObject.title].img,
-                                    iconSize: [50, 50],
+                                    iconSize: [30, 30],
                                     iconAnchor: [10, 10],
                                     popupAnchor: [20, -5],
                                 });
