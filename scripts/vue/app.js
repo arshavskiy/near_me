@@ -11,7 +11,7 @@ let app = new Vue({
         longitude: 0,
         geoData: [],
         extract: [],
-        geoDataFull: [],
+        geoDataFull: {},
         options:  [
                     {language: 'Hebrew', code: 'he', local:'he_IL', localPC:'he-IL'},
                     {language: 'English', code: 'en',  local:'en_US', localPC:'en-US'},
@@ -40,30 +40,13 @@ let app = new Vue({
           app.lang = e.code;
           app.local = e.local;
           app.localPC = e.localPC;
-          app.removeMarkers();
-       
-          app.run();
-        },
-
-        removeMarkers : function(){
-
-            app.geoDataFull.forEach(item=>{
-                let m = L.marker([item.lat, item.lon]);
-                m.remove(mymap);
-                mymap.removeLayer(m);
-            });
-
-            // return ()=>{
-            //     app.geoData = []; 
-            //     app.geoDataFull = [];
-            // }
+        //   app.geoData = [], app.geoDataFull = {};
+          run();
         },
 
         stopText: function () {
             window.speechSynthesis.cancel();
         },
-
-        
 
         readText: function (text) {
 
@@ -248,7 +231,7 @@ let app = new Vue({
                     }).addTo(mymap);
                 }
 
-                homeMarker = L.marker([app.latitude, app.longitude]).addTo(mymap)
+                L.marker([app.latitude, app.longitude]).addTo(mymap)
                     .bindPopup("<b>Hello world!</b><br />You Are here!").openPopup();
 
                 var popup = L.popup();
