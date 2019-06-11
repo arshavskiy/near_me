@@ -15,7 +15,7 @@ body{
   }
   
   ::-webkit-scrollbar-thumb:hover {
-    background: #355cc9;
+    background: #000;
   }
 
 
@@ -27,9 +27,9 @@ body{
 }
 
 .card_holder__item {
-    max-height: 45vh;
-    width: 80vw;
-    padding: 15px;
+    /* max-height: 45vh; */
+    /* width: 80vw; */
+    /* padding: 15px; */
     overflow: auto;
     /* border-right: 1px solid #000;
     border-right-style: dashed;

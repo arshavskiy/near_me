@@ -196,7 +196,8 @@ let app = new Vue({
                         'lat': locationsData[0].lat,
                         'lon': locationsData[0].lon,
                         'lang': app.lang,
-                        'local': app.local
+                        'local': app.local,
+                        'title': locationsData[0].title
                     };
 
                     getDataOnLocations(locationsData[0].title);
@@ -211,7 +212,8 @@ let app = new Vue({
                                 'lat': element.lat,
                                 'lon': element.lon,
                                 'lang': app.lang,
-                                'local': app.local
+                                'local': app.local,
+                                'title': element.title
                             };
 
                             getDataOnLocations(element.title);
@@ -279,7 +281,7 @@ let app = new Vue({
                             prop: 'extracts|info|images|categories|pageimages',
                             inprop: 'url|talkid',
                             explaintext: 1,
-                            pithumbsize: 110,
+                            pithumbsize: 300,
                             format: 'json',
                             origin: '*',
                         }
@@ -299,7 +301,7 @@ let app = new Vue({
 
                                 let myIcon = L.icon({
                                     iconUrl: app.geoDataFull[dataObject.title].img,
-                                    iconSize: [30, 30],
+                                    iconSize: [40, 40],
                                     iconAnchor: [10, 10],
                                     popupAnchor: [20, -5],
                                 });
