@@ -45,17 +45,23 @@
                                             <!-- <i class="far fa-star"></i> -->
                                         <!-- </div> -->
                                         <label :for="index" class="button" aria-hidden="true">
-                                            Details
+                                            <div class="icon">
+                                                <i class="fas fa-book-reader">
+                                                    
+                                                </i>
+                                                <!-- <span>bath</span> -->
+                                            </div>
                                         </label>
                                     </div>
                                 </div>
                                 <div class="back">
                                     <div class="inner">
                                         <div class="info">
-                                            <span>1</span>
-                                            <div class="icon">
-                                                <i class="fas fa-bath"></i>
-                                                <span>bath</span>
+                                            <div class="icon" v-on:click="readText(value)">
+                                                <i class="fas fa-volume-up" ></i>
+                                            </div>
+                                            <div class="icon" v-on:click="stopText">
+                                                <i class="fas fa-volume-mute" ></i>
                                             </div>
                                         </div>
                                         <div class="description">
@@ -63,8 +69,6 @@
                                                 {{value.extract}}
                                             </p>
                                         </div>
-                                        <!-- <div class="location">Warsaw, Poland</div> -->
-                                        <!-- <div class="price">38€ / day</div> -->
                                         <label :for="index" class="button return" aria-hidden="true">
                                             <i class="fas fa-arrow-left"></i>
                                         </label>
@@ -77,27 +81,16 @@
             </section>
 
             <section>
-
-              
-            </section>
-
-            <div class="btn_holder">
-                <button class="btn" v-on:click="readText">Play</button>
-                <button class="btn" v-on:click="stopText">Stop</button>
-            </div>
-
-
-            <section>
                 <div v-for="item in extract" class="card_holder"></div>
             </section>
         </div>
 
-        <div id="app-7">
+        <!-- <div id="app-7">
             <ol v-if="answer">
                 <todo-item v-for="item in groceryList" v-bind:todo="item" v-bind:key="item.id">
                 </todo-item>
             </ol>
-        </div>
+        </div> -->
 
     </main>
 

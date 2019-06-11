@@ -73,6 +73,7 @@
   grid-row: 2;
   margin-bottom: 0.3em;
   text-transform: uppercase;
+  text-align: center;
   letter-spacing: 3px;
   color: #fff;
   font-weight: 500;
@@ -131,7 +132,7 @@
 }
 
 .back .info i:before {
-  background: linear-gradient(40deg, #000, #438af3);
+  background: #000;
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
 }
