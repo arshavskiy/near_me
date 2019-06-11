@@ -30,26 +30,15 @@
             <section class="card_holder__container">
                 <div v-for="(value, name, index) in geoDataFull" class="card_holder">
                     <div class="card" :data-local="value.local" :data-lang="value.lang">
-                        <!-- <div class="float_image_with_text">
-                            <img :src=value.img v-if="value.img">
-                            {{value.extract}}
-                        </div> -->
-                        <!-- <div class="card" > -->
                             <input type="checkbox" :id="index" class="more" aria-hidden="true">
                             <div class="content">
                                 <div class="front"
                                 :style="{ 'background-image': 'url(' + value.img + ')' }">
                                     <div class="inner">
                                         <h3> {{value.title}}</h3>
-                                        <!-- <div class="rating"> -->
-                                            <!-- <i class="far fa-star"></i> -->
-                                        <!-- </div> -->
                                         <label :for="index" class="button" aria-hidden="true">
                                             <div class="icon">
-                                                <i class="fas fa-book-reader">
-                                                    
-                                                </i>
-                                                <!-- <span>bath</span> -->
+                                                <i class="fas fa-book-reader"></i>
                                             </div>
                                         </label>
                                     </div>
@@ -61,7 +50,7 @@
                                                 <i class="fas fa-volume-up" ></i>
                                             </div>
                                             <div class="icon" v-on:click="stopText">
-                                                <i class="fas fa-volume-mute" ></i>
+                                                <i class="fas fa-volume-up" ></i>
                                             </div>
                                         </div>
                                         <div class="description">
@@ -84,26 +73,17 @@
                 <div v-for="item in extract" class="card_holder"></div>
             </section>
         </div>
-
-        <!-- <div id="app-7">
-            <ol v-if="answer">
-                <todo-item v-for="item in groceryList" v-bind:todo="item" v-bind:key="item.id">
-                </todo-item>
-            </ol>
-        </div> -->
-
     </main>
-
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script> -->
-    <script src="https://unpkg.com/vue-select@3.0.0"></script>
-
-    <script src="scripts/vue/comments/select.js"></script>
-
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
         integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
         crossorigin=""></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/vue-select@3.0.0"></script>
+    <script src="scripts/vue/comments/select.js"></script>
+
 
     <script src="scripts/main.js"></script>
     <script src="scripts/vue/app.js"></script>
