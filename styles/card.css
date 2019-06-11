@@ -1,14 +1,9 @@
 * {
   box-sizing: border-box;
 }
-.wrapper {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-}
 .card {
-  width: 420px;
-  height: 340px;
+  width: 300px;
+  height: 300px;
   margin: 1em;
   perspective: 1500px;
 }
@@ -64,7 +59,7 @@
   grid-template-rows: 5fr 1fr 1fr 2fr 1fr;
   justify-items: center;
 }
-.front h2 {
+.front h3 {
   grid-row: 2;
   margin-bottom: 0.3em;
   text-transform: uppercase;
@@ -133,7 +128,7 @@
 }
 .back .description {
   grid-row: 5;
-  grid-column: -1;
+  grid-column: 1/-1;
   font-size: 0.86em;
   border-radius: 5px;
   font-weight: 600;
@@ -150,15 +145,15 @@
   font-size: 0.86em;
 }
 .back .location {
-  grid-column: 0.33333333;
+  grid-column: 1/3;
   justify-self: left;
 }
 .back .price {
-  grid-column: -3;
+  grid-column: 3/-1;
   justify-self: right;
 }
 .back .button {
-  grid-column: -1;
+  grid-column: 1/-1;
   justify-self: center;
 }
 .button {

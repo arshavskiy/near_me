@@ -14,6 +14,8 @@
         integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
         crossorigin=""></script>
 
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+
 </head>
 
 <body>
@@ -24,90 +26,124 @@
 
         <div id="app-5">
             <section>
-                    <!-- <button class="enter" v-on:click="run">Start nEaR</button> -->
-                    <v-select value="English" :options="options" label="language" :reduce="language => language" @input="onLanguageUpdate"/>
+                <!-- <button class="enter" v-on:click="run">Start nEaR</button> -->
+                <v-select value="English" :options="options" label="language" :reduce="language => language"
+                    @input="onLanguageUpdate" />
             </section>
-           
+
             <section class="card_holder__container">
                 <div v-for="(value, name) in geoDataFull" class="card_holder">
-                    <div class="card_holder__item" v-bind:data-local="value.local" v-bind:data-lang="value.lang">
+                    <div class="card_holder__item" :data-local="value.local" :data-lang="value.lang">
                         <div class="float_image_with_text">
                             <img :src=value.img v-if="value.img">
                             {{value.extract}}
+
+                            <div :style="{ 'background': 'url(' + value.img + ')' }"></div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- <div class="card">
-                <input type="checkbox" id="card1" class="more" aria-hidden="true">
-                <div class="content">
-                    <div class="front" style="background-image: url('https://images.unsplash.com/photo-1529408686214-b48b8532f72c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=986e2dee5c1b488d877ad7ba1afaf2ec&auto=format&fit=crop&w=1350&q=80')">
-                        <div class="inner">
-                            <h2>Cozy apartment</h2>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
+            <section>
+
+                <div class="card">
+                    <input type="checkbox" id="card1" class="more" aria-hidden="true">
+                    <div class="content">
+                        <div class="front"
+                            style="background-image: url('https://images.unsplash.com/photo-1529408686214-b48b8532f72c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=986e2dee5c1b488d877ad7ba1afaf2ec&auto=format&fit=crop&w=1350&q=80')">
+                            <div class="inner">
+                                <h3>Cozy apartment</h3>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <label for="card1" class="button" aria-hidden="true">
+                                    Details
+                                </label>
                             </div>
-                            <label for="card1" class="button" aria-hidden="true">
-                                Details
-                            </label>
                         </div>
-                    </div>
-                    <div class="back">
-                        <div class="inner">
-                            <div class="info">
-                                <span>5</span>
-                                <div class="icon">
-                                    <i class="fas fa-users"></i>
-                                    <span>people</span>
+                        <div class="back">
+                            <div class="inner">
+                                <div class="info">
+                                    <span>5</span>
+                                    <div class="icon">
+                                        <i class="fas fa-users"></i>
+                                        <span>people</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="info">
-                                <span>4</span>
-                                <div class="icon">
-                                    <i class="fas fa-door-open"></i>
-                                    <span>rooms</span>
+                                <div class="info">
+                                    <span>4</span>
+                                    <div class="icon">
+                                        <i class="fas fa-door-open"></i>
+                                        <span>rooms</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="info">
-                                <span>3</span>
-                                <div class="icon">
-                                    <i class="fas fa-bed"></i>
-                                    <span>beds</span>
+                                <div class="info">
+                                    <span>3</span>
+                                    <div class="icon">
+                                        <i class="fas fa-bed"></i>
+                                        <span>beds</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="info">
-                                <span>1</span>
-                                <div class="icon">
-                                    <i class="fas fa-bath"></i>
-                                    <span>bath</span>
+                                <div class="info">
+                                    <span>1</span>
+                                    <div class="icon">
+                                        <i class="fas fa-bath"></i>
+                                        <span>bath</span>
+                                    </div>
                                 </div>
+                                <div class="description">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae, accusamus.</p>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates earum
+                                        nostrum ipsam
+                                        ullam, reiciendis nam consectetur? Doloribus voluptate architecto possimus
+                                        perferendis
+                                        tenetur nemo amet temporibus, enim soluta nam, debitis.</p>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates earum
+                                        nostrum ipsam
+                                        ullam, reiciendis nam consectetur? Doloribus voluptate architecto possimus
+                                        perferendis
+                                        tenetur nemo amet temporibus, enim soluta nam, debitis.</p>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates earum
+                                        nostrum ipsam
+                                        ullam, reiciendis nam consectetur? Doloribus voluptate architecto possimus
+                                        perferendis
+                                        tenetur nemo amet temporibus, enim soluta nam, debitis.</p>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates earum
+                                        nostrum ipsam
+                                        ullam, reiciendis nam consectetur? Doloribus voluptate architecto possimus
+                                        perferendis
+                                        tenetur nemo amet temporibus, enim soluta nam, debitis.</p>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates earum
+                                        nostrum ipsam
+                                        ullam, reiciendis nam consectetur? Doloribus voluptate architecto possimus
+                                        perferendis
+                                        tenetur nemo amet temporibus, enim soluta nam, debitis.</p>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates earum
+                                        nostrum ipsam
+                                        ullam, reiciendis nam consectetur? Doloribus voluptate architecto possimus
+                                        perferendis
+                                        tenetur nemo amet temporibus, enim soluta nam, debitis.</p>
+                                </div>
+                                <div class="location">Warsaw, Poland</div>
+                                <div class="price">38€ / day</div>
+                                <label for="card1" class="button return" aria-hidden="true">
+                                    <i class="fas fa-arrow-left"></i>
+                                </label>
                             </div>
-                            <div class="description">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae, accusamus.</p>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates earum nostrum ipsam
-                                    ullam, reiciendis nam consectetur? Doloribus voluptate architecto possimus perferendis
-                                    tenetur nemo amet temporibus, enim soluta nam, debitis.</p>
-                            </div>
-                            <div class="location">Warsaw, Poland</div>
-                            <div class="price">38€ / day</div>
-                            <label for="card1" class="button return" aria-hidden="true">
-                                <i class="fas fa-arrow-left"></i>
-                            </label>
                         </div>
                     </div>
                 </div>
-            </div> -->
+            </section>
 
             <div class="btn_holder">
-                    <button class="btn" v-on:click="readText">Play</button>
-                    <button class="btn" v-on:click="stopText">Stop</button>
-                </div>
-                
+                <button class="btn" v-on:click="readText">Play</button>
+                <button class="btn" v-on:click="stopText">Stop</button>
+            </div>
+
 
             <section>
                 <div v-for="item in extract" class="card_holder"></div>

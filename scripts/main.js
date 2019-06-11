@@ -23,8 +23,6 @@ let initLeafMap = () => {
 
 window.onload = initLeafMap;
 
-
-
 window.mobilecheck = () => { 
   if( navigator.userAgent.match(/Android/i)
   || navigator.userAgent.match(/webOS/i)
