@@ -14,7 +14,7 @@ let app = new Vue({
             geoDataFull: {},
             voices: [],
             options: [{
-                    language: 'Hebrew',
+                    language: 'עברית',
                     code: 'he',
                     local: 'he_IL',
                     localPC: 'he-IL'
@@ -26,7 +26,7 @@ let app = new Vue({
                     localPC: 'en-US'
                 },
                 {
-                    language: 'Russian',
+                    language: 'Русский',
                     code: 'ru',
                     local: 'ru_RU',
                     localPC: 'ru-RU'
@@ -42,6 +42,7 @@ let app = new Vue({
 
     created() {
         console.log('created called.');
+        initLeafMap();
     },
 
     filters: {
@@ -95,8 +96,9 @@ let app = new Vue({
                     return new Promise((resolve) => {
                         voices = app.voices = speechSynthesis.getVoices()
                         if (voices.length) {
-                            resolve(voices)
-                            return app.reading = true;
+                            resolve(voices);
+                            
+                            return 
                         }
                         if (speechSynthesis.onvoiceschanged !== undefined) {
                             // Chrome gets the voices asynchronously so this is needed
@@ -137,10 +139,22 @@ let app = new Vue({
                 }
 
                 speak(text);
+                app.reading = true;
                 return;
 
             }
 
+        },
+
+        resize: function(){
+            DOMap.style.height = '40vh';
+            mymap.invalidateSize();
+      
+            let DOMcards = document.getElementsByClassName('card');
+            for (var i = 0; i < DOMcards.length; i++) {
+              DOMcards[i].style.height = '300px';
+            }
+      
         },
 
         run: window.run = function () {
@@ -174,7 +188,7 @@ let app = new Vue({
                         }
                     })
                     .then(function (response) {
-                        console.log(response.data.query);
+                        console.debug(response.data.query);
                         registerDataFromWiki(response);
                     })
                     .catch(function (error) {
@@ -240,14 +254,14 @@ let app = new Vue({
             }
 
             function InitMap() {
+                if (typeof mymap == 'undefined') {
 
-                if (!mymap in window) {
-                    mymap = L.map('mapid').setView([app.latitude, app.longitude], 13);
+                    console.debug('mapfromapp');
+                    
+                    mymap = L.map('mapid').setView([app.latitude, app.longitude], 15);
                     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
                         maxZoom: 18,
-                        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-                            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
                         id: 'mapbox.streets'
                     }).addTo(mymap);
                 }

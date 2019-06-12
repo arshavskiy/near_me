@@ -5,7 +5,7 @@
 .card {
   width: 300px;
   height: 300px;
-  margin: 1em;
+  margin: .5em;
   perspective: 1500px;
 }
 
@@ -132,9 +132,13 @@
 }
 
 .back .info i:before {
-  background: #000;
+  background: #355cc9;
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
+  /* border: solid 1px #355cc9; */
+  /* padding: 4px; */
+  /* border-radius: 4px; */
+
 }
 
 .back .info .icon {
