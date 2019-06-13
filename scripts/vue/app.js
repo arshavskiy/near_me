@@ -43,6 +43,7 @@ let app = new Vue({
     created() {
         console.log('created called.');
         initLeafMap();
+       
     },
 
     filters: {
@@ -150,7 +151,9 @@ let app = new Vue({
 
         showOnMap: (e, cardName)=>{
             console.debug(e, cardName);
-            mymap.setView([app.geoDataFull[cardName].lat , app.geoDataFull[cardName].getVoiceslon], 16, {"animate": true});
+            mymap.setView([app.geoDataFull[cardName].lat , app.geoDataFull[cardName].lon], 16, {
+                "animate": true,
+               });
         },
 
         run: window.run = function () {
@@ -228,6 +231,8 @@ let app = new Vue({
                         }
                     });
 
+                    loader.classList.add("hide");
+
                 } else {
 
                 }
@@ -262,8 +267,14 @@ let app = new Vue({
                     }).addTo(mymap);
                 }
 
-                L.marker([app.latitude, app.longitude]).addTo(mymap)
-                    .bindPopup("<b>Hello world!</b><br />You Are here!").openPopup();
+                const locationIcon = L.icon({
+                    iconUrl: './assets/location.png',
+                    iconSize: [60, 60],
+                    iconAnchor: [25, -20],
+                });
+
+                L.marker([app.latitude, app.longitude],{icon:locationIcon}).addTo(mymap)
+                    .bindPopup("You Are here!").openPopup();
 
                 var popup = L.popup();
 

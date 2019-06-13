@@ -20,6 +20,7 @@ let initLeafMap = () => {
 };
 
 const DOMap = document.getElementById('mapid');
+const loader = document.getElementById('loader');
 
 window.resizeClickMap = ()=> {
   DOMap.style.height = '60vh';
