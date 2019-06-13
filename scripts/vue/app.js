@@ -369,9 +369,9 @@ let app = new Vue({
                 window.navigator.geolocation.getCurrentPosition(handle);
 
 
-                // setInterval(() => {
-                //     navigator.geolocation.getCurrentPosition(handle);
-                // }, 5 * 60000);
+                setInterval(() => {
+                    navigator.geolocation.getCurrentPosition(handle);
+                }, 5 * 60000);
             }
         },
 

@@ -54,7 +54,7 @@ function debounce(func, wait, immediate) {
   };
 };
 
-function preloadImages(array, waitForOtherResources, timeout) {
+const preloadImages = (array, waitForOtherResources, timeout)=>{
   var loaded = false, list = preloadImages.list, imgs = array.slice(0), t = timeout || 15*1000, timer;
   if (!preloadImages.list) {
       preloadImages.list = [];
@@ -72,12 +72,13 @@ function preloadImages(array, waitForOtherResources, timeout) {
   }
 
   function loadNow() {
+    let that = this;
       if (!loaded) {
           loaded = true;
-          for (var i = 0; i < imgs.length; i++) {
-              var img = new Image();
+          for (let i = 0; i < imgs.length; i++) {
+              let img = new Image();
               img.onload = img.onerror = img.onabort = function() {
-                  var index = list.indexOf(this);
+                  let index = list.indexOf(that);
                   if (index !== -1) {
                       // remove image from the array once it's loaded
                       // for memory consumption reasons
