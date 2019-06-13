@@ -12,6 +12,15 @@ let initLeafMap = () => {
       }).addTo(mymap);
     }
 
+    // let HikeBike_HikeBike = L.tileLayer('https://tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png', {
+    //   maxZoom: 19,
+    //   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    // }).addTo(mymap);
+
+    let Esri_WorldStreetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+	    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+    }).addTo(mymap);;
+
     mymap.on('click', window.resizeClickMap);
     mymap.on('dragstart', window.resizeClickMap);
     mymap.on('zoomend', window.resizeClickMap);
