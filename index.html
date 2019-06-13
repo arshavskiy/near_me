@@ -31,7 +31,7 @@
 
             <section class="card_holder__container">
                 <div v-for="(value, name, index) in geoDataFull" class="card_holder">
-                    <div class="card" :data-local="value.local" :data-lang="value.lang" v-on:click="showOnMap($event, name)">
+                    <div class="card" :data-local="value.local" :data-lang="value.lang">
                             <input type="checkbox" :id="index" class="more" aria-hidden="true">
                             <div class="content">
                                 <div class="front"
