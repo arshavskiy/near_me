@@ -126,3 +126,7 @@ h1 {
 #editing-view-port::after{
     content: 'language';
 }
+
+.leaflet-marker-pane img{
+    /* border: 2px solid #fff; */
+}

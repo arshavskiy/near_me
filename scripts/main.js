@@ -26,6 +26,11 @@ let initLeafMap = () => {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mymap);
 
+    // let Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    //   maxZoom: 19,  
+    // attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    // }).addTo(mymap);
+
     mymap.on('click', window.resizeClickMap);
     mymap.on('dragstart', window.resizeClickMap);
     mymap.on('zoomend', window.resizeClickMap);

@@ -42,7 +42,7 @@ let app = new Vue({
 
     created() {
         console.log('created called.');
-        initLeafMap();
+        // initLeafMap();
        
     },
 
@@ -54,7 +54,6 @@ let app = new Vue({
 
     methods: {
         onLanguageUpdate: function (e) {
-            console.table(e);
             app.lang = e.code;
             app.local = e.local;
             app.localPC = e.localPC;
@@ -320,6 +319,9 @@ let app = new Vue({
                             app.geoDataFull[dataObject.title].extract = dataObject.extract;
 
                             if (dataObject.thumbnail) {
+
+                                preloadImages(dataObject.thumbnail.source, true);
+
                                 app.geoDataFull[dataObject.title].img = dataObject.thumbnail.source;
 
                                 let myIcon = L.icon({
@@ -369,7 +371,7 @@ let app = new Vue({
 
                 // setInterval(() => {
                 //     navigator.geolocation.getCurrentPosition(handle);
-                // }, 30000);
+                // }, 5 * 60000);
             }
         },
 
@@ -381,3 +383,5 @@ let app = new Vue({
 
 
 });
+
+Vue.config.devtools = true;
