@@ -146,15 +146,11 @@ let app = new Vue({
 
         },
 
-        resize: function(){
-            DOMap.style.height = '40vh';
-            mymap.invalidateSize();
-      
-            let DOMcards = document.getElementsByClassName('card');
-            for (var i = 0; i < DOMcards.length; i++) {
-              DOMcards[i].style.height = '300px';
-            }
-      
+        resize: window.resizeClickCard,
+
+        showOnMap: (e, cardName)=>{
+            console.debug(e, cardName);
+            mymap.setView([app.geoDataFull[cardName].lat , app.geoDataFull[cardName].getVoiceslon], 16, {"animate": true});
         },
 
         run: window.run = function () {

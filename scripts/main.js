@@ -12,33 +12,8 @@ let initLeafMap = () => {
       }).addTo(mymap);
     }
 
-    mymap.on('click', function (e) {
-
-      DOMap.style.height = '60vh';
-      mymap.invalidateSize();
-
-      let DOMcards = document.getElementsByClassName('card');
-      for (var i = 0; i < DOMcards.length; i++) {
-        DOMcards[i].style.height = '200px';
-      }
-
-      console.debug(e);
-    });
-
-    mymap.on('dragstart',function (e) {
-
-      DOMap.style.height = '60vh';
-      mymap.invalidateSize();
-
-      let DOMcards = document.getElementsByClassName('card');
-      for (var i = 0; i < DOMcards.length; i++) {
-        DOMcards[i].style.height = '200px';
-      }
-
-      console.debug(e);
-    });
-
-
+    mymap.on('click', window.resizeClickMap);
+    mymap.on('dragstart', window.resizeClickMap);
 
     window.run();
   });
@@ -46,44 +21,26 @@ let initLeafMap = () => {
 
 const DOMap = document.getElementById('mapid');
 
-window.onload = initLeafMap;
+window.resizeClickMap = ()=> {
+  DOMap.style.height = '60vh';
+  mymap.invalidateSize();
 
-window.mobilecheck = () => {
-  if (navigator.userAgent.match(/Android/i) ||
-    navigator.userAgent.match(/webOS/i) ||
-    navigator.userAgent.match(/iPhone/i) ||
-    navigator.userAgent.match(/iPad/i) ||
-    navigator.userAgent.match(/iPod/i) ||
-    navigator.userAgent.match(/BlackBerry/i) ||
-    navigator.userAgent.match(/Windows Phone/i)
-  ) {
-    return true;
-  } else {
-    return false;
+  let DOMcards = document.getElementsByClassName('card');
+  for (var i = 0; i < DOMcards.length; i++) {
+    DOMcards[i].style.height = '200px';
+  }
+};
+
+window.resizeClickCard = ()=>{
+  DOMap.style.height = '40vh';
+  mymap.invalidateSize();
+
+  let DOMcards = document.getElementsByClassName('card');
+  for (var i = 0; i < DOMcards.length; i++) {
+    DOMcards[i].style.height = '300px';
   }
 }
 
-window.inview = () => {
-  let all = document.querySelectorAll('.class');
-  let array = [];
-  let max;
 
-  all.forEach(node => {
+window.onload = initLeafMap;
 
-    const {
-      top,
-      right,
-      bottom,
-      left,
-      width
-    } = node.getBoundingClientRect();
-    const intersection = {
-      t: bottom,
-      r: window.innerWidth - left,
-      b: window.innerHeight - top,
-      l: right
-    };
-
-    let inview = left >= (0 - width / 10) && right < (window.innerWidth + width / 10);
-  });
-}
