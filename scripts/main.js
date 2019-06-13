@@ -14,7 +14,7 @@ let initLeafMap = () => {
 
     mymap.on('click', window.resizeClickMap);
     mymap.on('dragstart', window.resizeClickMap);
-    mymap.on('resize', window.resizeClickMap);
+    mymap.on('zoomend', window.resizeClickMap);
 
     window.run();
   });
