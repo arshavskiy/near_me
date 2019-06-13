@@ -151,6 +151,8 @@ let app = new Vue({
 
         showOnMap: (e, cardName)=>{
             console.debug(e, cardName);
+            e.stopPropagation();
+            if ( e.target.classList[0]==='button' )  return;
             mymap.setView([app.geoDataFull[cardName].lat , app.geoDataFull[cardName].lon], 16, {
                 "animate": true,
                });

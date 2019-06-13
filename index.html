@@ -54,6 +54,9 @@
                                             <div v-if="reading" class="icon" v-on:click="stopText">
                                                 <i class="fas fa-volume-off" ></i>
                                             </div>
+                                            <div class="icon" v-on:click="showOnMap($event, name)">
+                                                <i class="fas fa-map-marked-alt"></i>
+                                            </div>
                                         </div>
                                         <div class="description">
                                             <p>
