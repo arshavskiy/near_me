@@ -55,10 +55,10 @@
                                             <div class="icon" v-on:click="showOnMap($event, name)">
                                                 <i class="fas fa-map-marked-alt"></i>
                                             </div>
-                                            <div class="icon" v-on:click="adFavorite(name, e)">
+                                            <div v-if="value.selected == false" v-model="value.selected" class="icon" v-on:click="adFavorite(name, e)">
                                                     <i class="far fa-star"></i>
                                             </div>
-                                            <div class="icon" v-on:click="removeFavorite(name, e)">
+                                            <div  v-if="value.selected == true" v-model="value.selected" class="icon" v-on:click="removeFavorite(name, e)">
                                                     <i class="fas fa-star"></i>
                                             </div>
                                         </div>
@@ -90,6 +90,7 @@
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script> -->
     <script src="https://unpkg.com/vue-select@3.0.0"></script>
     <script src="scripts/vue/comments/select.js"></script>

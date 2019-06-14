@@ -1,43 +1,56 @@
 Vue.component('v-select', VueSelect.VueSelect);
 
+
+Vue.prototype.filters = {
+    reverse: function (array) {
+        return array.slice.reverse();
+    },
+
+    capitalize: function (value) {
+        if (!value) return '';
+        value = value.toString()
+        return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+};
+
+
+
 let app = new Vue({
     el: '#app-5',
-    data() {
-        return {
-            message: 'Hello Vue.js!',
-            Tlatitude: 0,
-            Tlongitude: 0,
-            latitude: 0,
-            longitude: 0,
-            geoData: [],
-            extract: [],
-            geoDataFull: {},
-            voices: [],
-            options: [{
-                    language: 'עברית',
-                    code: 'he',
-                    local: 'he_IL',
-                    localPC: 'he-IL'
-                },
-                {
-                    language: 'English',
-                    code: 'en',
-                    local: 'en_US',
-                    localPC: 'en-US'
-                },
-                {
-                    language: 'Русский',
-                    code: 'ru',
-                    local: 'ru_RU',
-                    localPC: 'ru-RU'
-                },
-            ],
-            lang: 'en',
-            local: 'en_US',
-            localPC: 'en-US',
-            reading: false,
-            gsradius: 2000
-        }
+    data: {
+        message: 'Hello Vue.js!',
+        Tlatitude: 0,
+        Tlongitude: 0,
+        latitude: 0,
+        longitude: 0,
+        geoData: [],
+        extract: [],
+        geoDataFull: {},
+        voices: [],
+        options: [{
+                language: 'עברית',
+                code: 'he',
+                local: 'he_IL',
+                localPC: 'he-IL'
+            },
+            {
+                language: 'English',
+                code: 'en',
+                local: 'en_US',
+                localPC: 'en-US'
+            },
+            {
+                language: 'Русский',
+                code: 'ru',
+                local: 'ru_RU',
+                localPC: 'ru-RU'
+            },
+        ],
+        lang: 'en',
+        local: 'en_US',
+        localPC: 'en-US',
+        reading: false,
+        gsradius: 2000
 
     },
 
@@ -46,12 +59,6 @@ let app = new Vue({
         // initLeafMap();
         document.getElementById('app-5').style.display = 'initial';
        
-    },
-
-    filters: {
-        reverse: function (value) {
-            return value.reverse();
-        }
     },
 
     methods: {
@@ -213,7 +220,9 @@ let app = new Vue({
                 let locationsData = response.data.query.geosearch;
 
                 if (locationsData.length === 1) {
-                    app.geoData.unshift(locationsData[0].title);
+
+                    app.geoData.push(locationsData[0].title);
+
                     app.geoDataFull[locationsData[0].title] = {
                         'lat': locationsData[0].lat,
                         'lon': locationsData[0].lon,
@@ -237,7 +246,9 @@ let app = new Vue({
                     locationsData.forEach(element => {
                         //if not allready exists
                         if (!app.geoDataFull[element.title] && element.title) {
-                            app.geoData.unshift(element.title);
+
+                            app.geoData.push(element.title);
+
                             app.geoDataFull[element.title] = {
                                 'lat': element.lat,
                                 'lon': element.lon,
@@ -253,10 +264,11 @@ let app = new Vue({
                             } else {
                                 app.geoDataFull[element.title].selected = false;
                             }
-
-                            getDataOnLocations(element.title);
                         }
+                        getDataOnLocations(element.title);
                     });
+
+                   
 
                     loader.classList.add("hide");
 
