@@ -35,7 +35,8 @@ let app = new Vue({
             lang: 'en',
             local: 'en_US',
             localPC: 'en-US',
-            reading: false
+            reading: false,
+            gsradius: 2000
         }
 
     },
@@ -53,6 +54,16 @@ let app = new Vue({
     },
 
     methods: {
+        adFavorite: function(name){
+            localStorage.setItem(name, JSON.stringify(app.geoDataFull[name]));
+            app.geoDataFull[name].selected = true;
+        },
+
+        removeFavorite: function(name){
+            localStorage.removeItem(name);
+            app.geoDataFull[name].selected = false;
+        },
+
         onLanguageUpdate: function (e) {
             app.lang = e.code;
             app.local = e.local;
@@ -70,9 +81,6 @@ let app = new Vue({
 
             window.speechSynthesis.cancel();
 
-            let array = [];
-            let max;
-
             let text = textNode.extract;
             let local = textNode.local;;
 
@@ -81,14 +89,14 @@ let app = new Vue({
 
                 const speak = async (text) => {
                     if (!speechSynthesis) {
-                        return
+                        return;
                     }
                     let message = new SpeechSynthesisUtterance(text);
                     message.voice = await chooseVoice();
                     message.lang = message.voice.lang;
                     speechSynthesis.speak(message);
                     console.table(message);
-                }
+                };
 
                 let voices = app.voices;
 
@@ -97,23 +105,22 @@ let app = new Vue({
                         voices = app.voices = speechSynthesis.getVoices()
                         if (voices.length) {
                             resolve(voices);
-                            
-                            return 
+                            return;
                         }
                         if (speechSynthesis.onvoiceschanged !== undefined) {
                             // Chrome gets the voices asynchronously so this is needed
                             speechSynthesis.onvoiceschanged = () => {
                                 voices = app.voices = speechSynthesis.getVoices();
                                 resolve(voices);
-                            }
+                            };
                         } else {
                             speechSynthesis.onvoiceschanged = () => {
                                 voices = app.voices = speechSynthesis.getVoices();
                                 resolve(voices);
-                            }
+                            };
                         }
-                    })
-                }
+                    });
+                };
 
                 let chooseVoice = async () => {
                     // let voices = (await getVoices()).filter((voice) => { 
@@ -136,7 +143,7 @@ let app = new Vue({
                     return new Promise((resolve) => {
                         resolve(filterdVoice[voiceIndex]);
                     })
-                }
+                };
 
                 speak(text);
                 app.reading = true;
@@ -183,7 +190,7 @@ let app = new Vue({
                             //   },
                             action: 'query',
                             list: 'geosearch',
-                            gsradius: 2000,
+                            gsradius: app.gsradius,
                             gscoord: mapGeo ? mapGeo.lat + '|' + mapGeo.lng : app.latitude + '|' + app.longitude,
                             format: 'json',
                             origin: '*',
@@ -239,7 +246,7 @@ let app = new Vue({
                 } else {
 
                 }
-                console.table('app.geoData: ', app.geoDataFull);
+                console.table('app.geoDataFull: ', app.geoDataFull);
                 // getDataOnLocations();
             }
 
@@ -368,19 +375,12 @@ let app = new Vue({
             if (window.navigator && window.navigator.geolocation) {
                 window.navigator.geolocation.getCurrentPosition(handle);
 
-
                 setInterval(() => {
                     navigator.geolocation.getCurrentPosition(handle);
-                }, 5 * 60000);
+                }, 5 * 60 * 1000);
             }
         },
-
-
-
-
-
     },
-
 
 });
 

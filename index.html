@@ -57,6 +57,12 @@
                                             <div class="icon" v-on:click="showOnMap($event, name)">
                                                 <i class="fas fa-map-marked-alt"></i>
                                             </div>
+                                            <div v-if="!value.selected" class="icon" v-on:click="adFavorite(name)">
+                                                    <i class="far fa-star"></i>
+                                            </div>
+                                            <div  v-if="value.selected" class="icon" v-on:click="removeFavorite(name)">
+                                                    <i class="fas fa-star"></i>
+                                            </div>
                                         </div>
                                         <div class="description">
                                             <p>

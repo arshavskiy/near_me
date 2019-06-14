@@ -54,8 +54,10 @@ function debounce(func, wait, immediate) {
   };
 };
 
-const preloadImages = (array, waitForOtherResources, timeout)=>{
-  var loaded = false, list = preloadImages.list, imgs = array.slice(0), t = timeout || 15*1000, timer;
+const preloadImages = (image, waitForOtherResources, timeout)=>{
+  let loaded = false;
+  let t = timeout || 15*1000;
+  let timer;
   if (!preloadImages.list) {
       preloadImages.list = [];
   }
@@ -72,22 +74,21 @@ const preloadImages = (array, waitForOtherResources, timeout)=>{
   }
 
   function loadNow() {
-    let that = this;
       if (!loaded) {
           loaded = true;
-          for (let i = 0; i < imgs.length; i++) {
+          // for (let i = 0; i < imgs.length; i++) {
               let img = new Image();
               img.onload = img.onerror = img.onabort = function() {
-                  let index = list.indexOf(that);
+                  let index = preloadImages.list.indexOf(this);
                   if (index !== -1) {
                       // remove image from the array once it's loaded
                       // for memory consumption reasons
-                      list.splice(index, 1);
+                      preloadImages.list.splice(index, 1);
                   }
               }
-              list.push(img);
-              img.src = imgs[i];
+              preloadImages.list.push(img);
+              img.src = image;
           }
       }
-  }
+  // }
 }
