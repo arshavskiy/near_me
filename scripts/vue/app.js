@@ -218,8 +218,14 @@ let app = new Vue({
                         'lon': locationsData[0].lon,
                         'lang': app.lang,
                         'local': app.local,
-                        'title': locationsData[0].title
+                        'title': locationsData[0].title,
                     };
+
+                    if (localStorage.getItem(app.geoDataFull[locationsData[0].title])){
+                        app.geoDataFull[locationsData[0].title].selected = true;
+                    } else {
+                        app.geoDataFull[locationsData[0].title].selected = false;
+                    }
 
                     getDataOnLocations(locationsData[0].title);
 
