@@ -44,6 +44,7 @@ let app = new Vue({
     created() {
         console.log('created called.');
         // initLeafMap();
+        document.getElementById('app-5').style.display = 'initial';
        
     },
 
@@ -54,12 +55,12 @@ let app = new Vue({
     },
 
     methods: {
-        adFavorite: function(name){
+        adFavorite: function(name, e){
             localStorage.setItem(name, JSON.stringify(app.geoDataFull[name]));
             app.geoDataFull[name].selected = true;
         },
 
-        removeFavorite: function(name){
+        removeFavorite: function(name, e){
             localStorage.removeItem(name);
             app.geoDataFull[name].selected = false;
         },
@@ -221,7 +222,9 @@ let app = new Vue({
                         'title': locationsData[0].title,
                     };
 
-                    if (localStorage.getItem(app.geoDataFull[locationsData[0].title])){
+                    let favorite = localStorage.getItem(app.geoDataFull[locationsData[0].title].title);
+
+                    if (favorite){
                         app.geoDataFull[locationsData[0].title].selected = true;
                     } else {
                         app.geoDataFull[locationsData[0].title].selected = false;
@@ -242,6 +245,14 @@ let app = new Vue({
                                 'local': app.local,
                                 'title': element.title
                             };
+
+                            let favorite = localStorage.getItem(app.geoDataFull[element.title].title);
+
+                            if (favorite){
+                                app.geoDataFull[element.title].selected = true;
+                            } else {
+                                app.geoDataFull[element.title].selected = false;
+                            }
 
                             getDataOnLocations(element.title);
                         }

@@ -9,20 +9,18 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
         integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
         crossorigin="" />
-   
     <link rel="stylesheet" href="https://unpkg.com/vue-select@3.0.0/dist/vue-select.css">
     <link rel="stylesheet" href="styles/loader.css">
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
 
 </head>
 
 <body>
-
     <div id="loader"></div>
-
-
     <main>
         <div id="mapid"></div>
         <div id="app-5">
+           
             <section>
                 <!-- <button class="enter" v-on:click="run">Start nEaR</button> -->
                 <v-select value="English" :options="options" label="language" :reduce="language => language"
@@ -30,7 +28,7 @@
             </section>
 
             <section class="card_holder__container">
-                <div v-for="(value, name, index) in geoDataFull" class="card_holder">
+                <div v-for="(value, name, index) in geoDataFull" :key="value.selected" class="card_holder">
                     <div class="card" :data-local="value.local" :data-lang="value.lang">
                             <input type="checkbox" :id="index" class="more" aria-hidden="true">
                             <div class="content">
@@ -57,10 +55,10 @@
                                             <div class="icon" v-on:click="showOnMap($event, name)">
                                                 <i class="fas fa-map-marked-alt"></i>
                                             </div>
-                                            <div v-if="!value.selected" class="icon" v-on:click="adFavorite(name)">
+                                            <div class="icon" v-on:click="adFavorite(name, e)">
                                                     <i class="far fa-star"></i>
                                             </div>
-                                            <div  v-if="value.selected" class="icon" v-on:click="removeFavorite(name)">
+                                            <div class="icon" v-on:click="removeFavorite(name, e)">
                                                     <i class="fas fa-star"></i>
                                             </div>
                                         </div>
@@ -101,7 +99,7 @@
     <script src="scripts/main.js"></script>
     <script src="scripts/vue/app.js"></script>
     
-    <link rel="stylesheet" type="text/css" href="styles/main.css">
+
     <link rel="stylesheet" type="text/css" href="styles/card.css">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">

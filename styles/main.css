@@ -43,7 +43,11 @@ body{
     
 }
 
-#app-5 button.enter {
+#app-5{
+    display: none;
+}
+
+app-5# button.enter {
     position: fixed;
     top: 10px;
     left: 188px;
