@@ -28,7 +28,7 @@
             </section>
 
             <section class="card_holder__container">
-                <div v-for="card in geoDataFull.slice().reverse()" :key="card.id" class="card_holder">
+                <div v-for="card in geoDataFull.slice().reverse()" @click="card.selected = !card.selected" :key="card.id" class="card_holder">
                     <div class="card" :data-local="card.local" :data-lang="card.lang">
                         <input type="checkbox" :id="card.id" class="more" aria-hidden="true">
                         <div class="content">
@@ -55,11 +55,11 @@
                                             <div class="icon" v-on:click="showOnMap($event, card)" >
                                                 <i class="fas fa-map-marked-alt"></i>
                                             </div>
-                                            <div v-if="!card.selected" class="icon" @click="adFavorite(card, $event)">
+                                            <div v-show="!card.selected" class="icon" @click="adFavorite(card, $event)">
                                             <!-- <div v-if="!selected(card.title)" class="icon" v-on:click="adFavorite(card, $event)"> -->
                                                     <i class="far fa-star"></i>
                                             </div>
-                                            <div v-if="card.selected" class="icon" @click="removeFavorite(card, $event)">
+                                            <div v-show="card.selected" class="icon" @click="removeFavorite(card, $event)">
                                                     <i class="fas fa-star"></i>
                                             </div>
                                         </div>
