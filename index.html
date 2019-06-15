@@ -55,10 +55,10 @@
                                             <div class="icon" v-on:click="showOnMap($event, name)">
                                                 <i class="fas fa-map-marked-alt"></i>
                                             </div>
-                                            <div v-if="value.selected == false" v-model="value.selected" class="icon" v-on:click="adFavorite(name, e)">
+                                            <div v-show="value.selected == false" class="icon" v-on:click="adFavorite(name, $event)">
                                                     <i class="far fa-star"></i>
                                             </div>
-                                            <div  v-if="value.selected == true" v-model="value.selected" class="icon" v-on:click="removeFavorite(name, e)">
+                                            <div v-show="value.selected == true" class="icon" v-on:click="removeFavorite(name, $event)">
                                                     <i class="fas fa-star"></i>
                                             </div>
                                         </div>

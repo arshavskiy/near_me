@@ -268,8 +268,6 @@ let app = new Vue({
                         getDataOnLocations(element.title);
                     });
 
-                   
-
                     loader.classList.add("hide");
 
                 } else {

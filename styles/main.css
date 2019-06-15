@@ -131,6 +131,11 @@ h1 {
     content: 'language';
 }
 
-.leaflet-marker-pane img{
-    /* border: 2px solid #fff; */
+
+.far.fa-star:active{
+    display: none
 }
+
+.far.fa-star:active  ~ .fas.fa-star{
+    display: inherit;
+} 
