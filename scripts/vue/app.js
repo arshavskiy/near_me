@@ -50,9 +50,9 @@ let app = new Vue({
         lang: 'en',
         local: 'en_US',
         localPC: 'en-US',
+        gsradius: 2000,
         reading: false,
-        gsradius: 2000
-
+        selected: cardTitle => localStorage.getItem(cardTitle),
     },
 
     created() {
@@ -63,10 +63,6 @@ let app = new Vue({
     },
 
     methods: {
-        seleceted: function(cardTitle){
-            return localStorage.getItem(cardTitle);
-        },
-        
         adFavorite: function(card, e){
             localStorage.setItem(card.title, JSON.stringify(app.geoDataFull[card.id]));
             // app.geoDataFull[card.id].selected = true;
