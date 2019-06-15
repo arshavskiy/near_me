@@ -130,12 +130,3 @@ h1 {
 #editing-view-port::after{
     content: 'language';
 }
-
-
-.far.fa-star:active{
-    display: none
-}
-
-.far.fa-star:active  ~ .fas.fa-star{
-    display: inherit;
-} 

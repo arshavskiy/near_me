@@ -28,15 +28,15 @@
             </section>
 
             <section class="card_holder__container">
-                <div v-for="(value, name, index) in geoDataFull" :key="value.selected" class="card_holder">
-                    <div class="card" :data-local="value.local" :data-lang="value.lang">
-                            <input type="checkbox" :id="index" class="more" aria-hidden="true">
-                            <div class="content">
+                <div v-for="card in geoDataFull" :key="card.selected" class="card_holder">
+                    <div class="card" :data-local="card.local" :data-lang="card.lang">
+                        <input type="checkbox" :id="card.id" class="more" aria-hidden="true">
+                        <div class="content">
                                 <div class="front"
-                                :style="{ 'background-image': 'url(' + value.img + ')' }">
+                                :style="{ 'background-image': 'url(' + card.img + ')' }">
                                     <div class="inner">
-                                        <h3> {{value.title}}</h3>
-                                        <label :for="index" class="button" aria-hidden="true" v-on:click="resize">
+                                        <h3> {{card.title}}</h3>
+                                        <label :for="card.id" class="button" aria-hidden="true" v-on:click="resize">
                                             <div class="icon">
                                                 <i class="fas fa-book-reader"></i>
                                             </div>
@@ -46,41 +46,37 @@
                                 <div class="back">
                                     <div class="inner">
                                         <div class="info">
-                                            <div v-if="!reading" class="icon" v-on:click="readText(value)">
-                                                <i class="fas fa-volume-up" ></i>
-                                            </div>
-                                            <div v-if="reading" class="icon" v-on:click="stopText" style="min-width: 21.5px">
+                                            <div v-if="!reading" class="icon" v-on:click="readText(card.title)">
                                                 <i class="fas fa-volume-off" ></i>
                                             </div>
-                                            <div class="icon" v-on:click="showOnMap($event, name)">
+                                            <div v-if="reading" class="icon" v-on:click="stopText" style="min-width: 21.5px">
+                                                <i class="fas fa-volume-up" ></i>
+                                            </div>
+                                            <div class="icon" v-on:click="showOnMap($event, card)">
                                                 <i class="fas fa-map-marked-alt"></i>
                                             </div>
-                                            <div v-show="value.selected == false" class="icon" v-on:click="adFavorite(name, $event)">
+                                            <div v-if="!selected(card.title)" class="icon" v-on:click="adFavorite(card, $event)">
                                                     <i class="far fa-star"></i>
                                             </div>
-                                            <div v-show="value.selected == true" class="icon" v-on:click="removeFavorite(name, $event)">
+                                            <div v-if="selected(card.title)" class="icon" v-on:click="removeFavorite(card, $event)">
                                                     <i class="fas fa-star"></i>
                                             </div>
                                         </div>
                                         <div class="description">
                                             <p>
-                                                {{value.extract}}
+                                                {{card.extract}}
                                             </p>
                                         </div>
-                                        <label :for="index" class="button return" aria-hidden="true">
+                                        <label :for="card.id" class="button return" aria-hidden="true">
                                             <i class="fas fa-arrow-left"></i>
                                         </label>
                                     </div>
                                 </div>
-                            </div>
-                        <!-- </div> -->
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <section>
-                <div v-for="item in extract" class="card_holder"></div>
-            </section>
         </div>
     </main>
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"

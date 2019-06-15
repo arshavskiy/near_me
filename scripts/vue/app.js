@@ -25,7 +25,8 @@ let app = new Vue({
         longitude: 0,
         geoData: [],
         extract: [],
-        geoDataFull: {},
+        cardIndex: 0,
+        geoDataFull: [],
         voices: [],
         options: [{
                 language: 'עברית',
@@ -62,14 +63,20 @@ let app = new Vue({
     },
 
     methods: {
-        adFavorite: function(name, e){
-            localStorage.setItem(name, JSON.stringify(app.geoDataFull[name]));
-            app.geoDataFull[name].selected = true;
+        seleceted: function(cardTitle){
+            return localStorage.getItem(cardTitle);
+        },
+        
+        adFavorite: function(card, e){
+            localStorage.setItem(card.title, JSON.stringify(app.geoDataFull[card.id]));
+            // app.geoDataFull[card.id].selected = true;
+            Vue.set(app.geoDataFull[card.id], 'selected', true);
         },
 
-        removeFavorite: function(name, e){
-            localStorage.removeItem(name);
-            app.geoDataFull[name].selected = false;
+        removeFavorite: function(card, e){
+            localStorage.removeItem(card.title);
+            // app.geoDataFull[card.id].selected = false;
+            Vue.set(app.geoDataFull[card.id], 'selected', false);
         },
 
         onLanguageUpdate: function (e) {
@@ -223,48 +230,54 @@ let app = new Vue({
 
                     app.geoData.push(locationsData[0].title);
 
-                    app.geoDataFull[locationsData[0].title] = {
+                    Vue.set(app.geoDataFull, app.cardIndex, {
                         'lat': locationsData[0].lat,
                         'lon': locationsData[0].lon,
                         'lang': app.lang,
                         'local': app.local,
                         'title': locationsData[0].title,
-                    };
+                        'id':app.cardIndex
+                    });
 
-                    let favorite = localStorage.getItem(app.geoDataFull[locationsData[0].title].title);
+
+                    let favorite = localStorage.getItem(locationsData[0].title);
 
                     if (favorite){
-                        app.geoDataFull[locationsData[0].title].selected = true;
+                        app.geoDataFull[app.cardIndex].selected = true;
                     } else {
-                        app.geoDataFull[locationsData[0].title].selected = false;
+                        app.geoDataFull[app.cardIndex].selected = false;
                     }
 
+                    app.cardIndex ++;
                     getDataOnLocations(locationsData[0].title);
 
                 } else if (locationsData.length > 1) {
 
                     locationsData.forEach(element => {
                         //if not allready exists
-                        if (!app.geoDataFull[element.title] && element.title) {
+                        if (!app.geoData[element.title] && element.title) {
 
                             app.geoData.push(element.title);
 
-                            app.geoDataFull[element.title] = {
+                            Vue.set(app.geoDataFull, app.cardIndex, {
                                 'lat': element.lat,
                                 'lon': element.lon,
                                 'lang': app.lang,
                                 'local': app.local,
-                                'title': element.title
-                            };
+                                'title': element.title,
+                                'id':app.cardIndex
+                            });
 
-                            let favorite = localStorage.getItem(app.geoDataFull[element.title].title);
+                            let favorite = localStorage.getItem(element.title);
 
                             if (favorite){
-                                app.geoDataFull[element.title].selected = true;
+                                app.geoDataFull[app.cardIndex].selected = true;
                             } else {
-                                app.geoDataFull[element.title].selected = false;
+                                app.geoDataFull[app.cardIndex].selected = false;
                             }
                         }
+
+                        app.cardIndex ++;
                         getDataOnLocations(element.title);
                     });
 
@@ -344,38 +357,51 @@ let app = new Vue({
                     })
                     .then(function (response) {
                         if (response.data.query) {
-                            console.table('respons: ', response.data.query.pages);
+
+                            console.debug('respons: ', response.data.query.pages);
+
                             let page = response.data.query.pages;
                             let pageId = Object.keys(response.data.query.pages)[0];
                             let dataObject = page[pageId];
                             let url = dataObject.fullurl;
+                            // dataObject.extract;
 
-                            app.geoDataFull[dataObject.title].extract = dataObject.extract;
+                            app.geoDataFull.forEach(card=>{
+                                if(card.title == title){
+                                    app.geoDataFull[card.id].extract = dataObject.extract;
+                                    Vue.set(app.geoDataFull[card.id], 'extract', dataObject.extract);
 
-                            if (dataObject.thumbnail) {
+                                    if (dataObject.thumbnail) {
 
-                                preloadImages(dataObject.thumbnail.source, true);
+                                        preloadImages(dataObject.thumbnail.source, true);
+        
+                                        Vue.set(app.geoDataFull[card.id], 'img', dataObject.thumbnail.source);
+                                        app.geoDataFull[card.id].img = dataObject.thumbnail.source;
+        
+                                        let myIcon = L.icon({
+                                            iconUrl: app.geoDataFull[card.id].img,
+                                            iconSize: [40, 40],
+                                            iconAnchor: [10, 10],
+                                            popupAnchor: [20, -5],
+                                        });
+        
+                                        L.marker([ app.geoDataFull[card.id].lat,  app.geoDataFull[card.id].lon], {
+                                                icon: myIcon
+                                            }).addTo(mymap)
+                                            .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
+        
+                                    } else {
+                                        L.marker([ app.geoDataFull[card.id].lat,  app.geoDataFull[card.id].lon]).addTo(mymap)
+                                            .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
+                                    }
+        
 
-                                app.geoDataFull[dataObject.title].img = dataObject.thumbnail.source;
 
-                                let myIcon = L.icon({
-                                    iconUrl: app.geoDataFull[dataObject.title].img,
-                                    iconSize: [40, 40],
-                                    iconAnchor: [10, 10],
-                                    popupAnchor: [20, -5],
-                                });
+                                }
+                            })
 
-                                L.marker([app.geoDataFull[dataObject.title].lat, app.geoDataFull[dataObject.title].lon], {
-                                        icon: myIcon
-                                    }).addTo(mymap)
-                                    .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
-
-                            } else {
-                                L.marker([app.geoDataFull[dataObject.title].lat, app.geoDataFull[dataObject.title].lon]).addTo(mymap)
-                                    .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
-                            }
-
-                            app.extract.unshift(page[pageId].extract);
+                            
+                            // app.extract.unshift(page[pageId].extract);
                             // app.extract = app.extract.reverse();
                         }
 
