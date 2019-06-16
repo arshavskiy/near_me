@@ -50,9 +50,24 @@ let app = new Vue({
         lang: 'en',
         local: 'en_US',
         localPC: 'en-US',
+        mapRadius: [500,1000,1500,2000,2500,3000],
         gsradius: 2000,
         reading: false,
         selected: cardTitle => localStorage.getItem(cardTitle),
+        toggleMenuOpen : false,
+        maps: [
+            {name:'simple',value: ()=>{
+                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}')
+                .addTo(mymap);
+            }},
+            {name:'Bicycle',value: ()=>{
+                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}')
+                .addTo(mymap);
+            }},
+
+        ],
+        mapStyle: ['Simple', 'Bicycle'],
+        mapStyleSelected:'Bicycle'
     },
 
     created() {
@@ -63,16 +78,25 @@ let app = new Vue({
     },
 
     methods: {
+
+        toggleMenu :()=>{
+            app.toggleMenuOpen = !app.toggleMenuOpen;
+        },
+        
         adFavorite: function(card, e){
+           
             localStorage.setItem(card.title, JSON.stringify(app.geoDataFull[card.id]));
             // app.geoDataFull[card.id].selected = true;
-            Vue.set(app.geoDataFull[card.id], 'selected', true);
+            // Vue.set(app.geoDataFull[card.id], 'selected', true);
+            card.selected = !card.selected;
         },
 
         removeFavorite: function(card, e){
+          
             localStorage.removeItem(card.title);
             // app.geoDataFull[card.id].selected = false;
-            Vue.set(app.geoDataFull[card.id], 'selected', false);
+            // Vue.set(app.geoDataFull[card.id], 'selected', false);
+            card.selected = !card.selected;
         },
 
         onLanguageUpdate: function (e) {

@@ -22,13 +22,49 @@
         <div id="app-5">
            
             <section>
-                <!-- <button class="enter" v-on:click="run">Start nEaR</button> -->
-                <v-select value="English" :options="options" label="language" :reduce="language => language"
-                    @input="onLanguageUpdate" />
+                <v-select value="English" 
+                :options="options" 
+                label="language" 
+                :reduce="language => language"
+                @input="onLanguageUpdate" />
+            </section>
+
+            <section class="menu">
+                    <i v-if="!toggleMenuOpen" class="fas fa-bars menu_btn" @click="toggleMenu"></i>
+                    <i v-if="toggleMenuOpen"class="fas fa-bars menu_btn no_boder" @click="toggleMenu"></i>
+                    <div class="menu_holder" v-if="toggleMenuOpen">
+                        <div class="menu_btn_holder">
+                                <i class="fas fa-times" @click="toggleMenu"></i>
+                        </div>
+
+                        <div>
+                            <div>
+                                <h4>Map type</h4>
+                                <select v-model="mapStyleSelected">
+                                    <option v-for="map in maps" v-bind:value="map.name">
+                                            {{ map.name }}
+                                    </option>
+                                </select>
+            
+                            </div>
+
+                            <div>
+                                <h4>
+                                    Search Radiuse
+                                </h4>
+                                <select v-model="gsradius">
+                                        <option v-for="radius in mapRadius" v-bind:value="radius">
+                                                {{ radius }}
+                                        </option>
+                                    </select>
+                            </div>
+                        </div>
+                        
+                    </div>
             </section>
 
             <section class="card_holder__container">
-                <div v-for="card in geoDataFull.slice().reverse()" @click="card.selected = !card.selected" :key="card.id" class="card_holder">
+                <div v-for="card in geoDataFull.slice().reverse()"  :key="card.id" class="card_holder">
                     <div class="card" :data-local="card.local" :data-lang="card.lang">
                         <input type="checkbox" :id="card.id" class="more" aria-hidden="true">
                         <div class="content">
@@ -55,11 +91,11 @@
                                             <div class="icon" v-on:click="showOnMap($event, card)" >
                                                 <i class="fas fa-map-marked-alt"></i>
                                             </div>
-                                            <div v-show="!card.selected" class="icon" @click="adFavorite(card, $event)">
+                                            <div v-show="!card.selected" class="icon" v-bind:value="card.selected" @click="adFavorite(card, $event)">
                                             <!-- <div v-if="!selected(card.title)" class="icon" v-on:click="adFavorite(card, $event)"> -->
                                                     <i class="far fa-star"></i>
                                             </div>
-                                            <div v-show="card.selected" class="icon" @click="removeFavorite(card, $event)">
+                                            <div v-show="card.selected" class="icon" v-bind:value="card.selected" @click="removeFavorite(card, $event)">
                                                     <i class="fas fa-star"></i>
                                             </div>
                                         </div>
