@@ -39,7 +39,7 @@
 
                         <div style="padding:0 20px">
                             <div>
-                                <h2>Map type</h2>
+                                <h3>Map type</h3>
                                 <select v-model="mapStyleSelected" class="menu_select">
                                     <option v-for="map in maps" v-bind:value="map.name" @:click="runMap(map)">
                                             {{ map.name }}
@@ -49,12 +49,22 @@
                             </div>
 
                             <div>
-                                <h2>Search radius</h2>
+                                <h3>Search radius</h3>
                                 <select v-model="gsradius" class="menu_select">
                                     <option v-for="radius in mapRadius" v-bind:value="radius" >
                                             {{ radius }}
                                     </option>
                                 </select>
+                            </div>
+
+                            <div>
+                                <h3>Selected Places</h3>
+                                <div class="menu_select" style="overflow: auto; height: 100px;">
+                                    <div v-for="(place, index) in geoDataFull">
+                                        <span v-if="place.selected" style="font-size: 12px">{{place.title}}</span>
+                                    </div>
+                                    
+                                </div>
                             </div>
                         </div>
                         
