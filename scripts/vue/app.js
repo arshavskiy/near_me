@@ -56,18 +56,19 @@ let app = new Vue({
         selected: cardTitle => localStorage.getItem(cardTitle),
         toggleMenuOpen : false,
         maps: [
-            {name:'simple',value: ()=>{
+            {name:'WorldImagery', value: ()=>{
                 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}')
                 .addTo(mymap);
             }},
-            {name:'Bicycle',value: ()=>{
-                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}')
-                .addTo(mymap);
+            {name:'Mapnik',value: ()=>{
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(mymap);
             }},
-
         ],
         mapStyle: ['Simple', 'Bicycle'],
-        mapStyleSelected:'Bicycle'
+        mapStyleSelected:'Mapnik'
     },
 
     created() {
@@ -77,7 +78,22 @@ let app = new Vue({
        
     },
 
+    watch: { 
+        mapStyleSelected: function(data) { 
+            app.maps.forEach(item=>{
+                if (item.name === data){
+                    item.value();
+                }
+            });
+            // app.maps[data].value();
+        }
+    },
+
     methods: {
+
+        runMap: (map)=>{
+            app.maps[map].value();
+        },
 
         toggleMenu :()=>{
             app.toggleMenuOpen = !app.toggleMenuOpen;
