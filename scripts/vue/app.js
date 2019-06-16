@@ -93,7 +93,7 @@ let app = new Vue({
             window.speechSynthesis.cancel();
 
             let text = textNode.extract;
-            let local = textNode.local;;
+            let local = textNode.local;
 
             if ('speechSynthesis' in window) {
                 const voiceIndex = 0;
@@ -170,7 +170,7 @@ let app = new Vue({
             console.debug(e, cardName);
             e.stopPropagation();
             // if ( e.target.className.includes('fa-map-marked-alt') ) {
-                mymap.setView([app.geoDataFull[cardName].lat , app.geoDataFull[cardName].lon], 16, {
+                mymap.setView([cardName.lat , cardName.lon], 16, {
                     "animate": true,
                    });
             // }
