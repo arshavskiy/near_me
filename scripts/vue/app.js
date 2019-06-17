@@ -129,11 +129,15 @@ let app = new Vue({
         },
 
         onLanguageUpdate: function (e) {
-            app.lang = e.code;
-            app.local = e.local;
-            app.localPC = e.localPC;
+
+            if (e.code){
+                app.lang = e.code;
+                app.local = e.local;
+                app.localPC = e.localPC;
+                window.run();
+            }
             //   app.geoData = [], app.geoDataFull = {};
-            window.run();
+           
         },
 
         stopText: function () {

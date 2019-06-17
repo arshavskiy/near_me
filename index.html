@@ -34,34 +34,35 @@
             <section class="menu">
                     <i v-if="!toggleMenuOpen" class="fas fa-bars menu_btn" @click="toggleMenu"></i>
                     <i v-if="toggleMenuOpen"class="fas fa-bars menu_btn no_boder" @click="toggleMenu"></i>
-                    <div class="menu_holder" v-if="toggleMenuOpen">
+                    <div class="menu_holder" v-show="toggleMenuOpen">
                         <div class="menu_btn_holder">
                                 <i class="fas fa-times" @click="toggleMenu"></i>
                         </div>
 
-                        <div style="padding:0 20px">
-                            <div>
-                                <h3>Map type</h3>
-                                <select v-model="mapStyleSelected" class="menu_select">
-                                    <option v-for="map in maps" v-bind:value="map.name" @:click="runMap(map)">
-                                            {{ map.name }}
-                                    </option>
-                                </select>
+                        <div style="padding:10px 0 0 10px">
+                            <div class="spaced">
+                                <span style="line-height: 30px">Map type  </span>
+                                    <select v-model="mapStyleSelected" class="menu_select">
+                                        <option v-for="map in maps" v-bind:value="map.name" @:click="runMap(map)">
+                                                {{ map.name }}
+                                        </option>
+                                    </select>
+                              
             
                             </div>
 
-                            <div>
-                                <h3>Search radius</h3>
-                                <select v-model="gsradius" class="menu_select">
-                                    <option v-for="radius in mapRadius" v-bind:value="radius" >
-                                            {{ radius }}
-                                    </option>
-                                </select>
+                            <div class="spaced">
+                                <span style="line-height: 30px">Search radius  </span>
+                                    <select v-model="gsradius" class="menu_select">
+                                        <option v-for="radius in mapRadius" v-bind:value="radius" >
+                                                {{ radius }}
+                                        </option>
+                                    </select>
                             </div>
 
                             <div>
-                                <h3>Selected Places</h3>
-                                <div class="menu_select" style="overflow: auto; height: 100px;">
+                                <h4>Selected Places</h4>
+                                <div class="menu_select" style="overflow: auto; height: 100px; width: 100%;">
                                     <div v-for="(place, index) in geoDataFull">
                                         <span v-if="place.selected" style="font-size: 12px">{{place.title}}</span>
                                     </div>
