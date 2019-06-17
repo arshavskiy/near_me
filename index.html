@@ -29,6 +29,8 @@
                 @input="onLanguageUpdate" />
             </section>
 
+            <i class="far fa-compass location" @click="locate"></i>
+
             <section class="menu">
                     <i v-if="!toggleMenuOpen" class="fas fa-bars menu_btn" @click="toggleMenu"></i>
                     <i v-if="toggleMenuOpen"class="fas fa-bars menu_btn no_boder" @click="toggleMenu"></i>

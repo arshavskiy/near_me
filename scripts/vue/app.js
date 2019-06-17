@@ -56,19 +56,30 @@ let app = new Vue({
         selected: cardTitle => localStorage.getItem(cardTitle),
         toggleMenuOpen : false,
         maps: [
-            {name:'WorldImagery', value: ()=>{
+            {name:'Simple', value: ()=>{
                 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}')
                 .addTo(mymap);
             }},
-            {name:'Mapnik',value: ()=>{
+            {name:'Map',value: ()=>{
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 }).addTo(mymap);
             }},
+            {name:'Satellite',value: ()=>{
+                var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                }).addTo(mymap);
+            }},
+            {name:'Detailed',value: ()=>{
+                var OpenStreetMap_France = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+                maxZoom: 20,
+                attribution: '&copy; Openstreetmap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(mymap);
+            }},
         ],
         mapStyle: ['Simple', 'Bicycle'],
-        mapStyleSelected:'Mapnik'
+        mapStyleSelected:'Detailed'
     },
 
     created() {
@@ -90,7 +101,9 @@ let app = new Vue({
     },
 
     methods: {
-
+        locate: ()=>{
+            mymap.setView([app.latitude, app.longitude], 15);
+        },
         runMap: (map)=>{
             app.maps[map].value();
         },
@@ -345,7 +358,7 @@ let app = new Vue({
 
                     console.debug('mapfromapp');
                     
-                    mymap = L.map('mapid').setView([app.latitude, app.longitude], 15);
+                    mymap = L.map('mapid').setView([app.latitude, app.longitude], 16);
                     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
                         maxZoom: 18,
                         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',

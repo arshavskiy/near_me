@@ -186,3 +186,14 @@ h1 {
 .leaflet-touch .leaflet-bar{
     margin-top: 60px;
 }
+
+.location{
+    position: absolute;
+    top: 130px;
+    z-index: 11111;
+    left: 12px;
+    padding: 5px;
+    background: #fff;
+    font-size: 20px;
+    border: 1px solid rgba(60,60,60,.26);
+}

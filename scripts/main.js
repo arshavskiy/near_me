@@ -5,34 +5,33 @@ let initLeafMap = () => {
 
     if (typeof mymap == 'undefined') {
       mymap = L.map('mapid').setView([handle.coords.latitude, handle.coords.longitude], 15);
-      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        maxZoom: 18,
-        id: 'mapbox.streets'
-      }).addTo(mymap);
+      // L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+      //   maxZoom: 18,
+      //   id: 'mapbox.streets'
+      // }).addTo(mymap);
     }
 
-    // let HikeBike_HikeBike = L.tileLayer('https://tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png', {
-    //   maxZoom: 19,
-    //   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    // }).addTo(mymap);
-
-    // let Esri_WorldStreetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-	  //   attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
-    // }).addTo(mymap);
-
-    let OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    var OpenStreetMap_France = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+      maxZoom: 20,
+      attribution: '&copy; Openstreetmap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mymap);
 
-    // let Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    //   maxZoom: 19,  
-    // attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-    // }).addTo(mymap);
-
-    mymap.on('click', window.resizeClickMap);
-    mymap.on('dragstart', window.resizeClickMap);
-    mymap.on('zoomend', window.resizeClickMap);
+    mymap.on('click', (e)=>{
+      console.debug(e);
+      window.resizeClickMap();
+    });
+    mymap.on('dragend',(e)=>{
+      console.debug(e);
+      window.resizeClickMap();
+    });
+    mymap.on('zoomend', (e)=>{
+      console.debug(e);
+      window.resizeClickMap();
+    });
+    mymap.on('dblclick ', (e)=>{
+      console.debug(e);
+      mymap.locate({setView : true})
+    });
 
     window.run();
   });
