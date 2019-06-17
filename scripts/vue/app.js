@@ -133,7 +133,7 @@ let app = new Vue({
             app.local = e.local;
             app.localPC = e.localPC;
             //   app.geoData = [], app.geoDataFull = {};
-            run();
+            window.run();
         },
 
         stopText: function () {
@@ -449,7 +449,7 @@ let app = new Vue({
                                 }
                             })
 
-                            
+                            // window.resizeClickMap();
                             // app.extract.unshift(page[pageId].extract);
                             // app.extract = app.extract.reverse();
                         }
@@ -477,9 +477,9 @@ let app = new Vue({
             if (window.navigator && window.navigator.geolocation) {
                 window.navigator.geolocation.getCurrentPosition(handle);
 
-                setInterval(() => {
-                    navigator.geolocation.getCurrentPosition(handle);
-                }, 5 * 60 * 1000);
+                // setInterval(() => {
+                //     navigator.geolocation.getCurrentPosition(handle);
+                // }, 5 * 60 * 1000);
             }
         },
     },
