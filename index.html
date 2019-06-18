@@ -51,18 +51,20 @@
                             <span style="line-height: 30px">Search radius </span>
                             <select v-model="gsradius" class="menu_select">
                                 <option v-for="radius in mapRadius" v-bind:value="radius">
-                                    {{ radius }}
+                                    {{ radius }} m
                                 </option>
                             </select>
                         </div>
 
                         <div>
                             <h4>Selected Places</h4>
-                            <div class="menu_select" style="overflow: auto; height: 100px; width: 100%;">
+                            <div class="menu_select" style="overflow: auto; height: 200px; width: 100%;">
                                 <div v-for="(place, index) in geoDataFull" class="spaced">
-                                    <span v-show="place.selected" style="font-size: 12px; line-height: 16px;">{{place.title}}</span>
-                                    <i v-show="place.selected" class="fas fa-star selected-menu" v-bind:value="place.selected"
-                                    @click="removeFavorite(place, $event)"></i>
+                                    <span v-if="place.selected" >{{place.title}}</span>
+                                    <i v-if="place.selected" class="fas fa-star selected-menu" 
+                                        v-bind:value="place.selected"
+                                        @click="removeFavorite(place, $event)">
+                                </i>
                                 </div>
 
                             </div>

@@ -3,6 +3,10 @@ body{
     font-family: ariel, sans-serif;
 }
 
+p{
+    font-family: initial;
+}
+
 ::-webkit-scrollbar {
     width: 5px;
   }
@@ -183,6 +187,12 @@ h1 {
     width:50%; 
     height: 30px; 
     font-weight: 600;
+}
+
+.menu_select span{
+    font-size: 13px;
+    line-height: 15px;
+    padding-top: 5px
 }
 
 .menu_btn_holder{
