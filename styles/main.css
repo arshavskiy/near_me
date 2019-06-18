@@ -192,7 +192,6 @@ h1 {
 .menu_select span{
     font-size: 13px;
     font-family: Arial, Helvetica, sans-serif;
-    line-height: 15px;
     padding-top: 5px;
 }
 
@@ -221,12 +220,20 @@ h1 {
     justify-content: space-between;
 }
 
+.spaced-grow{
+    flex-grow: 1;
+}
+
 .vs__dropdown-menu{
     padding-left:45px;
 }
 
 .mt-1{
     margin-top: 1rem;
+}
+
+.ml-1{
+    margin-left:1rem;
 }
 
 .selected{

@@ -58,7 +58,7 @@ window.resizeClickCard = ()=>{
 
   let DOMcards = document.getElementsByClassName('card');
   for (var i = 0; i < DOMcards.length; i++) {
-    DOMcards[i].style.height = '300px';
+    DOMcards[i].style.height = '260px';
   }
 }
 
