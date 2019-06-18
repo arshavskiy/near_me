@@ -1,5 +1,6 @@
 body{
     margin: 0;
+    font-family: ariel, sans-serif;
 }
 
 ::-webkit-scrollbar {
@@ -220,4 +221,8 @@ h1 {
 .selected{
     grid-row: 3;
     color: white;
+}
+
+.selected-menu{
+    color: black;
 }
