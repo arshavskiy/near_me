@@ -61,7 +61,7 @@
                             <div class="menu_select" style="overflow: auto; height: 200px; width: 100%;">
                                 <div v-for="(place, index) in geoDataFull" class="spaced">
                                     <span v-if="place.selected" >{{place.title}}</span>
-                                    <i v-on:click="showOnMap($event, place)" class="fas fa-map-marked-alt"></i>
+                                    <i v-on:click="showOnMap($event, place)" class="fas fa-map-marked-alt" style="float:right"></i>
                                     <i v-if="place.selected" class="fas fa-star selected-menu" 
                                         v-bind:value="place.selected"
                                         @click="removeFavorite(place, $event)">
