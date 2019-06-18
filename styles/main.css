@@ -167,15 +167,15 @@ h1 {
 
 .menu_holder{
     background: #fff;
-    opacity: 0.9;
+    opacity: 1;
     padding: 10px 8px 10px 0;
     border: 1px solid rgba(60,60,60,.26);
-    position: relative;
-    top: -33px;
+    position: fixed;
+    top: -1px;
     z-index: 1;
     transition: all 0.5s ease;
     width: 70vw;
-    height: 55vh;
+    height: 100vh;
 }
 
 .menu_select{
@@ -211,4 +211,8 @@ h1 {
 
 .vs__dropdown-menu{
     padding-left:45px;
+}
+
+.mt-1{
+    margin-top: 1rem;
 }
