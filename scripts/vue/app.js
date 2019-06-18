@@ -82,11 +82,32 @@ let app = new Vue({
         mapStyleSelected:'Detailed'
     },
 
+    mounted: function () {
+        this.$nextTick(function () {
+          // Code that will run only after the
+          // entire view has been rendered
+
+          console.debug('app.geoDataFull', app.geoDataFull );
+
+          var values = [],
+          keys = Object.keys(localStorage),
+          i = keys.length;
+  
+            while ( i-- ) {
+                let favCard =  JSON.parse(localStorage.getItem(keys[i]));
+                favCard.selected = true;
+                values.push(favCard );
+                app.geoDataFull.push( favCard );
+            }
+  
+        });
+      },
+
+
     created() {
         console.log('created called.');
         // initLeafMap();
         document.getElementById('app-5').style.display = 'initial';
-       
     },
 
     watch: { 
@@ -130,7 +151,7 @@ let app = new Vue({
 
         onLanguageUpdate: function (e) {
 
-            if (e.code){
+            if (e && e.code){
                 app.lang = e.code;
                 app.local = e.local;
                 app.localPC = e.localPC;
@@ -346,14 +367,15 @@ let app = new Vue({
             function handle(gpsData) {
                 let shouldUpdate = updateGpsData(gpsData);
 
+
                 app.Tlatitude = app.latitude;
                 app.Tlongitude = app.longitude;
 
-                if (shouldUpdate) {
+                // if (shouldUpdate) {
                     let mapGeo;
                     getFromWiki();
                     InitMap();
-                }
+                // }
 
             }
 

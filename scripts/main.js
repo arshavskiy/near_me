@@ -42,7 +42,7 @@ const loader = document.getElementById('loader');
 
 window.resizeClickMap = ()=> {
   DOMap.style.height = '60vh';
-  mymap.invalidateSize();
+  if(mymap) mymap.invalidateSize();
 
   let DOMcards = document.getElementsByClassName('card');
   for (var i = 0; i < DOMcards.length; i++) {
@@ -51,8 +51,10 @@ window.resizeClickMap = ()=> {
 };
 
 window.resizeClickCard = ()=>{
-  DOMap.style.height = '40vh';
-  mymap.invalidateSize();
+  if(DOMap){
+    DOMap.style.height = '40vh';
+    if(mymap) mymap.invalidateSize();
+  }
 
   let DOMcards = document.getElementsByClassName('card');
   for (var i = 0; i < DOMcards.length; i++) {
