@@ -287,4 +287,12 @@ h1 {
     .menu_holder{
         width: 300px;
     }
+    #mapid{
+        height: 40vh;
+    }
+    .card{
+        width: 23vw !important;
+        max-width: 250px;
+        height: 20vh !important;
+    }
 }
