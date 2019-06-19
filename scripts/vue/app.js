@@ -84,7 +84,7 @@ let app = new Vue({
 
     mounted: function () {
         this.$nextTick(function () {
-          // Code that will run only after the
+          // Code that will run only after the`
           // entire view has been rendered
 
           console.debug('app.geoDataFull', app.geoDataFull );
@@ -96,8 +96,12 @@ let app = new Vue({
             while ( i-- ) {
                 let favCard =  JSON.parse(localStorage.getItem(keys[i]));
                 favCard.selected = true;
-                values.push(favCard );
+                values.push( favCard );
                 app.geoDataFull.push( favCard );
+            }
+
+            if ( app.geoDataFull.length > 0 ){
+                app.cardIndex = app.geoDataFull.length-1;
             }
   
         });
@@ -356,6 +360,7 @@ let app = new Vue({
                     });
 
                     loader.classList.add("hide");
+                    L.circle([app.longitude,app.latitude], app.gsradius).addTo(mymap);
 
                 } else {
 
