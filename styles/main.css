@@ -31,6 +31,7 @@ p{
     overflow-x: scroll;
 }
 
+
 .card_holder__item {
     /* max-height: 45vh; */
     /* width: 80vw; */
@@ -273,4 +274,17 @@ h1 {
 
 .leaflet-left .leaflet-control {
     margin-left: 3px;
+}
+
+
+@media only screen and (min-width: 600px) {
+    .card_holder__container {
+        /* display: flex; */
+        flex-flow: wrap;
+        overflow-x: scroll;
+        overflow-y: scroll;
+    }
+    .menu_holder{
+        width: 300px;
+    }
 }

@@ -466,6 +466,7 @@ let app = new Vue({
 
                             app.geoDataFull.forEach(card=>{
                                 if(card.title == title){
+                                    
                                     app.geoDataFull[card.id].extract = dataObject.extract;
                                     Vue.set(app.geoDataFull[card.id], 'extract', dataObject.extract);
 
