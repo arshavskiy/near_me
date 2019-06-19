@@ -367,7 +367,7 @@ let app = new Vue({
                 var circleCenter = [app.latitude, app.longitude || app.mapClickedlatlng ];
                 var circleOptions = {
                     color:'green',
-                    weight:'1',
+                    weight:1,
                     radius : app.gsradius,
                     fillOpacity: 0.1
                  };
