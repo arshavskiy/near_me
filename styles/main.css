@@ -1,6 +1,6 @@
 body{
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 p{
@@ -131,7 +131,7 @@ h1 {
     background: #fff;
     border: 1px solid rgba(60,60,60,.26);
     border-radius: 4px;
-    font-family: sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 #editing-view-port::after{
@@ -146,7 +146,7 @@ h1 {
 }
 
 .menu h4{
-    font-family: ariel, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     /* text-transform: uppercase; */
     /* text-align: center; */
     line-height: 10px;
@@ -184,14 +184,25 @@ h1 {
 }
 
 .menu_select{
-    width:50%; 
+    width: 40%; 
     height: 30px; 
-    font-weight: 600;
+    font-weight: 100;
+    border: none;
+    background: #fff;
+}
+
+.menu_select .fas{
+    color: lightskyblue;
+}
+
+.menu_select .fa-map-marked-alt{
+    color: darkgrey;
 }
 
 .menu_select span{
     font-size: 13px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 100;
     padding-top: 5px;
 }
 
@@ -204,15 +215,30 @@ h1 {
     margin-top: 60px;
 }
 
-.location{
+.locationBtn{
     position: absolute;
     top: 130px;
     z-index: 11111;
-    left: 12px;
+    left: 4px;
     padding: 5px;
     background: #fff;
     font-size: 20px;
     border: 1px solid rgba(60,60,60,.26);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.expendBtn{
+    position: absolute;
+    top: 161.5px;
+    z-index: 11111;
+    left: 4px;
+    padding: 5.7px;
+    background: #fff;
+    font-size: 20px;
+    border: 1px solid rgba(60,60,60,.26);
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
 }
 
 .spaced{
@@ -243,4 +269,8 @@ h1 {
 
 .selected-menu{
     color: black;
+}
+
+.leaflet-left .leaflet-control {
+    margin-left: 3px;
 }

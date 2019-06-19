@@ -136,6 +136,8 @@ let app = new Vue({
         toggleMenu :()=>{
             app.toggleMenuOpen = !app.toggleMenuOpen;
         },
+
+        expendMap: window.resizeClickMap,
         
         adFavorite: function(card, e){
            
@@ -259,6 +261,21 @@ let app = new Vue({
            
         },
 
+        drawCircle: ()=>{
+            let circleCenter = [];
+            app.mapClickedlatlng ? circleCenter = app.mapClickedlatlng: circleCenter = [ app.latitude, app.longitude ]
+            // var circleCenter = [app.mapClickedlatlng] || [app.latitude, app.longitud ];
+            var circleOptions = {
+                color:'green',
+                weight: 2,
+                radius : app.gsradius,
+                fillOpacity: 0.05,
+                dashArray: '1 4 8'
+             };
+             var circle = L.circle(circleCenter, app.gsradius, circleOptions);
+             circle.addTo(mymap);
+        },
+
         run: window.run = function () {
 
             if (typeof mymap == 'undefined' || typeof mymap == 'null') initLeafMap();
@@ -358,24 +375,13 @@ let app = new Vue({
                         app.cardIndex ++;
                         getDataOnLocations(element.title);
                     });
-
-                    loader.classList.add("hide");
-
                 }
                 console.table('app.geoDataFull: ', app.geoDataFull);
 
-                var circleCenter = [app.mapClickedlatlng || app.latitude, app.longitude ];
-                var circleOptions = {
-                    color:'green',
-                    weight:1,
-                    radius : app.gsradius,
-                    fillOpacity: 0.1
-                 };
-                 var circle = L.circle(circleCenter, app.gsradius, circleOptions);
-                 circle.addTo(mymap);
-               
+                app.drawCircle();
 
-                // getDataOnLocations();
+                loader.classList.add("hide");
+
             }
 
             function handle(gpsData) {
@@ -413,7 +419,9 @@ let app = new Vue({
                 });
 
                 L.marker([app.latitude, app.longitude],{icon:locationIcon}).addTo(mymap)
-                    .bindPopup("You Are here!").openPopup();
+                    .openPopup();
+
+                // .bindPopup("You Are here!")
 
                 var popup = L.popup();
 
@@ -470,7 +478,7 @@ let app = new Vue({
         
                                         let myIcon = L.icon({
                                             iconUrl: app.geoDataFull[card.id].img,
-                                            iconSize: [40, 40],
+                                            iconSize: [45, 45],
                                             iconAnchor: [10, 10],
                                             popupAnchor: [20, -5],
                                         });
@@ -523,7 +531,10 @@ let app = new Vue({
                 // }, 5 * 60 * 1000);
             }
         },
-    },
+        
+    }
+
+   
 
 });
 

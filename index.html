@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
         integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
         crossorigin="" />
+        
     <link rel="stylesheet" href="https://unpkg.com/vue-select@3.0.0/dist/vue-select.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/loader.css">
     <link rel="stylesheet" type="text/css" href="styles/main.css">
 
@@ -26,7 +28,8 @@
                     @input="onLanguageUpdate" />
             </section>
 
-            <i class="far fa-compass location" @click="locate"></i>
+            <i class="far fa-compass locationBtn" @click="locate"></i>
+            <i class="fas fa-expand expendBtn" @click="expendMap"></i>
 
             <section class="menu">
                 <i v-if="!toggleMenuOpen" class="fas fa-bars menu_btn" @click="toggleMenu"></i>
@@ -57,7 +60,7 @@
                         </div>
 
                         <div>
-                            <h4>Selected Places</h4>
+                            <h4>Favorites</h4>
                             <div class="menu_select" style="overflow: auto; height: 200px; width: 100%;">
                                 <div v-for="(place, index) in geoDataFull">
                                     <div class="spaced" v-if="place.selected">
@@ -140,9 +143,8 @@
     <script src="./assets/leaflet-providers.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
     <script src="https://unpkg.com/vue-select@3.0.0"></script>
     <script src="scripts/vue/comments/select.js"></script>
 
