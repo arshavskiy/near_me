@@ -360,12 +360,21 @@ let app = new Vue({
                     });
 
                     loader.classList.add("hide");
-                    L.circle([app.longitude,app.latitude], app.gsradius).addTo(mymap);
-
-                } else {
 
                 }
                 console.table('app.geoDataFull: ', app.geoDataFull);
+
+                var circleCenter = [app.latitude, app.longitude || app.mapClickedlatlng ];
+                var circleOptions = {
+                    color:'green',
+                    weight:'1',
+                    radius : app.gsradius,
+                    fillOpacity: 0.1
+                 };
+                 var circle = L.circle(circleCenter, app.gsradius, circleOptions);
+                 circle.addTo(mymap);
+               
+
                 // getDataOnLocations();
             }
 
@@ -409,6 +418,7 @@ let app = new Vue({
                 var popup = L.popup();
 
                 function onMapClick(e) {
+                    app.mapClickedlatlng = e.latlng;
                     getFromWiki(e.latlng);
                     popup
                         .setLatLng(e.latlng)
