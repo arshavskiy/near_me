@@ -364,7 +364,7 @@ let app = new Vue({
                 }
                 console.table('app.geoDataFull: ', app.geoDataFull);
 
-                var circleCenter = [app.latitude, app.longitude || app.mapClickedlatlng ];
+                var circleCenter = [app.mapClickedlatlng || app.latitude, app.longitude ];
                 var circleOptions = {
                     color:'green',
                     weight:1,
