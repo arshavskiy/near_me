@@ -81,6 +81,10 @@ let app = new Vue({
         mapStyleSelected:'Detailed'
     },
 
+    computed: {
+       
+    },
+
     mounted: function () {
         this.$nextTick(function () {
           // Code that will run only after the`
@@ -98,8 +102,8 @@ let app = new Vue({
 
                 favCard.id = tempIndex++;
                 localStorage.setItem(favCard.title, JSON.stringify(favCard));
-
                 favCard.selected = true;
+
                 values.push( favCard );
                 app.geoDataFull.push( favCard );
             }
@@ -130,6 +134,18 @@ let app = new Vue({
     },
 
     methods: {
+        _calculateDistance : (e)=>{
+            app.length = mymap.distance(
+                {'lat': app.latitude , 'lng' : app.longitude}, 
+                e
+            );
+
+            console.debug(app.length);
+
+            return app.length
+
+        },
+
         locate: ()=>{
             mymap.setView([app.latitude, app.longitude], 15);
         },
@@ -281,6 +297,8 @@ let app = new Vue({
              circle.addTo(mymap);
         },
 
+       
+
         run: window.run = function () {
 
             if (typeof mymap == 'undefined' || typeof mymap == 'null') initLeafMap();
@@ -329,6 +347,10 @@ let app = new Vue({
                 if (locationsData.length === 1) {
 
                     app.geoData.push(locationsData[0].title);
+                    let calculate  =  app._calculateDistance({
+                        lat: locationsData[0].lat,
+                        lon: locationsData[0].lon
+                    });
 
                     Vue.set(app.geoDataFull, app.cardIndex, {
                         'lat': locationsData[0].lat,
@@ -336,7 +358,8 @@ let app = new Vue({
                         'lang': app.lang,
                         'local': app.local,
                         'title': locationsData[0].title,
-                        'id':app.cardIndex
+                        'id':app.cardIndex,
+                        'distance': calculate
                     });
 
 
@@ -359,13 +382,19 @@ let app = new Vue({
 
                             app.geoData.push(element.title);
 
+                            let calculate  =  app._calculateDistance({
+                                lat: element.lat,
+                                lon: element.lon
+                            });
+
                             Vue.set(app.geoDataFull, app.cardIndex, {
                                 'lat': element.lat,
                                 'lon': element.lon,
                                 'lang': app.lang,
                                 'local': app.local,
                                 'title': element.title,
-                                'id':app.cardIndex
+                                'id':app.cardIndex,
+                                'distance':calculate
                             });
 
                             let favorite = localStorage.getItem(element.title);
@@ -391,7 +420,6 @@ let app = new Vue({
 
             function handle(gpsData) {
                 let shouldUpdate = updateGpsData(gpsData);
-
 
                 app.Tlatitude = app.latitude;
                 app.Tlongitude = app.longitude;
@@ -432,6 +460,7 @@ let app = new Vue({
 
                 function onMapClick(e) {
                     app.mapClickedlatlng = e.latlng;
+
                     getFromWiki(e.latlng);
                     popup
                         .setLatLng(e.latlng)
@@ -441,6 +470,8 @@ let app = new Vue({
 
                 mymap.on('click', onMapClick);
             }
+
+            
 
             function getDataOnLocations(title) {
 

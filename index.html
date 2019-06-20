@@ -34,7 +34,7 @@
             <section class="menu">
                 <i v-if="!toggleMenuOpen" class="fas fa-bars menu_btn" @click="toggleMenu"></i>
                 <i v-show="toggleMenuOpen" class="fas fa-bars menu_btn no_boder" @click="toggleMenu"></i>
-                <div class="menu_holder"v-bind:class="{ show: toggleMenuOpen }">
+                <div class="menu_holder" v-bind:class="{ show: toggleMenuOpen }">
                     <div class="menu_btn_holder">
                         <i class="fas fa-times" @click="toggleMenu"></i>
                     </div>
@@ -89,6 +89,7 @@
                                     <i v-if="card.selected" class="fas fa-star selected" v-bind:value="card.selected"
                                     @click="removeFavorite(card, $event)"></i>
                                     <h3> {{card.title}}</h3>
+                                   
                                     <label :for="card.id" class="button" aria-hidden="true" v-on:click="resize">
                                         <div class="icon">
                                             <i class="fas fa-book-reader"></i>
@@ -120,6 +121,9 @@
                                             <i class="fas fa-star"></i>
                                         </div>
                                     </div>
+                                    <div v-if="card.distance" class="distance_container">
+                                        <span style="color: #000; font-size: 12px;">{{ card.distance.toFixed(0)}}m.</span>
+                                    </div>
                                     <div class="description">
                                         <p>
                                             {{card.extract}}
@@ -140,6 +144,7 @@
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
         integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
         crossorigin=""></script>
+    <!-- <script src="https://npmcdn.com/leaflet-geometryutil"></script> -->
     <script src="./assets/leaflet-providers.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

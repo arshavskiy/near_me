@@ -183,8 +183,10 @@ h1 {
     width: 0;
     height: 100vh;
 }
-.menu_holder>*{
+.menu_holder *{
     opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s ease;
 }
 
 .menu_holder.show{
@@ -192,10 +194,13 @@ h1 {
     width: 85vw;
     padding: 10px 8px 10px 0;
     transition: all 0.5s ease;
+    
 }
 
-.menu_holder.show > *{
+.menu_holder.show  *{
     opacity: 1;
+    visibility: visible;
+    transition: all 0.5s ease;
 }
 
 .menu_select{
