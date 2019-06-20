@@ -174,14 +174,28 @@ h1 {
 .menu_holder{
     background: #fff;
     opacity: 1;
-    padding: 10px 8px 10px 0;
+    /* padding: 10px 8px 10px 0; */
     border: 1px solid rgba(60,60,60,.26);
     position: fixed;
     top: -1px;
     z-index: 1;
     transition: all 0.5s ease;
-    width: 85vw;
+    width: 0;
     height: 100vh;
+}
+.menu_holder>*{
+    opacity: 0;
+}
+
+.menu_holder.show{
+    opacity: 1;
+    width: 85vw;
+    padding: 10px 8px 10px 0;
+    transition: all 0.5s ease;
+}
+
+.menu_holder.show > *{
+    opacity: 1;
 }
 
 .menu_select{
@@ -284,7 +298,7 @@ h1 {
         overflow-x: scroll;
         overflow-y: scroll;
     }
-    .menu_holder{
+    .menu_holder.show{
         width: 300px;
     }
     #mapid{

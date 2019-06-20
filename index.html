@@ -33,8 +33,8 @@
 
             <section class="menu">
                 <i v-if="!toggleMenuOpen" class="fas fa-bars menu_btn" @click="toggleMenu"></i>
-                <i v-if="toggleMenuOpen" class="fas fa-bars menu_btn no_boder" @click="toggleMenu"></i>
-                <div class="menu_holder" v-show="toggleMenuOpen">
+                <i v-show="toggleMenuOpen" class="fas fa-bars menu_btn no_boder" @click="toggleMenu"></i>
+                <div class="menu_holder"v-bind:class="{ show: toggleMenuOpen }">
                     <div class="menu_btn_holder">
                         <i class="fas fa-times" @click="toggleMenu"></i>
                     </div>
