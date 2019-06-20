@@ -18,7 +18,6 @@ Vue.prototype.filters = {
 let app = new Vue({
     el: '#app-5',
     data: {
-        message: 'Hello Vue.js!',
         Tlatitude: 0,
         Tlongitude: 0,
         latitude: 0,
@@ -92,9 +91,14 @@ let app = new Vue({
           var values = [],
           keys = Object.keys(localStorage),
           i = keys.length;
+          let tempIndex = 0;
   
             while ( i-- ) {
                 let favCard =  JSON.parse(localStorage.getItem(keys[i]));
+
+                favCard.id = tempIndex++;
+                localStorage.setItem(favCard.title, JSON.stringify(favCard));
+
                 favCard.selected = true;
                 values.push( favCard );
                 app.geoDataFull.push( favCard );
@@ -140,6 +144,7 @@ let app = new Vue({
         expendMap: window.resizeClickMap,
         
         adFavorite: function(card, e){
+            app.geoDataFull[card.id].selected = true;
            
             localStorage.setItem(card.title, JSON.stringify(app.geoDataFull[card.id]));
             // app.geoDataFull[card.id].selected = true;
