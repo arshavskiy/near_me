@@ -76,9 +76,9 @@ let app = new Vue({
                     // attribution: '&copy; Openstreetmap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 }).addTo(mymap);
             }},
-            {name:'Topographic',value: ()=>{
-                let esri =  L.esri.basemapLayer("Topographic").addTo(mymap);
-            }},
+            // {name:'Topographic',value: ()=>{
+            //     let esri =  L.esri.basemapLayer("Topographic").addTo(mymap);
+            // }},
         ],
         mapStyleSelected:'Map'
     },
