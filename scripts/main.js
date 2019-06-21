@@ -45,10 +45,14 @@ let initLeafMap = () => {
 
     updateGpsData(handle.coords);
 
-    var OpenStreetMap_France = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-      maxZoom: 20,
-      attribution: '&copy; Openstreetmap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(mymap);
+    // var OpenStreetMap_France = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+    //   maxZoom: 20,
+    //   attribution: '&copy; Openstreetmap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    // }).addTo(mymap);
+
+      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(mymap);
 
    
     
@@ -69,10 +73,26 @@ let initLeafMap = () => {
     //     })
     //   ]
     // }).addTo(mymap);
+
+    var searchControl = L.esri.Geocoding.geosearch().addTo(mymap);
+
+    var results = L.layerGroup().addTo(mymap);
+
+    searchControl.on('results', function(data){
+      results.clearLayers();
+      for (var i = data.results.length - 1; i >= 0; i--) {
+        results.addLayer(L.marker(data.results[i].latlng));
+      }
+    });
+  
+  
+    // var searchControl = new L.esri.Controls.Geosearch().addTo(mymap);
+
+    // var results = new L.LayerGroup().addTo(mymap);
   
     // searchControl.on('results', function(data){
     //   results.clearLayers();
-    //   for (let i = data.results.length - 1; i >= 0; i--) {
+    //   for (var i = data.results.length - 1; i >= 0; i--) {
     //     results.addLayer(L.marker(data.results[i].latlng));
     //   }
     // });
