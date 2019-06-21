@@ -122,10 +122,8 @@ h1 {
 }
 
 .v-select{
-    position: fixed;
     top: -1px;
     left: 0;
-    padding-left: 50px;
     z-index: 999;
     width: 100vw;
     height: 40px;

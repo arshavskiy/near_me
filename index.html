@@ -33,10 +33,7 @@
         <div id="mapid"></div>
         <div id="app-5">
 
-            <section>
-                <v-select value="English" :options="options" label="language" :reduce="language => language"
-                    @input="onLanguageUpdate" />
-            </section>
+            
 
             <i class="far fa-compass locationBtn" @click="locate"></i>
             <i class="fas fa-expand expendBtn" @click="expendMap"></i>
@@ -51,6 +48,11 @@
                     </div>
 
                     <div style="padding:10px 0 0 10px">
+
+                        <section class="spaced mt-1">
+                            <v-select value="English" :options="options" label="language" :reduce="language => language"
+                                @input="onLanguageUpdate" />
+                        </section>
 
                         <div class="spaced mt-1">
                             <span style="line-height: 30px">Map type </span>
