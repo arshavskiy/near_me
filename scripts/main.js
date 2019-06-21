@@ -15,6 +15,8 @@ setMarkersOnMapLoad = ()=>{
           lon: app.geoDataFull[card.id].lon
       });
 
+
+//  Vue.set(app.geoDataFull, card.id, calculate)
     app.geoDataFull[card.id].distance = calculate;
 
     let myIcon = L.icon({
