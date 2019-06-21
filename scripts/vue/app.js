@@ -71,14 +71,16 @@ let app = new Vue({
                 }).addTo(mymap);
             }},
             {name:'Detailed',value: ()=>{
-                var OpenStreetMap_France = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-                maxZoom: 20,
-                // attribution: '&copy; Openstreetmap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(mymap);
+                    var OpenStreetMap_France = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+                    maxZoom: 20,
+                    // attribution: '&copy; Openstreetmap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(mymap);
+            }},
+            {name:'Topographic',value: ()=>{
+                let esri =  L.esri.basemapLayer("Topographic").addTo(mymap);
             }},
         ],
-        mapStyle: ['Simple', 'Bicycle'],
-        mapStyleSelected:'Detailed'
+        mapStyleSelected:'Map'
     },
 
     computed: {
