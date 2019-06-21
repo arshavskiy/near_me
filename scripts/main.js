@@ -54,15 +54,28 @@ let initLeafMap = () => {
     
     L.map.onload = setMarkersOnMapLoad();
 
-    let searchControl = new L.esri.Controls.Geosearch().addTo(map);
-    let results = new L.LayerGroup().addTo(map);
+    // var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
+    // var searchControl = L.esri.Geocoding.geosearch({
+    //   providers: [
+    //     arcgisOnline,
+    //     L.esri.Geocoding.featureLayerProvider({
+    //       url: 'https://services.arcgis.com/uCXeTVveQzP4IIcx/arcgis/rest/services/gisday/FeatureServer/0/',
+    //       searchFields: ['Name', 'Organization'],
+    //       label: 'GIS Day Events',
+    //       bufferRadius: 5000,
+    //       formatSuggestion: function(feature){
+    //         return feature.properties.Name + ' - ' + feature.properties.Organization;
+    //       }
+    //     })
+    //   ]
+    // }).addTo(mymap);
   
-    searchControl.on('results', function(data){
-      results.clearLayers();
-      for (let i = data.results.length - 1; i >= 0; i--) {
-        results.addLayer(L.marker(data.results[i].latlng));
-      }
-    });
+    // searchControl.on('results', function(data){
+    //   results.clearLayers();
+    //   for (let i = data.results.length - 1; i >= 0; i--) {
+    //     results.addLayer(L.marker(data.results[i].latlng));
+    //   }
+    // });
 
     
 
