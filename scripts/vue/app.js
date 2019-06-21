@@ -80,7 +80,7 @@ let app = new Vue({
             //     let esri =  L.esri.basemapLayer("Topographic").addTo(mymap);
             // }},
         ],
-        mapStyleSelected:'Map'
+        mapStyleSelected:'Simple'
     },
 
     computed: {

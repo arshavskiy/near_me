@@ -111,7 +111,7 @@
                             <div class="back">
                                 <div class="inner">
                                     <div class="info">
-                                        <div v-if="!reading" class="icon" v-on:click="readText(card)"
+                                        <div v-if="!reading && card.lang!='he'" class="icon" v-on:click="readText(card)"
                                             style="min-width: 21.5px">
                                             <i class="fas fa-volume-off"></i>
                                         </div>
@@ -133,7 +133,7 @@
                                         </div>
                                     </div>
                                     <div v-if="card.distance" class="distance_container">
-                                        <span style="color: #000; font-size: 12px;">{{ card.distance.toFixed(0)}}m.</span>
+                                        <span style="color: #000; font-size: 15px;">{{ card.distance.toFixed(0)}}m.</span>
                                     </div>
                                     <div class="description">
                                         <p>
