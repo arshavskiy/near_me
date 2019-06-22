@@ -40,39 +40,24 @@ let initLeafMap = () => {
     console.debug('gps => call to map from main');
 
     if (typeof mymap == 'undefined') {
+
       mymap = L.map('mapid').setView([handle.coords.latitude, handle.coords.longitude], 15);
-    }
-
-    updateGpsData(handle.coords);
-
-  // default map Simple 
+      L.map.onload = setMarkersOnMapLoad();
 
       L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(mymap);
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(mymap);
 
-   
-    
-    L.map.onload = setMarkersOnMapLoad();
+    } else {
+      mymap.setView([handle.coords.latitude, handle.coords.longitude], 15);
+    }
 
-    // var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
-    // var searchControl = L.esri.Geocoding.geosearch({
-    //   providers: [
-    //     arcgisOnline,
-    //     L.esri.Geocoding.featureLayerProvider({
-    //       url: 'https://services.arcgis.com/uCXeTVveQzP4IIcx/arcgis/rest/services/gisday/FeatureServer/0/',
-    //       searchFields: ['Name', 'Organization'],
-    //       label: 'GIS Day Events',
-    //       bufferRadius: 5000,
-    //       formatSuggestion: function(feature){
-    //         return feature.properties.Name + ' - ' + feature.properties.Organization;
-    //       }
-    //     })
-    //   ]
-    // }).addTo(mymap);
+    if (app.Tlatitude != handle.coords.latitude && app.Tlongitude != handle.coords.longitude) {
+      updateGpsData(handle.coords);
+    }
+  // default map Simple 
 
     var searchControl = L.esri.Geocoding.geosearch().addTo(mymap);
-
     var results = L.layerGroup().addTo(mymap);
 
     searchControl.on('results', function(data){
