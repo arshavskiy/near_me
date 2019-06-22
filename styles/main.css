@@ -68,7 +68,7 @@ app-5# button.enter {
 
 
 #mapid {
-    height: 40vh;
+    height: 50vh;
 }
 
 .float_image_with_text img {
@@ -318,7 +318,7 @@ h1 {
         width: 300px;
     }
     #mapid{
-        height: 40vh;
+        height: 50vh;
     }
     .card{
         width: 23vw !important;

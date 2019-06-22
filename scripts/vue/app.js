@@ -46,6 +46,7 @@ let app = new Vue({
                 localPC: 'ru-RU'
             },
         ],
+        language: 'English',
         lang: 'en',
         local: 'en_US',
         localPC: 'en-US',
@@ -505,8 +506,8 @@ let app = new Vue({
                             app.geoDataFull.forEach(card=>{
                                 if(card.title == title){
                                     
-                                    app.geoDataFull[card.id].extract = dataObject.extract;
-                                    Vue.set(app.geoDataFull[card.id], 'extract', dataObject.extract);
+                                    app.geoDataFull[card.id].extract = dataObject.extract.replace(/=/g,'');
+                                    Vue.set(app.geoDataFull[card.id], 'extract', dataObject.extract.replace(/=/g,''));
 
                                     if (dataObject.thumbnail) {
 

@@ -120,7 +120,7 @@ const DOMap = document.getElementById('mapid');
 const loader = document.getElementById('loader');
 
 window.resizeClickMap = ()=> {
-  DOMap.style.height = '60vh';
+  DOMap.style.height = '70vh';
   if(mymap) mymap.invalidateSize();
 
   let DOMcards = document.getElementsByClassName('card');
@@ -131,7 +131,7 @@ window.resizeClickMap = ()=> {
 
 window.resizeClickCard = ()=>{
   if(DOMap){
-    DOMap.style.height = '40vh';
+    DOMap.style.height = '50vh';
     if(mymap) mymap.invalidateSize();
   }
 
