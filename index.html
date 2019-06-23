@@ -33,8 +33,6 @@
         <div id="mapid"></div>
         <div id="app-5">
 
-            
-
             <i class="far fa-compass locationBtn" @click="locate"></i>
             <i class="fas fa-expand expendBtn" @click="expendMap"></i>
             <!-- <div class='pointer'><< Click search button</div> -->
@@ -130,7 +128,8 @@
                                             <!-- <div v-if="!selected(card.title)" class="icon" v-on:click="adFavorite(card, $event)"> -->
                                             <i class="far fa-star"></i>
                                         </div>
-                                        <div v-show="card.selected" class="icon" v-bind:value="card.selected"
+                                        <div v-show="card.selected" class="icon" 
+                                            v-bind:value="card.selected"
                                             @click="removeFavorite(card, $event)">
                                             <i class="fas fa-star"></i>
                                         </div>

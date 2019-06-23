@@ -112,7 +112,7 @@ let app = new Vue({
             }
 
             if ( app.geoDataFull.length > 0 ){
-                app.cardIndex = app.geoDataFull.length-1;
+                app.cardIndex = app.geoDataFull.length;
             }
   
         });
@@ -151,7 +151,7 @@ let app = new Vue({
 
         locate: ()=>{
             initLeafMap();
-            mymap.setView([app.latitude, app.longitude], 15);
+            mymap.setView([app.latitude, app.longitude], 18);
         },
         runMap: (map)=>{
             app.maps[map].value();
@@ -291,7 +291,7 @@ let app = new Vue({
             app.mapClickedlatlng ? circleCenter = app.mapClickedlatlng: circleCenter = [ app.latitude, app.longitude ]
             // var circleCenter = [app.mapClickedlatlng] || [app.latitude, app.longitud ];
             var circleOptions = {
-                color:'green',
+                color:'#333',
                 weight: 2,
                 radius : app.gsradius,
                 fillOpacity: 0.05,
@@ -451,7 +451,7 @@ let app = new Vue({
 
                 const locationIcon = L.icon({
                     iconUrl: './assets/location.png',
-                    iconSize: [60, 60],
+                    iconSize: [40, 40],
                     iconAnchor: [25, -20],
                 });
 

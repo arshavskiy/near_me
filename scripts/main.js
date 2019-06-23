@@ -35,6 +35,7 @@ setMarkersOnMapLoad = ()=>{
 };
 
 let initLeafMap = () => {
+
   window.navigator.geolocation.getCurrentPosition((handle) => {
 
     console.debug('gps => call to map from main');
@@ -48,6 +49,16 @@ let initLeafMap = () => {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(mymap);
 
+      let searchControl = L.esri.Geocoding.geosearch().addTo(mymap);
+      let results = L.layerGroup().addTo(mymap);
+
+      searchControl.on('results', function(data){
+        results.clearLayers();
+        for (var i = data.results.length - 1; i >= 0; i--) {
+            results.addLayer(L.marker(data.results[i].latlng));
+          }
+       });
+
     } else {
       mymap.setView([handle.coords.latitude, handle.coords.longitude], 15);
     }
@@ -57,15 +68,7 @@ let initLeafMap = () => {
     }
   // default map Simple 
 
-    var searchControl = L.esri.Geocoding.geosearch().addTo(mymap);
-    var results = L.layerGroup().addTo(mymap);
-
-    searchControl.on('results', function(data){
-      results.clearLayers();
-      for (var i = data.results.length - 1; i >= 0; i--) {
-        results.addLayer(L.marker(data.results[i].latlng));
-      }
-    });
+    
   
   
     // var searchControl = new L.esri.Controls.Geosearch().addTo(mymap);
@@ -105,7 +108,7 @@ const DOMap = document.getElementById('mapid');
 const loader = document.getElementById('loader');
 
 window.resizeClickMap = ()=> {
-  DOMap.style.height = '70vh';
+  DOMap.style.height = '65vh';
   if(mymap) mymap.invalidateSize();
 
   let DOMcards = document.getElementsByClassName('card');
