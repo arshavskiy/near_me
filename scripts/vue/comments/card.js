@@ -4,8 +4,19 @@ let card = Vue.component('card-component', {
         card: {
             type: Object,
             requires: true
+        },
+        // showOnMap: { type: Function },
+    },
+    mounted() {
+        // Use the parent function directly here
+        
+    },
+    data() {
+        return {
+            reading: false,
         }
     },
+
     template: `<div class="card" :data-local="card.local" :data-lang="card.lang">
                     <input type="checkbox" :id="card.id" class="more" aria-hidden="true">
                     <div class="content">
@@ -61,36 +72,40 @@ let card = Vue.component('card-component', {
                         </div>
                     </div>
                 </div>`,
-    data() {
-        return {
-            reading: false,
-        }
-    },
-
+   
     methods: {
+        showOnMap: (e, cardName) => {
+            console.debug(e, cardName);
+            e.stopPropagation();
+            // if ( e.target.className.includes('fa-map-marked-alt') ) {
+            mymap.setView([cardName.lat, cardName.lon], 16, {
+                "animate": true,
+            });
+            // }
 
+        },
         resize: window.resizeClickCard,
 
         adFavorite: function (card, e) {
             app.geoDataFull[card.id].selected = true;
 
             localStorage.setItem(card.title, JSON.stringify(app.geoDataFull[card.id]));
-            // app.geoDataFull[card.id].selected = true;
-            // Vue.set(app.geoDataFull[card.id], 'selected', true);
-            card.selected = !card.selected;
+            app.geoDataFull[card.id].selected = true;
+            Vue.set(app.geoDataFull[card.id], 'selected', true);
+            card.selected = true;
         },
 
         removeFavorite: function (card, e) {
 
             localStorage.removeItem(card.title);
-            // app.geoDataFull[card.id].selected = false;
-            // Vue.set(app.geoDataFull[card.id], 'selected', false);
-            card.selected = !card.selected;
+            app.geoDataFull[card.id].selected = false;
+            Vue.set(app.geoDataFull[card.id], 'selected', false);
+            card.selected = false;
         },
 
         stopText: function () {
             window.speechSynthesis.cancel();
-            app.reading = false;
+            this.reading = false;
         },
 
         readText: function (textNode) {
@@ -162,7 +177,7 @@ let card = Vue.component('card-component', {
                 };
 
                 speak(text);
-                app.reading = true;
+                this.reading = true;
                 return;
 
             }

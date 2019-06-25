@@ -53,7 +53,6 @@ let app = new Vue({
         localPC: 'en-US',
         mapRadius: [500, 1000, 1500, 2000, 2500, 3000],
         gsradius: 1000,
-        reading: false,
         selected: cardTitle => localStorage.getItem(cardTitle),
         toggleMenuOpen: false,
         maps: [{
@@ -184,6 +183,14 @@ let app = new Vue({
                 app.localPC = e.localPC;
                 window.run();
             }
+        },
+
+        removeFavorite: function (card, e) {
+
+            localStorage.removeItem(card.title);
+            // app.geoDataFull[card.id].selected = false;
+            Vue.set(app.geoDataFull[card.id], 'selected', false);
+            card.selected = false;
         },
 
         resize: window.resizeClickCard,
