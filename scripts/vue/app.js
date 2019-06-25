@@ -1,6 +1,3 @@
-Vue.component('v-select', VueSelect.VueSelect);
-
-
 Vue.prototype.filters = {
     reverse: function (array) {
         return array.slice.reverse();
@@ -14,182 +11,13 @@ Vue.prototype.filters = {
 };
 
 
-Vue.component('card-component', {
-    props: {
-        card: {
-            type: Object,
-            requires: true
-        }
-    },
-    template : `<div class="card" :data-local="card.local" :data-lang="card.lang">
-                    <input type="checkbox" :id="card.id" class="more" aria-hidden="true">
-                    <div class="content">
-                        <div class="front" :style="{ 'background-image': 'url(' + card.img + ')' }">
-                            <div class="inner">
-                                <i v-if="card.selected" class="fas fa-star selected" v-bind:value="card.selected"
-                                @click="removeFavorite(card, $event)"></i>
-                                <h3> {{card.title}}</h3>
-                            
-                                <label :for="card.id" class="button" aria-hidden="true" v-on:click="resize">
-                                    <div class="icon">
-                                        <i class="fas fa-book-reader"></i>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="back">
-                            <div class="inner">
-                                <div class="info">
-                                    <div v-if="!reading && card.lang!='he'" class="icon" v-on:click="readText(card)"
-                                        style="min-width: 21.5px">
-                                        <i class="fas fa-volume-off"></i>
-                                    </div>
-                                    <div v-if="reading" class="icon" v-on:click="stopText"
-                                        style="min-width: 21.5px">
-                                        <i class="fas fa-volume-up"></i>
-                                    </div>
-                                    <div class="icon" v-on:click="showOnMap($event, card)">
-                                        <i class="fas fa-map-marked-alt"></i>
-                                    </div>
-                                    <div v-show="!card.selected" class="icon" v-bind:value="card.selected"
-                                        @click="adFavorite(card, $event)">
-                                        <!-- <div v-if="!selected(card.title)" class="icon" v-on:click="adFavorite(card, $event)"> -->
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                    <div v-show="card.selected" class="icon" v-bind:value="card.selected"
-                                        @click="removeFavorite(card, $event)">
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                </div>
-                                <div v-if="card.distance" class="distance_container">
-                                    <span style="color: #000; font-size: 15px;">{{ card.distance.toFixed(0)}}m.</span>
-                                </div>
-                                <div class="description">
-                                    <p>
-                                        {{card.extract}}
-                                    </p>
-                                </div>
-                                <label :for="card.id" class="button return" aria-hidden="true">
-                                    <i class="fas fa-arrow-left"></i>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>`,
-    data() {
-        return {
-            reading: false,
-        }
-    },
-
-    methods: {
-
-        resize: window.resizeClickCard,
-
-        adFavorite: function(card, e){
-            app.geoDataFull[card.id].selected = true;
-           
-            localStorage.setItem(card.title, JSON.stringify(app.geoDataFull[card.id]));
-            // app.geoDataFull[card.id].selected = true;
-            // Vue.set(app.geoDataFull[card.id], 'selected', true);
-            card.selected = !card.selected;
-        },
-
-        removeFavorite: function(card, e){
-          
-            localStorage.removeItem(card.title);
-            // app.geoDataFull[card.id].selected = false;
-            // Vue.set(app.geoDataFull[card.id], 'selected', false);
-            card.selected = !card.selected;
-        },
-
-        stopText: function () {
-            window.speechSynthesis.cancel();
-            app.reading = false;
-        },
-
-        readText: function (textNode) {
-
-            window.speechSynthesis.cancel();
-
-            let text = textNode.extract;
-            let local = textNode.local;
-
-            if ('speechSynthesis' in window) {
-                const voiceIndex = 0;
-
-                const speak = async (text) => {
-                    if (!speechSynthesis) {
-                        return;
-                    }
-                    let message = new SpeechSynthesisUtterance(text);
-                    message.voice = await chooseVoice();
-                    message.lang = message.voice.lang;
-                    speechSynthesis.speak(message);
-                    console.table(message);
-                };
-
-                let voices = app.voices;
-
-                let getVoices = () => {
-                    return new Promise((resolve) => {
-                        voices = app.voices = speechSynthesis.getVoices()
-                        if (voices.length) {
-                            resolve(voices);
-                            return;
-                        }
-                        if (speechSynthesis.onvoiceschanged !== undefined) {
-                            // Chrome gets the voices asynchronously so this is needed
-                            speechSynthesis.onvoiceschanged = () => {
-                                voices = app.voices = speechSynthesis.getVoices();
-                                resolve(voices);
-                            };
-                        } else {
-                            speechSynthesis.onvoiceschanged = () => {
-                                voices = app.voices = speechSynthesis.getVoices();
-                                resolve(voices);
-                            };
-                        }
-                    });
-                };
-
-                let chooseVoice = async () => {
-                    // let voices = (await getVoices()).filter((voice) => { 
-                    //     voice.lang == app.local || voice.lang == app.localPC; 
-                    // });
-                    if (voices.length === 0) {
-                        voices = await getVoices();
-                    } else {
-                        voices = app.voices;
-                    }
-
-                    let filterdVoice = [];
-
-                    voices.forEach(voice => {
-                        if (voice.lang == app.localPC || voice.lang == local) {
-                            filterdVoice.push(voice);
-                        }
-                    })
-
-                    return new Promise((resolve) => {
-                        resolve(filterdVoice[voiceIndex]);
-                    })
-                };
-
-                speak(text);
-                app.reading = true;
-                return;
-
-            }
-
-        },
-
-    },
-})
-
-
 let app = new Vue({
     el: '#app-5',
+    
+    components:{
+        'card-component': card,
+        'v-select' : VueSelect.VueSelect,
+    },
     data: {
         Tlatitude: 0,
         Tlongitude: 0,
@@ -223,73 +51,82 @@ let app = new Vue({
         lang: 'en',
         local: 'en_US',
         localPC: 'en-US',
-        mapRadius: [500,1000,1500,2000,2500,3000],
+        mapRadius: [500, 1000, 1500, 2000, 2500, 3000],
         gsradius: 1000,
         reading: false,
         selected: cardTitle => localStorage.getItem(cardTitle),
-        toggleMenuOpen : false,
-        maps: [
-            {name:'Simple', value: ()=>{
-                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}')
-                .addTo(mymap);
-            }},
-            {name:'Map',value: ()=>{
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                // attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(mymap);
-            }},
-            {name:'Satellite',value: ()=>{
-                var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                    // attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-                }).addTo(mymap);
-            }},
-            {name:'Detailed',value: ()=>{
+        toggleMenuOpen: false,
+        maps: [{
+                name: 'Simple',
+                value: () => {
+                    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}')
+                        .addTo(mymap);
+                }
+            },
+            {
+                name: 'Map',
+                value: () => {
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                        // attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(mymap);
+                }
+            },
+            {
+                name: 'Satellite',
+                value: () => {
+                    var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                        // attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                    }).addTo(mymap);
+                }
+            },
+            {
+                name: 'Detailed',
+                value: () => {
                     var OpenStreetMap_France = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-                    maxZoom: 20,
-                    // attribution: '&copy; Openstreetmap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(mymap);
-            }},
-            // {name:'Topographic',value: ()=>{
-            //     let esri =  L.esri.basemapLayer("Topographic").addTo(mymap);
-            // }},
+                        maxZoom: 20,
+                        // attribution: '&copy; Openstreetmap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(mymap);
+                }
+            },
+           
         ],
-        mapStyleSelected:'Simple'
+        mapStyleSelected: 'Simple'
     },
 
     computed: {
-       
+
     },
 
     mounted: function () {
         this.$nextTick(function () {
-          // Code that will run only after the`
-          // entire view has been rendered
+            // Code that will run only after the`
+            // entire view has been rendered
 
-          console.debug('app.geoDataFull', app.geoDataFull );
+            console.debug('app.geoDataFull', app.geoDataFull);
 
-          var values = [],
-          keys = Object.keys(localStorage),
-          i = keys.length;
-          let tempIndex = 0;
-  
-            while ( i-- ) {
-                let favCard =  JSON.parse(localStorage.getItem(keys[i]));
+            var values = [],
+                keys = Object.keys(localStorage),
+                i = keys.length;
+            let tempIndex = 0;
+
+            while (i--) {
+                let favCard = JSON.parse(localStorage.getItem(keys[i]));
 
                 favCard.id = tempIndex++;
                 localStorage.setItem(favCard.title, JSON.stringify(favCard));
                 favCard.selected = true;
 
-                values.push( favCard );
-                app.geoDataFull.push( favCard );
+                values.push(favCard);
+                app.geoDataFull.push(favCard);
             }
 
-            if ( app.geoDataFull.length > 0 ){
+            if (app.geoDataFull.length > 0) {
                 app.cardIndex = app.geoDataFull.length;
             }
-  
+
         });
-      },
+    },
 
 
     created() {
@@ -298,10 +135,10 @@ let app = new Vue({
         document.getElementById('app-5').style.display = 'initial';
     },
 
-    watch: { 
-        mapStyleSelected: function(data) { 
-            app.maps.forEach(item=>{
-                if (item.name === data){
+    watch: {
+        mapStyleSelected: function (data) {
+            app.maps.forEach(item => {
+                if (item.name === data) {
                     item.value();
                 }
             });
@@ -310,9 +147,11 @@ let app = new Vue({
     },
 
     methods: {
-        _calculateDistance : (e)=>{
-            app.length = mymap.distance(
-                {'lat': app.latitude , 'lng' : app.longitude}, 
+        _calculateDistance: (e) => {
+            app.length = mymap.distance({
+                    'lat': app.latitude,
+                    'lng': app.longitude
+                },
                 e
             );
 
@@ -322,24 +161,24 @@ let app = new Vue({
 
         },
 
-        locate: ()=>{
+        locate: () => {
             initLeafMap();
             mymap.setView([app.latitude, app.longitude], 18);
         },
 
-        runMap: (map)=>{
+        runMap: (map) => {
             app.maps[map].value();
         },
 
-        toggleMenu :()=>{
+        toggleMenu: () => {
             app.toggleMenuOpen = !app.toggleMenuOpen;
         },
 
         expendMap: window.resizeClickMap,
-        
+
         onLanguageUpdate: function (e) {
 
-            if (e && e.code){
+            if (e && e.code) {
                 app.lang = e.code;
                 app.local = e.local;
                 app.localPC = e.localPC;
@@ -347,113 +186,32 @@ let app = new Vue({
             }
         },
 
-        // stopText: function () {
-        //     window.speechSynthesis.cancel();
-        //     app.reading = false;
-        // },
-
-        // readText: function (textNode) {
-
-        //     window.speechSynthesis.cancel();
-
-        //     let text = textNode.extract;
-        //     let local = textNode.local;
-
-        //     if ('speechSynthesis' in window) {
-        //         const voiceIndex = 0;
-
-        //         const speak = async (text) => {
-        //             if (!speechSynthesis) {
-        //                 return;
-        //             }
-        //             let message = new SpeechSynthesisUtterance(text);
-        //             message.voice = await chooseVoice();
-        //             message.lang = message.voice.lang;
-        //             speechSynthesis.speak(message);
-        //             console.table(message);
-        //         };
-
-        //         let voices = app.voices;
-
-        //         let getVoices = () => {
-        //             return new Promise((resolve) => {
-        //                 voices = app.voices = speechSynthesis.getVoices()
-        //                 if (voices.length) {
-        //                     resolve(voices);
-        //                     return;
-        //                 }
-        //                 if (speechSynthesis.onvoiceschanged !== undefined) {
-        //                     // Chrome gets the voices asynchronously so this is needed
-        //                     speechSynthesis.onvoiceschanged = () => {
-        //                         voices = app.voices = speechSynthesis.getVoices();
-        //                         resolve(voices);
-        //                     };
-        //                 } else {
-        //                     speechSynthesis.onvoiceschanged = () => {
-        //                         voices = app.voices = speechSynthesis.getVoices();
-        //                         resolve(voices);
-        //                     };
-        //                 }
-        //             });
-        //         };
-
-        //         let chooseVoice = async () => {
-        //             // let voices = (await getVoices()).filter((voice) => { 
-        //             //     voice.lang == app.local || voice.lang == app.localPC; 
-        //             // });
-        //             if (voices.length === 0) {
-        //                 voices = await getVoices();
-        //             } else {
-        //                 voices = app.voices;
-        //             }
-
-        //             let filterdVoice = [];
-
-        //             voices.forEach(voice => {
-        //                 if (voice.lang == app.localPC || voice.lang == local) {
-        //                     filterdVoice.push(voice);
-        //                 }
-        //             })
-
-        //             return new Promise((resolve) => {
-        //                 resolve(filterdVoice[voiceIndex]);
-        //             })
-        //         };
-
-        //         speak(text);
-        //         app.reading = true;
-        //         return;
-
-        //     }
-
-        // },
-
         resize: window.resizeClickCard,
 
-        showOnMap: (e, cardName)=>{
+        showOnMap: (e, cardName) => {
             console.debug(e, cardName);
             e.stopPropagation();
             // if ( e.target.className.includes('fa-map-marked-alt') ) {
-                mymap.setView([cardName.lat , cardName.lon], 16, {
-                    "animate": true,
-                   });
+            mymap.setView([cardName.lat, cardName.lon], 16, {
+                "animate": true,
+            });
             // }
-           
+
         },
 
-        drawCircle: ()=>{
+        drawCircle: () => {
             let circleCenter = [];
-            app.mapClickedlatlng ? circleCenter = app.mapClickedlatlng: circleCenter = [ app.latitude, app.longitude ]
+            app.mapClickedlatlng ? circleCenter = app.mapClickedlatlng : circleCenter = [app.latitude, app.longitude]
             // var circleCenter = [app.mapClickedlatlng] || [app.latitude, app.longitud ];
             var circleOptions = {
-                color:'#333',
+                color: '#333',
                 weight: 2,
-                radius : app.gsradius,
+                radius: app.gsradius,
                 fillOpacity: 0.05,
                 dashArray: '1 4 8'
-             };
-             var circle = L.circle(circleCenter, app.gsradius, circleOptions);
-             circle.addTo(mymap);
+            };
+            var circle = L.circle(circleCenter, app.gsradius, circleOptions);
+            circle.addTo(mymap);
         },
 
         run: window.run = function () {
@@ -499,12 +257,13 @@ let app = new Vue({
             }
 
             function registerDataFromWiki(response) {
+
                 let locationsData = response.data.query.geosearch;
 
                 if (locationsData.length === 1) {
 
                     app.geoData.push(locationsData[0].title);
-                    let calculate  =  app._calculateDistance({
+                    let calculate = app._calculateDistance({
                         lat: locationsData[0].lat,
                         lon: locationsData[0].lon
                     });
@@ -515,20 +274,20 @@ let app = new Vue({
                         'lang': app.lang,
                         'local': app.local,
                         'title': locationsData[0].title,
-                        'id':app.cardIndex,
+                        'id': app.cardIndex,
                         'distance': calculate
                     });
 
 
                     let favorite = localStorage.getItem(locationsData[0].title);
 
-                    if (favorite){
+                    if (favorite) {
                         app.geoDataFull[app.cardIndex].selected = true;
                     } else {
                         app.geoDataFull[app.cardIndex].selected = false;
                     }
 
-                    app.cardIndex ++;
+                    app.cardIndex++;
                     getDataOnLocations(locationsData[0].title);
 
                 } else if (locationsData.length > 1) {
@@ -539,7 +298,7 @@ let app = new Vue({
 
                             app.geoData.push(element.title);
 
-                            let calculate  =  app._calculateDistance({
+                            let calculate = app._calculateDistance({
                                 lat: element.lat,
                                 lon: element.lon
                             });
@@ -550,20 +309,20 @@ let app = new Vue({
                                 'lang': app.lang,
                                 'local': app.local,
                                 'title': element.title,
-                                'id':app.cardIndex,
-                                'distance':calculate
+                                'id': app.cardIndex,
+                                'distance': calculate
                             });
 
                             let favorite = localStorage.getItem(element.title);
 
-                            if (favorite){
+                            if (favorite) {
                                 app.geoDataFull[app.cardIndex].selected = true;
                             } else {
                                 app.geoDataFull[app.cardIndex].selected = false;
                             }
                         }
 
-                        app.cardIndex ++;
+                        app.cardIndex++;
                         getDataOnLocations(element.title);
                     });
                 }
@@ -581,11 +340,11 @@ let app = new Vue({
                 app.Tlatitude = app.latitude;
                 app.Tlongitude = app.longitude;
 
-                // if (shouldUpdate) {
+                if (shouldUpdate) {
                     let mapGeo;
                     getFromWiki();
                     InitMap();
-                // }
+                }
 
             }
 
@@ -593,7 +352,7 @@ let app = new Vue({
                 if (typeof mymap == 'undefined') {
 
                     console.debug('mapfromapp');
-                    
+
                     mymap = L.map('mapid').setView([app.latitude, app.longitude], 16);
                     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
                         maxZoom: 18,
@@ -608,7 +367,9 @@ let app = new Vue({
                     iconAnchor: [25, -20],
                 });
 
-                L.marker([app.latitude, app.longitude],{icon:locationIcon}).addTo(mymap)
+                L.marker([app.latitude, app.longitude], {
+                        icon: locationIcon
+                    }).addTo(mymap)
                     .openPopup();
 
                 // .bindPopup("You Are here!")
@@ -655,36 +416,36 @@ let app = new Vue({
                             let url = dataObject.fullurl;
                             // dataObject.extract;
 
-                            app.geoDataFull.forEach(card=>{
-                                if(card.title == title){
-                                    
-                                    app.geoDataFull[card.id].extract = dataObject.extract.replace(/=/g,'');
-                                    Vue.set(app.geoDataFull[card.id], 'extract', dataObject.extract.replace(/=/g,''));
+                            app.geoDataFull.forEach(card => {
+                                if (card.title == title) {
+
+                                    app.geoDataFull[card.id].extract = dataObject.extract.replace(/=/g, '');
+                                    Vue.set(app.geoDataFull[card.id], 'extract', dataObject.extract.replace(/=/g, ''));
 
                                     if (dataObject.thumbnail) {
 
                                         preloadImages(dataObject.thumbnail.source, true);
-        
+
                                         Vue.set(app.geoDataFull[card.id], 'img', dataObject.thumbnail.source);
                                         app.geoDataFull[card.id].img = dataObject.thumbnail.source;
-        
+
                                         let myIcon = L.icon({
                                             iconUrl: app.geoDataFull[card.id].img,
                                             iconSize: [45, 45],
                                             iconAnchor: [10, 10],
                                             popupAnchor: [20, -5],
                                         });
-        
-                                        L.marker([ app.geoDataFull[card.id].lat,  app.geoDataFull[card.id].lon], {
+
+                                        L.marker([app.geoDataFull[card.id].lat, app.geoDataFull[card.id].lon], {
                                                 icon: myIcon
                                             }).addTo(mymap)
                                             .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
-        
+
                                     } else {
-                                        L.marker([ app.geoDataFull[card.id].lat,  app.geoDataFull[card.id].lon]).addTo(mymap)
+                                        L.marker([app.geoDataFull[card.id].lat, app.geoDataFull[card.id].lon]).addTo(mymap)
                                             .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
                                     }
-        
+
 
 
                                 }
@@ -720,10 +481,10 @@ let app = new Vue({
 
                 setInterval(() => {
                     navigator.geolocation.getCurrentPosition(handle);
-                }, 5 * 60 * 1000);
+                },  5 * 1000);
             }
         },
-        
+
     }
 
 });
