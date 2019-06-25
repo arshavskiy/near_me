@@ -64,4 +64,8 @@ Vue.component('card-component', {
             
         }
     },
+
+    methods: {
+        
+    },
 })

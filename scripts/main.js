@@ -1,3 +1,5 @@
+
+
 function updateGpsData(gpsData) {
   if (app.latitude != gpsData.latitude && app.longitude != gpsData.longitude) {
       app.latitude = gpsData.latitude;
@@ -7,6 +9,8 @@ function updateGpsData(gpsData) {
 
 
 setMarkersOnMapLoad = ()=>{
+ 
+  console.debug('map loaded', performance.now() );
 
   app.geoDataFull.forEach( card =>{
 
@@ -18,27 +22,31 @@ setMarkersOnMapLoad = ()=>{
 //  Vue.set(app.geoDataFull, card.id, calculate)
     app.geoDataFull[card.id].distance = calculate;
 
-    let myIcon = L.icon({
-        iconUrl: app.geoDataFull[card.id].img,
-        iconSize: [45, 45],
-        iconAnchor: [10, 10],
-        popupAnchor: [20, -5],
+        if (app.geoDataFull[card.id].img){
+            let myIcon = L.icon({
+                              iconUrl: app.geoDataFull[card.id].img,
+                              iconSize: [45, 45],
+                              iconAnchor: [10, 10],
+                              popupAnchor: [20, -5],
+                          });
+              L.marker([ app.geoDataFull[card.id].lat,  app.geoDataFull[card.id].lon], {
+                icon: myIcon
+                }).addTo(mymap).bindPopup("<b>" + app.geoDataFull[card.id].title + "</b>").openPopup();
+        } else {
+            L.marker([ app.geoDataFull[card.id].lat,  app.geoDataFull[card.id].lon]).addTo(mymap).bindPopup("<b>" + app.geoDataFull[card.id].title + "</b>").openPopup();
+        }
+
     });
 
-    L.marker([ app.geoDataFull[card.id].lat,  app.geoDataFull[card.id].lon], {
-            icon: myIcon
-        }).addTo(mymap)
-        .bindPopup("<b>" + app.geoDataFull[card.id].title + "</b>").openPopup();
-    });
-
-  console.debug('map loaded');
 };
 
 let initLeafMap = () => {
+  
+  console.debug( 'onloadMap:', performance.now() );
 
   window.navigator.geolocation.getCurrentPosition((handle) => {
 
-    console.debug('gps => call to map from main');
+    console.debug( 'gps => call to map from main:', performance.now() );
 
     if (typeof mymap == 'undefined') {
 
@@ -129,6 +137,7 @@ window.resizeClickCard = ()=>{
   }
 }
 
+console.debug( 'init:', performance.now() );
 
 window.onload = initLeafMap;
 
