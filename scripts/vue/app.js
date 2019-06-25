@@ -189,7 +189,7 @@ let app = new Vue({
 
             localStorage.removeItem(card.title);
             // app.geoDataFull[card.id].selected = false;
-            Vue.set(app.geoDataFull[card.id], 'selected', false);
+            // Vue.set(app.geoDataFull[card.id], 'selected', false);
             card.selected = false;
         },
 
