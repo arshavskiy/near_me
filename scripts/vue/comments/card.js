@@ -61,7 +61,7 @@ let card = Vue.component('card-component', {
                                     <span style="color: #000; font-size: 15px;">{{ card.distance.toFixed(0)}}m.</span>
                                 </div>
                                 <div class="description">
-                                    <p>
+                                    <p :class="{ right : card.lang=='he'}">
                                         {{card.extract}}
                                     </p>
                                 </div>

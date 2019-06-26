@@ -120,4 +120,4 @@ window.resizeClickCard = () => {
 
 console.debug('init:', performance.now());
 
-window.onload = initLeafMap;
+// window.onload = initLeafMap;
