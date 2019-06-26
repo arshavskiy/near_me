@@ -251,3 +251,7 @@
   grid-row: 3;
   grid-column: 4;
 }
+
+.inner > .fa-star{
+  position: absolute;
+}
