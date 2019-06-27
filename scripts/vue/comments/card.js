@@ -87,20 +87,17 @@ let card = Vue.component('card-component', {
         resize: window.resizeClickCard,
 
         adFavorite: function (card, e) {
-            app.geoDataFull[card.id].selected = true;
-
-            localStorage.setItem(card.title, JSON.stringify(app.geoDataFull[card.id]));
+            card.selected = true;
             app.geoDataFull[card.id].selected = true;
             Vue.set(app.geoDataFull[card.id], 'selected', true);
-            card.selected = true;
+            localStorage.setItem(card.title, JSON.stringify(app.geoDataFull[card.id]));
         },
 
         removeFavorite: function (card, e) {
-
-            localStorage.removeItem(card.title);
-            app.geoDataFull[card.id].selected = false;
-            Vue.set(app.geoDataFull[card.id], 'selected', false);
             card.selected = false;
+            Vue.set(app.geoDataFull[card.id], 'selected', false);
+            app.geoDataFull[card.id].selected = false;
+            localStorage.removeItem(card.title);
         },
 
         stopText: function () {
