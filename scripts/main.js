@@ -46,6 +46,10 @@ let initLeafMap = () => {
 
 		console.debug('gps => call to map from main:', performance.now());
 
+		if (app.Tlatitude != handle.coords.latitude && app.Tlongitude != handle.coords.longitude) {
+			updateGpsData(handle.coords);
+		}
+
 		if (typeof mymap == 'undefined') {
 
 			mymap = L.map('mapid').setView([handle.coords.latitude, handle.coords.longitude], 15);
@@ -67,10 +71,6 @@ let initLeafMap = () => {
 
 		} else {
 			mymap.setView([handle.coords.latitude, handle.coords.longitude], 15);
-		}
-
-		if (app.Tlatitude != handle.coords.latitude && app.Tlongitude != handle.coords.longitude) {
-			updateGpsData(handle.coords);
 		}
 
 		mymap.on('click', (e) => {

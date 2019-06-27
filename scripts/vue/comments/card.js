@@ -72,6 +72,7 @@ let card = Vue.component('card-component', {
                         </div>
                     </div>
                 </div>`,
+                
    
     methods: {
         showOnMap: (e, cardName) => {
@@ -88,15 +89,15 @@ let card = Vue.component('card-component', {
 
         adFavorite: function (card, e) {
             card.selected = true;
-            app.geoDataFull[card.id].selected = true;
+            // app.geoDataFull[card.id].selected = true;
             Vue.set(app.geoDataFull[card.id], 'selected', true);
             localStorage.setItem(card.title, JSON.stringify(app.geoDataFull[card.id]));
         },
 
         removeFavorite: function (card, e) {
             card.selected = false;
+            // app.geoDataFull[card.id].selected = false;
             Vue.set(app.geoDataFull[card.id], 'selected', false);
-            app.geoDataFull[card.id].selected = false;
             localStorage.removeItem(card.title);
         },
 
