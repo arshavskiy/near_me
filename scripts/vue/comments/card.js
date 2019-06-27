@@ -61,7 +61,7 @@ let card = Vue.component('card-component', {
                                     <span style="color: #000; font-size: 15px;">{{ card.distance.toFixed(0)}}m.</span>
                                 </div>
                                 <div class="description">
-                                    <p :class="{ right : card.lang=='he'}">
+                                    <p v-if="card.extract" :class="{ right : card.lang=='he'}">
                                         {{card.extract}}
                                     </p>
                                 </div>
@@ -89,15 +89,15 @@ let card = Vue.component('card-component', {
 
         adFavorite: function (card, e) {
             card.selected = true;
-            // app.geoDataFull[card.id].selected = true;
-            Vue.set(app.geoDataFull[card.id], 'selected', true);
+            app.geoDataFull[card.id].selected = true;
+            // Vue.set(app.geoDataFull[card.id], 'selected', true);
             localStorage.setItem(card.title, JSON.stringify(app.geoDataFull[card.id]));
         },
 
         removeFavorite: function (card, e) {
             card.selected = false;
-            // app.geoDataFull[card.id].selected = false;
-            Vue.set(app.geoDataFull[card.id], 'selected', false);
+            app.geoDataFull[card.id].selected = false;
+            // Vue.set(app.geoDataFull[card.id], 'selected', false);
             localStorage.removeItem(card.title);
         },
 

@@ -214,7 +214,7 @@ let app = new Vue({
             app.mapClickedlatlng ? circleCenter = app.mapClickedlatlng : circleCenter = [app.latitude, app.longitude]
             // var circleCenter = [app.mapClickedlatlng] || [app.latitude, app.longitud ];
             var circleOptions = {
-                color: '#333',
+                color: '#111',
                 weight: 2,
                 radius: app.gsradius,
                 fillOpacity: 0.05,
@@ -269,8 +269,11 @@ let app = new Vue({
             function registerDataFromWiki(response) {
 
                 let locationsData = response.data.query.geosearch;
+                let geoDataMaped = app.geoData.join();
 
                 if (locationsData.length === 1) {
+
+                    // if ( locationsData[0].title && !geoDataMaped.includes(locationsData[0].title) ) {
 
                     app.geoData.push(locationsData[0].title);
                     let calculate = app._calculateDistance({
@@ -299,12 +302,14 @@ let app = new Vue({
 
                     app.cardIndex++;
                     getDataOnLocations(locationsData[0].title);
+                // }
 
                 } else if (locationsData.length > 1) {
 
                     locationsData.forEach(element => {
+
                         //if not allready exists
-                        if (!app.geoData[element.title] && element.title) {
+                        // if ( element.title && !geoDataMaped.includes(element.title) ) {
 
                             app.geoData.push(element.title);
 
@@ -330,7 +335,7 @@ let app = new Vue({
                             } else {
                                 app.geoDataFull[app.cardIndex].selected = false;
                             }
-                        }
+                        // }
 
                         app.cardIndex++;
                         getDataOnLocations(element.title);
@@ -430,7 +435,7 @@ let app = new Vue({
                                 if (card.title == title) {
 
                                     app.geoDataFull[card.id].extract = dataObject.extract.replace(/=/g, '');
-                                    Vue.set(app.geoDataFull[card.id], 'extract', dataObject.extract.replace(/=/g, ''));
+                                    // Vue.set(app.geoDataFull[card.id], 'extract', dataObject.extract.replace(/=/g, ''));
 
                                     if (dataObject.thumbnail) {
 
@@ -491,7 +496,7 @@ let app = new Vue({
 
                 setInterval(() => {
                     navigator.geolocation.getCurrentPosition(handle);
-                },  5 * 1000);
+                },  5 * 60 * 1000);
             }
         },
 
