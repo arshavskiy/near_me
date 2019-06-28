@@ -40,7 +40,7 @@ function setMarkersOnMapLoad(){
 
 };
 
-let initLeafMap = () => {
+let initLeafMap = function(){
 
 	console.debug('onloadMap:', performance.now());
 
@@ -75,16 +75,16 @@ let initLeafMap = () => {
 			mymap.setView([handle.coords.latitude, handle.coords.longitude], 15);
 		}
 
-		mymap.on('click', (e) => {
+		mymap.on('click', function(e){
 			console.debug(e);
 			window.resizeClickMap();
-		}).on('dragend', (e) => {
+		}).on('dragend', function(e){
 			console.debug(e);
 			window.resizeClickMap();
-		}).on('zoomend', (e) => {
+		}).on('zoomend', function(e){
 			console.debug(e);
 			window.resizeClickMap();
-		}).on('dblclick ', (e) => {
+		}).on('dblclick ', function(e){
 			console.debug(e);
 			mymap.locate({
 				setView: true
@@ -98,7 +98,7 @@ let initLeafMap = () => {
 const DOMap = document.getElementById('mapid');
 const loader = document.getElementById('loader');
 
-window.resizeClickMap = () => {
+window.resizeClickMap = function(){
 	DOMap.style.height = '65vh';
 	if (mymap) mymap.invalidateSize();
 
@@ -108,7 +108,7 @@ window.resizeClickMap = () => {
 	}
 };
 
-window.resizeClickCard = () => {
+window.resizeClickCard = function(){
 	if (DOMap) {
 		DOMap.style.height = '50vh';
 		if (mymap) mymap.invalidateSize();
