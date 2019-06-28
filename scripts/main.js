@@ -8,7 +8,7 @@ function updateGpsData(gpsData) {
 }
 
 
-setMarkersOnMapLoad = () => {
+function setMarkersOnMapLoad(){
 
 	console.debug('map loaded', performance.now());
 
@@ -54,7 +54,7 @@ let initLeafMap = () => {
 
 		if (typeof mymap == 'undefined') {
 
-			mymap = L.map('mapid').setView([handle.coords.latitude, handle.coords.longitude], 15);
+			window.mymap = L.map('mapid').setView([handle.coords.latitude, handle.coords.longitude], 15);
 			L.map.onload = setMarkersOnMapLoad();
 
 			L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
