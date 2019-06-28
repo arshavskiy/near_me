@@ -1,3 +1,5 @@
+'strict mode';
+
 
 let card = Vue.component('card-component', {
     props: {

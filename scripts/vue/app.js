@@ -1,3 +1,5 @@
+'strict mode';
+
 Vue.prototype.filters = {
     reverse: function (array) {
         return array.slice.reverse();

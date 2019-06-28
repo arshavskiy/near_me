@@ -1,3 +1,5 @@
+'strict mode';
+
 function updateGpsData(gpsData) {
 	if (app.latitude != gpsData.latitude && app.longitude != gpsData.longitude) {
 		app.latitude = gpsData.latitude;
