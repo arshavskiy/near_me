@@ -158,8 +158,8 @@ let app = new Vue({
     methods: {
         _calculateDistance: (e) => {
             app.length = mymap.distance({
-                    'lat': app.latitude,
-                    'lng': app.longitude
+                    'lat': store.getters.latitude,
+                    'lng': store.getters.longitude
                 },
                 e
             );
