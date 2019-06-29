@@ -12,7 +12,7 @@ window.resizeClickMap = function () {
 
 		let DOMcards = document.getElementsByClassName('card');
 		for (var i = 0; i < DOMcards.length; i++) {
-			DOMcards[i].style.height = '200px';
+			DOMcards[i].style.height = '160px';
 		}
 	}
 };
