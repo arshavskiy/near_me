@@ -1,39 +1,60 @@
 "use strict";
 
 function updateGpsData(gpsData) {
-	if (app.latitude != gpsData.latitude && app.longitude != gpsData.longitude) {
-		app.latitude = gpsData.latitude;
-		app.longitude = gpsData.longitude;
-	}
+	store.commit('latitudeUpdate', gpsData.latitude);
+	store.commit('longitudeUpdate',gpsData.longitude);
 }
 
+window.resizeClickMap = function () {
+	if (DOMap && DOMap.style.height == '50vh') {
+		DOMap.style.height = '65vh';
+		if (mymap) mymap.invalidateSize();
+
+		let DOMcards = document.getElementsByClassName('card');
+		for (var i = 0; i < DOMcards.length; i++) {
+			DOMcards[i].style.height = '200px';
+		}
+	}
+};
+
+window.resizeClickCard = function () {
+	if (DOMap && DOMap.style.height != '50vh') {
+		DOMap.style.height = '50vh';
+		if (mymap) mymap.invalidateSize();
+
+		let DOMcards = document.getElementsByClassName('card');
+		for (var i = 0; i < DOMcards.length; i++) {
+			DOMcards[i].style.height = '260px';
+		}
+	}
+};
 
 function setMarkersOnMapLoad() {
 
 	console.debug('map loaded', performance.now());
 
-	app.geoDataFull.forEach(card => {
+	store.getters.geoDataFull.forEach(card => {
 
 		let calculate = app._calculateDistance({
-			lat: app.geoDataFull[card.id].lat,
-			lon: app.geoDataFull[card.id].lon
+			lat: store.getters.geoDataFull[card.id].lat,
+			lon: store.getters.geoDataFull[card.id].lon
 		});
 
-		//  Vue.set(app.geoDataFull, card.id, calculate)
-		app.geoDataFull[card.id].distance = calculate;
+		//  Vue.set(store.getters.geoDataFull, card.id, calculate)
+		store.getters.geoDataFull[card.id].distance = calculate;
 
-		if (app.geoDataFull[card.id].img) {
+		if (store.getters.geoDataFull[card.id].img) {
 			let myIcon = L.icon({
-				iconUrl: app.geoDataFull[card.id].img,
+				iconUrl: store.getters.geoDataFull[card.id].img,
 				iconSize: [45, 45],
 				iconAnchor: [10, 10],
 				popupAnchor: [20, -5],
 			});
-			L.marker([app.geoDataFull[card.id].lat, app.geoDataFull[card.id].lon], {
+			L.marker([store.getters.geoDataFull[card.id].lat, store.getters.geoDataFull[card.id].lon], {
 				icon: myIcon
-			}).addTo(mymap).bindPopup("<b>" + app.geoDataFull[card.id].title + "</b>").openPopup();
+			}).addTo(mymap).bindPopup("<b>" + store.getters.geoDataFull[card.id].title + "</b>").openPopup();
 		} else {
-			L.marker([app.geoDataFull[card.id].lat, app.geoDataFull[card.id].lon]).addTo(mymap).bindPopup("<b>" + app.geoDataFull[card.id].title + "</b>").openPopup();
+			L.marker([store.getters.geoDataFull[card.id].lat, store.getters.geoDataFull[card.id].lon]).addTo(mymap).bindPopup("<b>" + store.getters.geoDataFull[card.id].title + "</b>").openPopup();
 		}
 
 	});
@@ -50,7 +71,7 @@ let initLeafMap = function () {
 
 		console.debug('gps => call to map from main:', performance.now());
 
-		if (app.Tlatitude != handle.coords.latitude && app.Tlongitude != handle.coords.longitude) {
+		if (store.getters.Tlatitude != handle.coords.latitude && store.getters.Tlongitude != handle.coords.longitude) {
 			updateGpsData(handle.coords);
 		}
 
@@ -100,29 +121,7 @@ let initLeafMap = function () {
 const DOMap = document.getElementById('mapid');
 const loader = document.getElementById('loader');
 
-window.resizeClickMap = function () {
-	if (DOMap && DOMap.style.height == '50vh') {
-		DOMap.style.height = '65vh';
-		if (mymap) mymap.invalidateSize();
 
-		let DOMcards = document.getElementsByClassName('card');
-		for (var i = 0; i < DOMcards.length; i++) {
-			DOMcards[i].style.height = '200px';
-		}
-	}
-};
-
-window.resizeClickCard = function () {
-	if (DOMap && DOMap.style.height != '50vh') {
-		DOMap.style.height = '50vh';
-		if (mymap) mymap.invalidateSize();
-
-		let DOMcards = document.getElementsByClassName('card');
-		for (var i = 0; i < DOMcards.length; i++) {
-			DOMcards[i].style.height = '260px';
-		}
-	}
-};
 
 console.debug('init:', performance.now());
 

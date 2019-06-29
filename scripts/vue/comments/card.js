@@ -11,7 +11,7 @@ let card = Vue.component('card-component', {
     },
     mounted() {
         // Use the parent function directly here
-        
+
     },
     data() {
         return {
@@ -74,8 +74,8 @@ let card = Vue.component('card-component', {
                         </div>
                     </div>
                 </div>`,
-                
-   
+
+
     methods: {
         showOnMap: (e, cardName) => {
             console.debug(e, cardName);
@@ -93,16 +93,20 @@ let card = Vue.component('card-component', {
 
         adFavorite: function (card, e) {
             card.selected = true;
-            app.geoDataFull[card.id].selected = true;
+            // app.geoDataFull[card.id].selected = true;
+            store.commit('adFavorite', card);
+            // card.selected = store.getters.geoDataFull[card.id].selected;
             // Vue.set(app.geoDataFull[card.id], 'selected', true);
             localStorage.setItem(card.title, JSON.stringify(app.geoDataFull[card.id]));
+            return;
         },
 
         removeFavorite: function (card, e) {
             card.selected = false;
-            app.geoDataFull[card.id].selected = false;
-            // Vue.set(app.geoDataFull[card.id], 'selected', false);
+            store.commit('removeFavorite', card);
             localStorage.removeItem(card.title);
+            // Vue.nextTick();
+            return;
         },
 
         stopText: function () {
@@ -156,8 +160,8 @@ let card = Vue.component('card-component', {
                 };
 
                 let chooseVoice = async () => {
-                    // let voices = (await getVoices()).filter((voice) => { 
-                    //     voice.lang == app.local || voice.lang == app.localPC; 
+                    // let voices = (await getVoices()).filter((voice) => {
+                    //     voice.lang == app.local || voice.lang == app.localPC;
                     // });
                     if (voices.length === 0) {
                         voices = await getVoices();
@@ -186,5 +190,16 @@ let card = Vue.component('card-component', {
 
         },
 
+    },
+
+    watch:{
+        'card':  {
+            handler: function(val){
+                console.log('updated');
+                console.log(val);
+            },
+            deep: true
+
+        }
     },
 })
