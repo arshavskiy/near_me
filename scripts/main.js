@@ -38,6 +38,8 @@ function setMarkersOnMapLoad() {
 
 	});
 
+	console.debug('markers loaded', performance.now());
+
 };
 
 let initLeafMap = function () {

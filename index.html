@@ -8,10 +8,11 @@
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" crossorigin=""></script>
-    
+
     <script src="https://unpkg.com/esri-leaflet@2.2.4/dist/esri-leaflet.js" crossorigin=""></script>
-        <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.2.14/dist/esri-leaflet-geocoder.css" crossorigin="">
-        <script src="https://unpkg.com/esri-leaflet-geocoder@2.2.14/dist/esri-leaflet-geocoder.js" crossorigin=""></script>
+    <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.2.14/dist/esri-leaflet-geocoder.css"
+          crossorigin="">
+    <script src="https://unpkg.com/esri-leaflet-geocoder@2.2.14/dist/esri-leaflet-geocoder.js" crossorigin=""></script>
 
 
     <link rel="stylesheet" href="https://unpkg.com/vue-select@3.0.0/dist/vue-select.css">
@@ -25,89 +26,94 @@
 </head>
 
 <body>
-    <div id="loader"></div>
-    <main>
-        <div id="mapid"></div>
-        <div id="app-5">
+<div id="loader"></div>
+<main>
+    <div id="mapid"></div>
+    <div id="app-5">
 
-            <i class="far fa-compass locationBtn" @click="locate"></i>
-            <i class="fas fa-expand expendBtn" @click="expendMap"></i>
-            <!-- <div class='pointer'><< Click search button</div> -->
+        <i class="far fa-compass locationBtn" @click="locate"></i>
+        <i class="fas fa-expand expendBtn" @click="expendMap"></i>
+        <!-- <div class='pointer'><< Click search button</div> -->
 
-            <section class="menu">
-                <i v-if="!toggleMenuOpen" class="fas fa-bars menu_btn" @click="toggleMenu"></i>
-                <i v-show="toggleMenuOpen" class="fas fa-bars menu_btn no_boder" @click="toggleMenu"></i>
-                <div class="menu_holder" v-bind:class="{ show: toggleMenuOpen }">
-                    <div class="menu_btn_holder">
-                        <i class="fas fa-times" style="padding: 0 5px;" @click="toggleMenu"></i>
+        <section class="menu">
+            <i v-if="!toggleMenuOpen" class="fas fa-bars menu_btn" @click="toggleMenu"></i>
+            <i v-show="toggleMenuOpen" class="fas fa-bars menu_btn no_boder" @click="toggleMenu"></i>
+            <div class="menu_holder" v-bind:class="{ show: toggleMenuOpen }">
+                <div class="menu_btn_holder">
+                    <i class="fas fa-times" style="padding: 0 5px;" @click="toggleMenu"></i>
+                </div>
+
+                <div style="padding:10px 0 0 10px">
+
+                    <section class="spaced mt-1">
+                        <v-select value="English" :options="options" label="language" :reduce="language => language"
+                                  @input="onLanguageUpdate"/>
+                    </section>
+
+
+                    <div class="spaced mt-1">
+                        <span style="line-height: 30px">Map type </span>
+                        <select v-model="mapStyleSelected" class="menu_select">
+                            <option v-for="map in maps" v-bind:value="map.name" @:click="runMap(map)">
+                                {{ map.name }}
+                            </option>
+                        </select>
                     </div>
 
-                    <div style="padding:10px 0 0 10px">
+                    <div class="spaced ">
+                        <span style="line-height: 30px">Search radius </span>
+                        <select v-model="gsradius" class="menu_select">
+                            <option v-for="radius in mapRadius" v-bind:value="radius">
+                                {{ radius }} m
+                            </option>
+                        </select>
+                    </div>
 
-                        <section class="spaced mt-1">
-                            <v-select value="English" :options="options" label="language" :reduce="language => language"
-                                @input="onLanguageUpdate" />
-                        </section>
-
-
-                        <div class="spaced mt-1">
-                            <span style="line-height: 30px">Map type </span>
-                            <select v-model="mapStyleSelected" class="menu_select">
-                                <option v-for="map in maps" v-bind:value="map.name" @:click="runMap(map)">
-                                    {{ map.name }}
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="spaced ">
-                            <span style="line-height: 30px">Search radius </span>
-                            <select v-model="gsradius" class="menu_select">
-                                <option v-for="radius in mapRadius" v-bind:value="radius">
-                                    {{ radius }} m
-                                </option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <h4>Favorites</h4>
-                            <div class="menu_select" style="overflow: auto; height: 200px; width: 100%;">
-                                <div v-for="(place, index) in geoDataFull">
-                                    <div class="spaced" v-if="place.selected">
-                                            <span class="spaced-grow"> {{place.title}} </span>
-                                            <i v-on:click="showOnMap($event, place)" class="fas fa-map-marked-alt"></i>
-                                            <i class="fas fa-star selected-menu ml-1" 
-                                                v-bind:value="place.selected"
-                                                @click="removeFavorite(place, $event)">
-                                            </i>
-                                    </div>
+                    <div>
+                        <h4>Favorites</h4>
+                        <div class="menu_select" style="overflow: auto; height: 200px; width: 100%;">
+                            <div v-for="(place, index) in geoDataFull">
+                                <div class="spaced" v-if="place.selected">
+                                    <span class="spaced-grow"> {{place.title}} </span>
+                                    <i v-on:click="showOnMap($event, place)" class="fas fa-map-marked-alt"></i>
+                                    <i class="fas fa-star selected-menu ml-1"
+                                       v-bind:value="place.selected"
+                                       @click="removeFavorite(place, $event)">
+                                    </i>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
-            </section>
 
-            
-            <section class="card_holder__container">
-                <div v-for="card in geoDataFull.slice().reverse()" :key="card.id" class="card_holder">
-                    <card-component :card=card ></card-component>      
-                </div>
-            </section>
-
-        </div>
-    </main>
+            </div>
+        </section>
 
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
-    <script src="https://unpkg.com/vue-select@3.0.0"></script>
-    <script src="scripts/vue/comments/card.js"></script>
+        <section class="card_holder__container">
+            <div v-for="card in geoDataFull.slice().reverse()" :key="card.id" class="card_holder">
+                <card-component :card=card></card-component>
+            </div>
+        </section>
 
-    <script src="scripts/utils.js"></script>
-    <script src="scripts/main.js"></script>
-    <script src="scripts/vue/app.js"></script>
+    </div>
+</main>
+
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+<script src="https://unpkg.com/vuex@3.1.1/dist/vuex.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script> -->
+<script src="https://unpkg.com/vue-select@3.0.0"></script>
+<script src="scripts/vue/comments/card.js"></script>
+
+<script src="scripts/utils.js"></script>
+<script src="scripts/main.js"></script>
+<script src="scripts/vue/app.js"></script>
 
 </body>
 

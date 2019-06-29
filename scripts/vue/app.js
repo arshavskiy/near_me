@@ -96,7 +96,7 @@ let app = new Vue({
     },
 
     computed: {
-
+        
     },
 
     mounted: function () {
@@ -108,6 +108,8 @@ let app = new Vue({
             // entire view has been rendered
 
             console.debug('app.geoDataFull', app.geoDataFull);
+            
+            //move to computed?
 
             var values = [],
                 keys = Object.keys(localStorage),
@@ -123,6 +125,8 @@ let app = new Vue({
 
                 values.push(favCard);
                 app.geoDataFull.push(favCard);
+                this.$store.geoDataFullUp('change', event.target.value)
+                
             }
 
             if (app.geoDataFull.length > 0) {
