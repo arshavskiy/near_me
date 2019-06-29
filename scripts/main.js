@@ -8,7 +8,7 @@ function updateGpsData(gpsData) {
 }
 
 
-function setMarkersOnMapLoad(){
+function setMarkersOnMapLoad() {
 
 	console.debug('map loaded', performance.now());
 
@@ -40,7 +40,7 @@ function setMarkersOnMapLoad(){
 
 };
 
-let initLeafMap = function(){
+let initLeafMap = function () {
 
 	console.debug('onloadMap:', performance.now());
 
@@ -75,20 +75,20 @@ let initLeafMap = function(){
 			mymap.setView([handle.coords.latitude, handle.coords.longitude], 15);
 		}
 
-		mymap.on('click', function(e){
+		mymap.on('click', function (e) {
 			console.debug(e);
 			window.resizeClickMap();
-		}).on('dragend', function(e){
+		}).on('dragend', function (e) {
 			console.debug(e);
 			window.resizeClickMap();
-		}).on('zoomend', function(e){
+		}).on('zoomend', function (e) {
 			console.debug(e);
 			window.resizeClickMap();
-		}).on('dblclick ', function(e){
+		}).on('dblclick ', function (e) {
 			console.debug(e);
 			mymap.locate({
 				setView: true
-			})
+			});
 		});
 
 		window.run();
@@ -98,27 +98,29 @@ let initLeafMap = function(){
 const DOMap = document.getElementById('mapid');
 const loader = document.getElementById('loader');
 
-window.resizeClickMap = function(){
-	DOMap.style.height = '65vh';
-	if (mymap) mymap.invalidateSize();
+window.resizeClickMap = function () {
+	if (DOMap && DOMap.style.height == '50vh') {
+		DOMap.style.height = '65vh';
+		if (mymap) mymap.invalidateSize();
 
-	let DOMcards = document.getElementsByClassName('card');
-	for (var i = 0; i < DOMcards.length; i++) {
-		DOMcards[i].style.height = '200px';
+		let DOMcards = document.getElementsByClassName('card');
+		for (var i = 0; i < DOMcards.length; i++) {
+			DOMcards[i].style.height = '200px';
+		}
 	}
 };
 
-window.resizeClickCard = function(){
-	if (DOMap) {
+window.resizeClickCard = function () {
+	if (DOMap && DOMap.style.height != '50vh') {
 		DOMap.style.height = '50vh';
 		if (mymap) mymap.invalidateSize();
-	}
 
-	let DOMcards = document.getElementsByClassName('card');
-	for (var i = 0; i < DOMcards.length; i++) {
-		DOMcards[i].style.height = '260px';
+		let DOMcards = document.getElementsByClassName('card');
+		for (var i = 0; i < DOMcards.length; i++) {
+			DOMcards[i].style.height = '260px';
+		}
 	}
-}
+};
 
 console.debug('init:', performance.now());
 

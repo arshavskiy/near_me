@@ -28,7 +28,7 @@ let card = Vue.component('card-component', {
                                 @click="removeFavorite(card, $event)"></i>
                                 <h3> {{card.title}}</h3>
                             
-                                <label :for="card.id" class="button" aria-hidden="true" v-on:click="resize">
+                                <label :for="card.id" class="button" aria-hidden="true" v-on:click="resize()">
                                     <div class="icon">
                                         <i class="fas fa-book-reader"></i>
                                     </div>
@@ -87,7 +87,9 @@ let card = Vue.component('card-component', {
             // }
 
         },
-        resize: window.resizeClickCard,
+        resize: () => {
+            window.resizeClickCard();
+        },
 
         adFavorite: function (card, e) {
             card.selected = true;
