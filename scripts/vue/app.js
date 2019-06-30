@@ -452,6 +452,8 @@ let app = new Vue({
                     .then(function (response) {
                         if (response.data.query) {
 
+                            let cardTemp = {};
+
                             console.debug('respons: ', response.data.query.pages);
 
                             let page = response.data.query.pages;
@@ -460,30 +462,33 @@ let app = new Vue({
                             let url = dataObject.fullurl;
                             // dataObject.extract;
 
-                            card.extract =  dataObject.extract.replace(/=/g, '');
+                            cardTemp.extract =  dataObject.extract.replace(/=/g, '');
 
                             if (dataObject.thumbnail) {
+
                                 preloadImages(dataObject.thumbnail.source, true);
-                                card.img = dataObject.thumbnail.source;
+
+                                cardTemp.img = dataObject.thumbnail.source;
 
                                 let myIcon = L.icon({
-                                    iconUrl: card.img,
+                                    iconUrl: cardTemp.img,
                                     iconSize: [45, 45],
                                     iconAnchor: [10, 10],
                                     popupAnchor: [20, -5],
                                 });
 
-                                L.marker([app.geoDataFull[app.geoDataFull.length-1].lat, app.geoDataFull[app.geoDataFull.length-1].lon], {
+                                L.marker([store.getters.geoDataFull[store.getters.Index-1].lat, store.getters.geoDataFull[store.getters.Index-1].lon], {
                                     icon: myIcon
                                 }).addTo(mymap)
                                     .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
 
                             } else {
-                                L.marker([app.geoDataFull[app.geoDataFull.length-1].lat, app.geoDataFull[app.geoDataFull.length-1].lon]).addTo(mymap)
+                                L.marker([store.getters.geoDataFull[store.getters.Index-1].lat, store.getters.geoDataFull[store.getters.Index-1].lon]).addTo(mymap)
                                     .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
                             }
 
-                            store.commit('card', card);
+                            // app.geoDataFull[card.id].img = dataObject.thumbnail.source;
+                            store.commit('addCardData', cardTemp);
 
                             // window.resizeClickMap();
                             // app.extract.unshift(page[pageId].extract);

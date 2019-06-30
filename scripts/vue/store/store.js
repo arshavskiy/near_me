@@ -12,6 +12,9 @@ const store = new Vuex.Store({
         addCard: (state, card) => {
             state.geoDataFull.push(card);
         },
+        addCardData: (state, card) => {
+            state.geoDataFull[store.getters.Index] = card;
+        },
         adFavorite: (state, card) =>{
             state.geoDataFull[card.id].selected = true;
         },
@@ -36,6 +39,7 @@ const store = new Vuex.Store({
     },
     getters: {
         geoDataFull: state => state.geoDataFull,
+        Index: state => state.geoDataFull.length,
         latitude: state => state.latitude,
         longitude: state => state.longitude,
         Tlatitude: state => state.Tlatitude,
