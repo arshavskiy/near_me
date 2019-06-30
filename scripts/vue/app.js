@@ -470,7 +470,10 @@ let app = new Vue({
 
                                         preloadImages(dataObject.thumbnail.source, true);
 
-                                        Vue.set(app.geoDataFull[card.id], 'img', dataObject.thumbnail.source);
+                                        // Vue.set(app.geoDataFull[card.id], 'img', dataObject.thumbnail.source);
+                                        app.geoDataFull[card.id].img = dataObject.thumbnail.source;
+                                        store.commit('setCardImage',app.geoDataFull[card.id]);
+
                                         app.geoDataFull[card.id].img = dataObject.thumbnail.source;
 
                                         let myIcon = L.icon({
