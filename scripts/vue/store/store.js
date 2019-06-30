@@ -18,6 +18,9 @@ const store = new Vuex.Store({
         removeFavorite: (state, card) =>{
             state.geoDataFull[card.id].selected = false;
         },
+        setCardImage: (state, card)=>{
+            state.geoDataFull[card.id] = card;
+        },
         latitudeUpdate: (state, latitude) => {
             state.latitude = latitude;
         },
