@@ -460,43 +460,30 @@ let app = new Vue({
                             let url = dataObject.fullurl;
                             // dataObject.extract;
 
-                            app.geoDataFull.forEach(card => {
-                                if (card.title == title) {
+                            card.extract =  dataObject.extract.replace(/=/g, '');
 
-                                    app.geoDataFull[card.id].extract = dataObject.extract.replace(/=/g, '');
-                                    // Vue.set(app.geoDataFull[card.id], 'extract', dataObject.extract.replace(/=/g, ''));
+                            if (dataObject.thumbnail) {
+                                preloadImages(dataObject.thumbnail.source, true);
+                                card.img = dataObject.thumbnail.source;
 
-                                    if (dataObject.thumbnail) {
+                                let myIcon = L.icon({
+                                    iconUrl: card.img,
+                                    iconSize: [45, 45],
+                                    iconAnchor: [10, 10],
+                                    popupAnchor: [20, -5],
+                                });
 
-                                        preloadImages(dataObject.thumbnail.source, true);
+                                L.marker([app.geoDataFull[app.geoDataFull.length-1].lat, app.geoDataFull[app.geoDataFull.length-1].lon], {
+                                    icon: myIcon
+                                }).addTo(mymap)
+                                    .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
 
-                                        // Vue.set(app.geoDataFull[card.id], 'img', dataObject.thumbnail.source);
-                                        app.geoDataFull[card.id].img = dataObject.thumbnail.source;
-                                        store.commit('setCardImage',app.geoDataFull[card.id]);
+                            } else {
+                                L.marker([app.geoDataFull[app.geoDataFull.length-1].lat, app.geoDataFull[app.geoDataFull.length-1].lon]).addTo(mymap)
+                                    .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
+                            }
 
-                                        app.geoDataFull[card.id].img = dataObject.thumbnail.source;
-
-                                        let myIcon = L.icon({
-                                            iconUrl: app.geoDataFull[card.id].img,
-                                            iconSize: [45, 45],
-                                            iconAnchor: [10, 10],
-                                            popupAnchor: [20, -5],
-                                        });
-
-                                        L.marker([app.geoDataFull[card.id].lat, app.geoDataFull[card.id].lon], {
-                                                icon: myIcon
-                                            }).addTo(mymap)
-                                            .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
-
-                                    } else {
-                                        L.marker([app.geoDataFull[card.id].lat, app.geoDataFull[card.id].lon]).addTo(mymap)
-                                            .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
-                                    }
-
-
-
-                                }
-                            })
+                            store.commit('card', card);
 
                             // window.resizeClickMap();
                             // app.extract.unshift(page[pageId].extract);

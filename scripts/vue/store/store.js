@@ -19,7 +19,7 @@ const store = new Vuex.Store({
             state.geoDataFull[card.id].selected = false;
         },
         setCardImage: (state, card)=>{
-            state.geoDataFull[card.id] = card;
+            state.geoDataFull[state.geoDataFull.length-1] = card;
         },
         latitudeUpdate: (state, latitude) => {
             state.latitude = latitude;
