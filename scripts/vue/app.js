@@ -359,7 +359,7 @@ let app = new Vue({
                                 'selected': localStorage.getItem(element.title) ? true : false
                             };
 
-                            // store.commit('addCardData', app.geoDataFull[app.cardIndex]);
+                            store.commit('addCard', app.geoDataFull[app.cardIndex]);
 
                             // store.commit('addCard', {
                             //     'lat': locationsData[0].lat,
@@ -515,7 +515,7 @@ let app = new Vue({
                                         // Vue.set(app.geoDataFull[card.id], 'img', dataObject.thumbnail.source);
                                         app.geoDataFull[card.id].img = dataObject.thumbnail.source;
 
-                                        // store.commit('setCardImage', app.geoDataFull[card.id]);
+                                        store.commit('addCardData', app.geoDataFull[card.id]);
                                         // store.commit('updateCardInfo', app.geoDataFull[card.id]);
 
                                         let myIcon = L.icon({
