@@ -2,7 +2,7 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
-        geoDataFull: [],
+        cardsData: [],
         latitude: 0,
         longitude: 0,
         Tlatitude: 0,
@@ -10,19 +10,24 @@ const store = new Vuex.Store({
     },
     mutations: {
         addCard: (state, card) => {
-            state.geoDataFull.push(card);
+            state.cardsData.push(card);
         },
         addCardData: (state, card) => {
-            state.geoDataFull[store.getters.Index] = card;
+            state.cardsData[card.id] = card;
+            console.debug('state.cardsData[store.getters.Index]', state.cardsData[store.getters.Index]);
+            console.debug('card', card);
         },
         adFavorite: (state, card) =>{
-            state.geoDataFull[card.id].selected = true;
+            state.cardsData[card.id].selected = true;
         },
         removeFavorite: (state, card) =>{
-            state.geoDataFull[card.id].selected = false;
+            state.cardsData[card.id].selected = false;
         },
-        setCardImage: (state, card)=>{
-            state.geoDataFull[state.geoDataFull.length-1] = card;
+        updateCardInfo: (state, card)=>{
+            state.cardsData[card.id].img = card;
+        },
+        setCardExtract: (state, card)=>{
+            state.cardsData[card.id].extract = card.extract;
         },
         latitudeUpdate: (state, latitude) => {
             state.latitude = latitude;
@@ -38,8 +43,8 @@ const store = new Vuex.Store({
         }
     },
     getters: {
-        geoDataFull: state => state.geoDataFull,
-        Index: state => state.geoDataFull.length,
+        cardsData: state => state.cardsData,
+        Index: state => state.cardsData.length,
         latitude: state => state.latitude,
         longitude: state => state.longitude,
         Tlatitude: state => state.Tlatitude,

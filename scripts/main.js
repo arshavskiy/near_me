@@ -33,28 +33,28 @@ function setMarkersOnMapLoad() {
 
 	console.debug('map loaded', performance.now());
 
-	store.getters.geoDataFull.forEach(card => {
+	store.getters.cardsData.forEach(card => {
 
 		let calculate = app._calculateDistance({
-			lat: store.getters.geoDataFull[card.id].lat,
-			lon: store.getters.geoDataFull[card.id].lon
+			lat: store.getters.cardsData[card.id].lat,
+			lon: store.getters.cardsData[card.id].lon
 		});
 
-		//  Vue.set(store.getters.geoDataFull, card.id, calculate)
-		store.getters.geoDataFull[card.id].distance = calculate;
+		//  Vue.set(store.getters.cardsData, card.id, calculate)
+		// store.getters.cardsData[card.id].distance = calculate; fix
 
-		if (store.getters.geoDataFull[card.id].img) {
+		if (store.getters.cardsData[card.id].img) {
 			let myIcon = L.icon({
-				iconUrl: store.getters.geoDataFull[card.id].img,
+				iconUrl: store.getters.cardsData[card.id].img,
 				iconSize: [45, 45],
 				iconAnchor: [10, 10],
 				popupAnchor: [20, -5],
 			});
-			L.marker([store.getters.geoDataFull[card.id].lat, store.getters.geoDataFull[card.id].lon], {
+			L.marker([store.getters.cardsData[card.id].lat, store.getters.cardsData[card.id].lon], {
 				icon: myIcon
-			}).addTo(mymap).bindPopup("<b>" + store.getters.geoDataFull[card.id].title + "</b>").openPopup();
+			}).addTo(mymap).bindPopup("<b>" + store.getters.cardsData[card.id].title + "</b>").openPopup();
 		} else {
-			L.marker([store.getters.geoDataFull[card.id].lat, store.getters.geoDataFull[card.id].lon]).addTo(mymap).bindPopup("<b>" + store.getters.geoDataFull[card.id].title + "</b>").openPopup();
+			L.marker([store.getters.cardsData[card.id].lat, store.getters.cardsData[card.id].lon]).addTo(mymap).bindPopup("<b>" + store.getters.cardsData[card.id].title + "</b>").openPopup();
 		}
 
 	});

@@ -95,7 +95,7 @@ let card = Vue.component('card-component', {
             card.selected = true;
             // app.geoDataFull[card.id].selected = true;
             store.commit('adFavorite', card);
-            // card.selected = store.getters.geoDataFull[card.id].selected;
+            // card.selected = store.getters.cardsData[card.id].selected;
             // Vue.set(app.geoDataFull[card.id], 'selected', true);
             localStorage.setItem(card.title, JSON.stringify(app.geoDataFull[card.id]));
             return;
