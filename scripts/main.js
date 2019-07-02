@@ -41,7 +41,9 @@ function setMarkersOnMapLoad() {
 		});
 
 		//  Vue.set(store.getters.cardsData, card.id, calculate)
-		// store.getters.cardsData[card.id].distance = calculate; fix
+
+		// TODO fix
+		// store.getters.cardsData[card.id].distance = calculate;
 
 		if (store.getters.cardsData[card.id].img) {
 			let myIcon = L.icon({

@@ -32,7 +32,8 @@ let app = new Vue({
         cardIndex: 0,
         geoDataFull: store.getters.cardsData,
         voices: [],
-        options: [{
+        options: [
+            {
                 language: 'עברית',
                 code: 'he',
                 local: 'he_IL',
@@ -59,7 +60,8 @@ let app = new Vue({
         gsradius: 1000,
         selected: cardTitle => localStorage.getItem(cardTitle),
         toggleMenuOpen: false,
-        maps: [{
+        maps: [
+            {
                 name: 'Simple',
                 value: () => {
                     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}')
@@ -245,32 +247,9 @@ let app = new Vue({
 
             function getFromWiki(mapGeo) {
 
-                const LANGUAGE_LINK = app.lang;
-
-                axios.get('https://' + LANGUAGE_LINK + '.wikipedia.org/w/api.php', {
-                        params: {
-                            // headers: {
-                            //   'Origin': 'https://5a6b54b1.ngrok.io/',
-                            //   'Content-Type':'application/json; charset=UTF-8'
-                            //   },
-                            action: 'query',
-                            list: 'geosearch',
-                            gsradius: app.gsradius,
-                            gscoord: mapGeo ? mapGeo.lat + '|' + mapGeo.lng : app.latitude + '|' + app.longitude,
-                            format: 'json',
-                            origin: '*',
-                        }
-                    })
-                    .then(function (response) {
-                        console.debug(response.data.query);
+                Service.getFromWiki(mapGeo).then( response=>{
                         registerDataFromWiki(response);
-                    })
-                    .catch(function (error) {
-                        console.error(error);
-                    })
-                    .then(function () {
-                        // always executed
-                    });
+                });
             }
 
             function registerDataFromWiki(response) {
@@ -451,21 +430,7 @@ let app = new Vue({
 
             function getDataOnLocations(title) {
 
-                const LANGUAGE_LINK = app.lang;
-
-                axios.get('https://' + LANGUAGE_LINK + '.wikipedia.org/w/api.php', {
-                        params: {
-                            action: 'query',
-                            titles: title,
-                            prop: 'extracts|info|images|categories|pageimages',
-                            inprop: 'url|talkid',
-                            explaintext: 1,
-                            pithumbsize: 300,
-                            format: 'json',
-                            origin: '*',
-                        }
-                    })
-                    .then(function (response) {
+                Service.getDataOnLocations(title).then(function (response) {
                         if (response.data.query) {
 
                             let cardTemp = {};
