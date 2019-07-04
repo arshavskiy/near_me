@@ -11,9 +11,7 @@ function updateGpsData(gpsData) {
 function setMarkersOnMapLoad() {
 
 	console.debug('map loaded', performance.now());
-
 	app.geoDataFull.forEach(card => {
-
 		let calculate = app._calculateDistance({
 			lat: app.geoDataFull[card.id].lat,
 			lon: app.geoDataFull[card.id].lon
@@ -45,9 +43,7 @@ let initLeafMap = function () {
 	console.debug('onloadMap:', performance.now());
 
 	window.navigator.geolocation.getCurrentPosition((handle) => {
-
 		console.debug('gps => call to map from main:', performance.now());
-
 		if (app.Tlatitude != handle.coords.latitude && app.Tlongitude != handle.coords.longitude) {
 			updateGpsData(handle.coords);
 		}
@@ -55,6 +51,7 @@ let initLeafMap = function () {
 		if (typeof mymap == 'undefined') {
 
 			window.mymap = L.map('mapid').setView([handle.coords.latitude, handle.coords.longitude], 15);
+
 			L.map.onload = setMarkersOnMapLoad();
 
 			L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
@@ -71,9 +68,7 @@ let initLeafMap = function () {
 				}
 			});
 
-		} else {
-			mymap.setView([handle.coords.latitude, handle.coords.longitude], 15);
-		}
+		} else mymap.setView([handle.coords.latitude, handle.coords.longitude], 15);
 
 		mymap.on('click', function (e) {
 			console.debug(e);
