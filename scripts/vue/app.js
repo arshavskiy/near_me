@@ -15,10 +15,10 @@ Vue.prototype.filters = {
 
 let app = new Vue({
     el: '#app-5',
-    
-    components:{
+
+    components: {
         'card-component': card,
-        'v-select' : VueSelect.VueSelect,
+        'v-select': VueSelect.VueSelect,
     },
     data: {
         Tlatitude: 0,
@@ -31,11 +31,11 @@ let app = new Vue({
         geoDataFull: [],
         voices: [],
         options: [{
-                language: 'עברית',
-                code: 'he',
-                local: 'he_IL',
-                localPC: 'he-IL'
-            },
+            language: 'עברית',
+            code: 'he',
+            local: 'he_IL',
+            localPC: 'he-IL'
+        },
             {
                 language: 'English',
                 code: 'en',
@@ -58,12 +58,12 @@ let app = new Vue({
         selected: cardTitle => localStorage.getItem(cardTitle),
         toggleMenuOpen: false,
         maps: [{
-                name: 'Simple',
-                value: () => {
-                    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}')
-                        .addTo(mymap);
-                }
-            },
+            name: 'Simple',
+            value: () => {
+                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}')
+                    .addTo(mymap);
+            }
+        },
             {
                 name: 'Map',
                 value: () => {
@@ -90,19 +90,17 @@ let app = new Vue({
                     }).addTo(mymap);
                 }
             },
-           
+
         ],
         mapStyleSelected: 'Simple'
     },
 
-    computed: {
-
-    },
+    computed: {},
 
     mounted: function () {
 
-        initLeafMap(); 
-        
+        initLeafMap();
+
         this.$nextTick(function () {
             // Code that will run only after the`
             // entire view has been rendered
@@ -238,44 +236,12 @@ let app = new Vue({
                 return app.Tlatitude != gpsData.coords.latitude && app.Tlongitude != gpsData.coords.longitude;
             }
 
-            function getFromWiki(mapGeo) {
-
-                const LANGUAGE_LINK = app.lang;
-
-                axios.get('https://' + LANGUAGE_LINK + '.wikipedia.org/w/api.php', {
-                        params: {
-                            // headers: {
-                            //   'Origin': 'https://5a6b54b1.ngrok.io/',
-                            //   'Content-Type':'application/json; charset=UTF-8'
-                            //   },
-                            action: 'query',
-                            list: 'geosearch',
-                            gsradius: app.gsradius,
-                            gscoord: mapGeo ? mapGeo.lat + '|' + mapGeo.lng : app.latitude + '|' + app.longitude,
-                            format: 'json',
-                            origin: '*',
-                        }
-                    })
-                    .then(function (response) {
-                        console.debug(response.data.query);
-                        registerDataFromWiki(response);
-                    })
-                    .catch(function (error) {
-                        console.error(error);
-                    })
-                    .then(function () {
-                        // always executed
-                    });
-            }
-
             function registerDataFromWiki(response) {
 
                 let locationsData = response.data.query.geosearch;
                 let geoDataMaped = app.geoData.join();
 
                 if (locationsData.length === 1) {
-
-                    // if ( locationsData[0].title && !geoDataMaped.includes(locationsData[0].title) ) {
 
                     app.geoData.push(locationsData[0].title);
                     let calculate = app._calculateDistance({
@@ -304,41 +270,35 @@ let app = new Vue({
 
                     app.cardIndex++;
                     getDataOnLocations(locationsData[0].title);
-                // }
 
                 } else if (locationsData.length > 1) {
 
                     locationsData.forEach(element => {
 
-                        //if not allready exists
-                        // if ( element.title && !geoDataMaped.includes(element.title) ) {
+                        app.geoData.push(element.title);
 
-                            app.geoData.push(element.title);
+                        let calculate = app._calculateDistance({
+                            lat: element.lat,
+                            lon: element.lon
+                        });
 
-                            let calculate = app._calculateDistance({
-                                lat: element.lat,
-                                lon: element.lon
-                            });
+                        Vue.set(app.geoDataFull, app.cardIndex, {
+                            'lat': element.lat,
+                            'lon': element.lon,
+                            'lang': app.lang,
+                            'local': app.local,
+                            'title': element.title,
+                            'id': app.cardIndex,
+                            'distance': calculate
+                        });
 
-                            Vue.set(app.geoDataFull, app.cardIndex, {
-                                'lat': element.lat,
-                                'lon': element.lon,
-                                'lang': app.lang,
-                                'local': app.local,
-                                'title': element.title,
-                                'id': app.cardIndex,
-                                'distance': calculate
-                            });
+                        let favorite = localStorage.getItem(element.title);
 
-                            let favorite = localStorage.getItem(element.title);
-
-                            if (favorite) {
-                                app.geoDataFull[app.cardIndex].selected = true;
-                            } else {
-                                app.geoDataFull[app.cardIndex].selected = false;
-                            }
-                        // }
-
+                        if (favorite) {
+                            app.geoDataFull[app.cardIndex].selected = true;
+                        } else {
+                            app.geoDataFull[app.cardIndex].selected = false;
+                        }
                         app.cardIndex++;
                         getDataOnLocations(element.title);
                     });
@@ -359,7 +319,9 @@ let app = new Vue({
 
                 if (shouldUpdate) {
                     let mapGeo;
-                    getFromWiki();
+                    Service.getFromWiki().then((response) => {
+                        registerDataFromWiki(response);
+                    });
                     InitMap();
                 }
 
@@ -385,18 +347,19 @@ let app = new Vue({
                 });
 
                 L.marker([app.latitude, app.longitude], {
-                        icon: locationIcon
-                    }).addTo(mymap)
+                    icon: locationIcon
+                }).addTo(mymap)
                     .openPopup();
-
-                // .bindPopup("You Are here!")
 
                 var popup = L.popup();
 
                 function onMapClick(e) {
                     app.mapClickedlatlng = e.latlng;
 
-                    getFromWiki(e.latlng);
+                    Service.getFromWiki(e.latlng).then((response) => {
+                        registerDataFromWiki(response);
+                    });
+
                     popup
                         .setLatLng(e.latlng)
                     // .setContent("You clicked the map at " + e.latlng.toString())
@@ -408,89 +371,57 @@ let app = new Vue({
 
             function getDataOnLocations(title) {
 
-                const LANGUAGE_LINK = app.lang;
+                Service.getDataOnLocations(title).then(function (response) {
+                    if (response.data.query) {
 
-                axios.get('https://' + LANGUAGE_LINK + '.wikipedia.org/w/api.php', {
-                        params: {
-                            action: 'query',
-                            titles: title,
-                            prop: 'extracts|info|images|categories|pageimages',
-                            inprop: 'url|talkid',
-                            explaintext: 1,
-                            pithumbsize: 300,
-                            format: 'json',
-                            origin: '*',
-                        }
-                    })
-                    .then(function (response) {
-                        if (response.data.query) {
+                        console.debug('respons: ', response.data.query.pages);
 
-                            console.debug('respons: ', response.data.query.pages);
+                        let page = response.data.query.pages;
+                        let pageId = Object.keys(response.data.query.pages)[0];
+                        let dataObject = page[pageId];
+                        let url = dataObject.fullurl;
 
-                            let page = response.data.query.pages;
-                            let pageId = Object.keys(response.data.query.pages)[0];
-                            let dataObject = page[pageId];
-                            let url = dataObject.fullurl;
-                            // dataObject.extract;
+                        app.geoDataFull.forEach(card => {
+                            if (card.title == title) {
 
-                            app.geoDataFull.forEach(card => {
-                                if (card.title == title) {
+                                app.geoDataFull[card.id].extract = dataObject.extract.replace(/=/g, '');
+                                // Vue.set(app.geoDataFull[card.id], 'extract', dataObject.extract.replace(/=/g, ''));
 
-                                    app.geoDataFull[card.id].extract = dataObject.extract.replace(/=/g, '');
-                                    // Vue.set(app.geoDataFull[card.id], 'extract', dataObject.extract.replace(/=/g, ''));
+                                if (dataObject.thumbnail) {
 
-                                    if (dataObject.thumbnail) {
+                                    preloadImages(dataObject.thumbnail.source, true);
 
-                                        preloadImages(dataObject.thumbnail.source, true);
+                                    Vue.set(app.geoDataFull[card.id], 'img', dataObject.thumbnail.source);
+                                    app.geoDataFull[card.id].img = dataObject.thumbnail.source;
 
-                                        Vue.set(app.geoDataFull[card.id], 'img', dataObject.thumbnail.source);
-                                        app.geoDataFull[card.id].img = dataObject.thumbnail.source;
+                                    let myIcon = L.icon({
+                                        iconUrl: app.geoDataFull[card.id].img,
+                                        iconSize: [45, 45],
+                                        iconAnchor: [10, 10],
+                                        popupAnchor: [20, -5],
+                                    });
 
-                                        let myIcon = L.icon({
-                                            iconUrl: app.geoDataFull[card.id].img,
-                                            iconSize: [45, 45],
-                                            iconAnchor: [10, 10],
-                                            popupAnchor: [20, -5],
-                                        });
+                                    L.marker([app.geoDataFull[card.id].lat, app.geoDataFull[card.id].lon], {
+                                        icon: myIcon
+                                    }).addTo(mymap)
+                                        .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
 
-                                        L.marker([app.geoDataFull[card.id].lat, app.geoDataFull[card.id].lon], {
-                                                icon: myIcon
-                                            }).addTo(mymap)
-                                            .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
-
-                                    } else {
-                                        L.marker([app.geoDataFull[card.id].lat, app.geoDataFull[card.id].lon]).addTo(mymap)
-                                            .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
-                                    }
-
-
-
+                                } else {
+                                    L.marker([app.geoDataFull[card.id].lat, app.geoDataFull[card.id].lon]).addTo(mymap)
+                                        .bindPopup("<b>" + dataObject.title + "</b>").openPopup();
                                 }
-                            })
 
-                            // window.resizeClickMap();
-                            // app.extract.unshift(page[pageId].extract);
-                            // app.extract = app.extract.reverse();
-                        }
 
-                        // axios.get(url,{
-                        //   params: {
-                        //     'origin': '*',
-                        //     'Access-Control-Allow-Origin':'*'
-                        //   }
-                        // }).then((html)=>{
-                        //   console.table('html: ', html);
-                        // })
+                            }
+                        })
 
-                        // let content = page[pageId].revisions[0].slots.main['*'];
+                        // window.resizeClickMap();
+                        // app.extract.unshift(page[pageId].extract);
+                        // app.extract = app.extract.reverse();
+                    }
+                    // let content = page[pageId].revisions[0].slots.main['*'];
+                })
 
-                    })
-                    .catch(function (error) {
-                        console.error(error);
-                    })
-                    .then(function () {
-                        // always executed
-                    });
             }
 
             if (window.navigator && window.navigator.geolocation) {
@@ -498,7 +429,7 @@ let app = new Vue({
 
                 setInterval(() => {
                     navigator.geolocation.getCurrentPosition(handle);
-                },  5 * 60 * 1000);
+                }, 5 * 60 * 1000);
             }
         },
 
