@@ -101,10 +101,7 @@ let app = new Vue({
 
         initLeafMap();
 
-        this.$nextTick(function () {
-            // Code that will run only after the`
-            // entire view has been rendered
-
+        function addFavoriteCardToMap(){
             console.debug('app.geoDataFull', app.geoDataFull);
 
             var values = [],
@@ -126,6 +123,13 @@ let app = new Vue({
             if (app.geoDataFull.length > 0) {
                 app.cardIndex = app.geoDataFull.length;
             }
+
+        }
+
+        this.$nextTick(function () {
+            // Code that will run only after the`
+            // entire view has been rendered
+            addFavoriteCardToMap();
 
         });
     },
@@ -201,7 +205,6 @@ let app = new Vue({
         showOnMap: (e, cardName) => {
             console.debug(e, cardName);
             e.stopPropagation();
-            // if ( e.target.className.includes('fa-map-marked-alt') ) {
             mymap.setView([cardName.lat, cardName.lon], 16, {
                 "animate": true,
             });
