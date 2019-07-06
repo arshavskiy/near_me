@@ -6,8 +6,6 @@ function updateGpsData(gpsData) {
 		app.longitude = gpsData.longitude;
 	}
 }
-
-
 function setMarkersOnMapLoad() {
 
 	console.debug('map loaded', performance.now());
@@ -38,9 +36,30 @@ function setMarkersOnMapLoad() {
 
 };
 
+
+
+
 let initLeafMap = function () {
 
 	console.debug('onloadMap:', performance.now());
+
+	ymaps.ready(init);
+	function init(){
+		// Создание карты.
+		window.navigator.geolocation.getCurrentPosition((handle) => {
+			var myMap = new ymaps.Map("mapid", {
+				// Координаты центра карты.
+				// Порядок по умолчанию: «широта, долгота».
+				// Чтобы не определять координаты центра карты вручную,
+				// воспользуйтесь инструментом Определение координат.
+				center: [handle.coords.latitude, handle.coords.longitude],
+				// Уровень масштабирования. Допустимые значения:
+				// от 0 (весь мир) до 19.
+				zoom: 15
+			});
+		});
+	}
+
 
 	window.navigator.geolocation.getCurrentPosition((handle) => {
 		console.debug('gps => call to map from main:', performance.now());
@@ -51,6 +70,7 @@ let initLeafMap = function () {
 		if (typeof mymap == 'undefined') {
 
 			window.mymap = L.map('mapid').setView([handle.coords.latitude, handle.coords.longitude], 15);
+
 
 			L.map.onload = setMarkersOnMapLoad();
 
@@ -104,7 +124,6 @@ window.resizeClickMap = function () {
 		}
 	}
 };
-
 window.resizeClickCard = function () {
 	if (DOMap && DOMap.style.height != '50vh') {
 		DOMap.style.height = '50vh';

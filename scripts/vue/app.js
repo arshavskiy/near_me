@@ -134,7 +134,6 @@ let app = new Vue({
         });
     },
 
-
     created() {
         console.log('created called.');
         // initLeafMap();
