@@ -123,28 +123,29 @@ let app = new Vue({
                     if (typeof valuesT != 'undefined') {
                         return;
                     } else {
-                        let valuesT = [],
+                        var valuesT = [],
                             defaults = window.defaults,
-                            j = defaults.length;
+                            j = defaults.length,
+                            tempIndext = 0;;
 
                         while (j--) {
-                            let defCard = defaults[j];
+                            let defCard = defaults[j]
+                            defCard.id = tempIndext++;
 
                             if (defCard.title) {
                                 localStorage.setItem(defCard.title, JSON.stringify(defCard));
+                                app.geoDataFull.push(defCard);
                             }
                         }
                     }
-
-
                 }
 
-
+                if (app.geoDataFull.length > 0) {
+                    app.cardIndex = app.geoDataFull.length;
+                }
             }
 
-            if (app.geoDataFull.length > 0) {
-                app.cardIndex = app.geoDataFull.length;
-            }
+
 
         }
 
