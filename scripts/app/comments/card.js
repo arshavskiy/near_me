@@ -60,7 +60,7 @@ let card = Vue.component('card-component', {
                                     </div>
                                 </div>
                                 <div v-if="card.distance" class="distance_container">
-                                    <span style="color: #000; font-size: 15px;">{{ card.distance.toFixed(0)}}m.</span>
+                                    <span style="color: #000; font-size: 15px;">{{ (card.distance / 1000).toFixed(0) }}km.</span>
                                 </div>
                                 <div class="description">
                                     <p v-if="card.extract" :class="{ right : card.lang=='he'}">

@@ -1,85 +1,91 @@
 "use strict";
 
 function updateGpsData(gpsData) {
-	store.commit('latitudeUpdate', gpsData.latitude);
-	store.commit('longitudeUpdate',gpsData.longitude);
+	if (app.latitude != gpsData.latitude && app.longitude != gpsData.longitude) {
+		app.latitude = gpsData.latitude || 59.9319;
+		app.longitude = gpsData.longitude || 30.3049;
+	}
 }
 
-window.resizeClickMap = function () {
-	if (DOMap && DOMap.style.height == '50vh') {
-		DOMap.style.height = '65vh';
-		if (mymap) mymap.invalidateSize();
-
-		let DOMcards = document.getElementsByClassName('card');
-		for (var i = 0; i < DOMcards.length; i++) {
-			DOMcards[i].style.height = '160px';
-		}
-	}
-};
-
-window.resizeClickCard = function () {
-	if (DOMap && DOMap.style.height != '50vh') {
-		DOMap.style.height = '50vh';
-		if (mymap) mymap.invalidateSize();
-
-		let DOMcards = document.getElementsByClassName('card');
-		for (var i = 0; i < DOMcards.length; i++) {
-			DOMcards[i].style.height = '260px';
-		}
-	}
-};
 
 function setMarkersOnMapLoad() {
 
 	console.debug('map loaded', performance.now());
-
-	store.getters.cardsData.forEach(card => {
-
+	app.geoDataFull.forEach(card => {
 		let calculate = app._calculateDistance({
-			lat: store.getters.cardsData[card.id].lat,
-			lon: store.getters.cardsData[card.id].lon
+			lat: app.geoDataFull[card.id].lat,
+			lon: app.geoDataFull[card.id].lon
 		});
 
-		//  Vue.set(store.getters.cardsData, card.id, calculate)
+		//  Vue.set(app.geoDataFull, card.id, calculate)
+		app.geoDataFull[card.id].distance = calculate;
 
-		// TODO fix
-		// store.getters.cardsData[card.id].distance = calculate;
-
-		if (store.getters.cardsData[card.id].img) {
+		if (app.geoDataFull[card.id].img) {
 			let myIcon = L.icon({
-				iconUrl: store.getters.cardsData[card.id].img,
+				iconUrl: app.geoDataFull[card.id].img,
 				iconSize: [45, 45],
 				iconAnchor: [10, 10],
 				popupAnchor: [20, -5],
 			});
-			L.marker([store.getters.cardsData[card.id].lat, store.getters.cardsData[card.id].lon], {
+			L.marker([app.geoDataFull[card.id].lat, app.geoDataFull[card.id].lon], {
 				icon: myIcon
-			}).addTo(mymap).bindPopup("<b>" + store.getters.cardsData[card.id].title + "</b>").openPopup();
+			}).addTo(mymap).bindPopup("<b>" + app.geoDataFull[card.id].title + "</b>").openPopup();
 		} else {
-			L.marker([store.getters.cardsData[card.id].lat, store.getters.cardsData[card.id].lon]).addTo(mymap).bindPopup("<b>" + store.getters.cardsData[card.id].title + "</b>").openPopup();
+			L.marker([app.geoDataFull[card.id].lat, app.geoDataFull[card.id].lon]).addTo(mymap).bindPopup("<b>" + app.geoDataFull[card.id].title + "</b>").openPopup();
 		}
 
 	});
 
-	console.debug('markers loaded', performance.now());
-
+	mymap.setView([app.latitude || 59.9319, app.longitude || 30.3049], 15);
 };
 
 let initLeafMap = function () {
 
 	console.debug('onloadMap:', performance.now());
 
-	window.navigator.geolocation.getCurrentPosition((handle) => {
 
+
+
+	var options = {
+		enableHighAccuracy: true,
+		timeout: 5000,
+		maximumAge: 0
+	};
+
+	function error(error){
+
+		console.debug('gps error', error.message, performance.now());
+		window.mymap = L.map('mapid').setView([59.9319, 30.3049], 10);
+
+		L.map.onload = setMarkersOnMapLoad();
+
+		L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(mymap);
+
+		let searchControl = L.esri.Geocoding.geosearch().addTo(mymap);
+		let results = L.layerGroup().addTo(mymap);
+
+		searchControl.on('results', function (data) {
+			results.clearLayers();
+			for (var i = data.results.length - 1; i >= 0; i--) {
+				results.addLayer(L.marker(data.results[i].latlng));
+			}
+		});
+
+		loader.classList.add("hide");
+	}
+
+	function success(handle){
 		console.debug('gps => call to map from main:', performance.now());
-
-		if (store.getters.Tlatitude != handle.coords.latitude && store.getters.Tlongitude != handle.coords.longitude) {
+		if (app.Tlatitude != handle.coords.latitude && app.Tlongitude != handle.coords.longitude) {
 			updateGpsData(handle.coords);
 		}
 
 		if (typeof mymap == 'undefined') {
 
 			window.mymap = L.map('mapid').setView([handle.coords.latitude, handle.coords.longitude], 15);
+
 			L.map.onload = setMarkersOnMapLoad();
 
 			L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
@@ -97,7 +103,7 @@ let initLeafMap = function () {
 			});
 
 		} else {
-			mymap.setView([handle.coords.latitude, handle.coords.longitude], 15);
+			mymap.setView([handle.coords.latitude, handle.coords.longitude], 18);
 		}
 
 		mymap.on('click', function (e) {
@@ -117,13 +123,37 @@ let initLeafMap = function () {
 		});
 
 		window.run();
-	});
+	};
+
+	navigator.geolocation.getCurrentPosition(success, error, options);
 };
 
 const DOMap = document.getElementById('mapid');
 const loader = document.getElementById('loader');
 
+window.resizeClickMap = function () {
+	if (DOMap && DOMap.style.height == '50vh') {
+		DOMap.style.height = '65vh';
+		if (mymap) mymap.invalidateSize();
 
+		let DOMcards = document.getElementsByClassName('card');
+		for (var i = 0; i < DOMcards.length; i++) {
+			DOMcards[i].style.height = '200px';
+		}
+	}
+};
+
+window.resizeClickCard = function () {
+	if (DOMap && DOMap.style.height != '50vh') {
+		DOMap.style.height = '50vh';
+		if (mymap) mymap.invalidateSize();
+
+		let DOMcards = document.getElementsByClassName('card');
+		for (var i = 0; i < DOMcards.length; i++) {
+			DOMcards[i].style.height = '260px';
+		}
+	}
+};
 
 console.debug('init:', performance.now());
 
