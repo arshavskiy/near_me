@@ -36,6 +36,7 @@ function setMarkersOnMapLoad() {
 
 	});
 
+	mymap.setView([app.latitude, app.longitude], 18);
 };
 
 let initLeafMap = function () {
@@ -68,7 +69,7 @@ let initLeafMap = function () {
 				}
 			});
 
-		} else mymap.setView([handle.coords.latitude, handle.coords.longitude], 15);
+		} else mymap.setView([handle.coords.latitude, handle.coords.longitude], 18);
 
 		mymap.on('click', function (e) {
 			console.debug(e);

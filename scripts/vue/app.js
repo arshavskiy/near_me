@@ -175,7 +175,7 @@ let app = new Vue({
 
         locate: () => {
             initLeafMap();
-            mymap.setView([app.latitude, app.longitude], 18);
+
         },
 
         runMap: (map) => {
