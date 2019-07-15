@@ -104,10 +104,10 @@ let app = new Vue({
         function addFavoriteCardToMap(){
             console.debug('app.geoDataFull', app.geoDataFull);
 
-            var values = [],
+            let values = [],
                 keys = Object.keys(localStorage),
-                i = keys.length;
-            let tempIndex = 0;
+                i = keys.length,
+                tempIndex = 0;
 
             while (i--) {
                 let favCard = JSON.parse(localStorage.getItem(keys[i]));
@@ -120,7 +120,23 @@ let app = new Vue({
                     values.push(favCard);
                     app.geoDataFull.push(favCard);
                 } else {
-                    return
+                    if (typeof valuesT === 'undefined') {
+                        // return;
+                    } else {
+                        let valuesT = [],
+                            defaults = window.defaults,
+                            i = defaults.length;
+
+                        while (i--) {
+                            let defCard = defaults[i];
+
+                            if (defCard.title) {
+                                localStorage.setItem(defCard.title, JSON.stringify(defCard));
+                            }
+                        }
+                    }
+
+
                 }
 
 
