@@ -120,15 +120,15 @@ let app = new Vue({
                     values.push(favCard);
                     app.geoDataFull.push(favCard);
                 } else {
-                    if (typeof valuesT === 'undefined') {
-                        // return;
+                    if (typeof valuesT != 'undefined') {
+                        return;
                     } else {
                         let valuesT = [],
                             defaults = window.defaults,
-                            i = defaults.length;
+                            j = defaults.length;
 
-                        while (i--) {
-                            let defCard = defaults[i];
+                        while (j--) {
+                            let defCard = defaults[j];
 
                             if (defCard.title) {
                                 localStorage.setItem(defCard.title, JSON.stringify(defCard));
