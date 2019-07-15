@@ -2,8 +2,8 @@
 
 function updateGpsData(gpsData) {
 	if (app.latitude != gpsData.latitude && app.longitude != gpsData.longitude) {
-		app.latitude = gpsData.latitude;
-		app.longitude = gpsData.longitude;
+		app.latitude = gpsData.latitude || 59.9319;
+		app.longitude = gpsData.longitude || 30.3049;
 	}
 }
 
@@ -36,14 +36,47 @@ function setMarkersOnMapLoad() {
 
 	});
 
-	mymap.setView([app.latitude, app.longitude], 18);
+	mymap.setView([app.latitude || 59.9319, app.longitude || 30.3049], 15);
 };
 
 let initLeafMap = function () {
 
 	console.debug('onloadMap:', performance.now());
 
-	window.navigator.geolocation.getCurrentPosition((handle) => {
+
+
+
+	var options = {
+		enableHighAccuracy: true,
+		timeout: 5000,
+		maximumAge: 0
+	};
+
+	function error(error){
+
+		console.debug('gps error', error.message, performance.now());
+		window.mymap = L.map('mapid').setView([59.9319, 30.3049], 10);
+
+		L.map.onload = setMarkersOnMapLoad();
+
+		L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(mymap);
+
+		let searchControl = L.esri.Geocoding.geosearch().addTo(mymap);
+		let results = L.layerGroup().addTo(mymap);
+
+		searchControl.on('results', function (data) {
+			results.clearLayers();
+			for (var i = data.results.length - 1; i >= 0; i--) {
+				results.addLayer(L.marker(data.results[i].latlng));
+			}
+		});
+
+		loader.classList.add("hide");
+	}
+
+	function success(handle){
 		console.debug('gps => call to map from main:', performance.now());
 		if (app.Tlatitude != handle.coords.latitude && app.Tlongitude != handle.coords.longitude) {
 			updateGpsData(handle.coords);
@@ -69,7 +102,9 @@ let initLeafMap = function () {
 				}
 			});
 
-		} else mymap.setView([handle.coords.latitude, handle.coords.longitude], 18);
+		} else {
+			mymap.setView([handle.coords.latitude, handle.coords.longitude], 18);
+		}
 
 		mymap.on('click', function (e) {
 			console.debug(e);
@@ -88,7 +123,9 @@ let initLeafMap = function () {
 		});
 
 		window.run();
-	});
+	};
+
+	navigator.geolocation.getCurrentPosition(success, error, options);
 };
 
 const DOMap = document.getElementById('mapid');
