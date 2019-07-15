@@ -112,12 +112,18 @@ let app = new Vue({
             while (i--) {
                 let favCard = JSON.parse(localStorage.getItem(keys[i]));
 
-                favCard.id = tempIndex++;
-                localStorage.setItem(favCard.title, JSON.stringify(favCard));
-                favCard.selected = true;
+                if (favCard.title){
+                    favCard.id = tempIndex++;
+                    localStorage.setItem(favCard.title, JSON.stringify(favCard));
+                    favCard.selected = true;
 
-                values.push(favCard);
-                app.geoDataFull.push(favCard);
+                    values.push(favCard);
+                    app.geoDataFull.push(favCard);
+                } else {
+                    return
+                }
+
+
             }
 
             if (app.geoDataFull.length > 0) {
