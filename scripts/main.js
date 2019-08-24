@@ -88,9 +88,14 @@ let initLeafMap = function () {
 
 			L.map.onload = setMarkersOnMapLoad();
 
-			L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-			}).addTo(mymap);
+			// L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+			// 	attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+			// }).addTo(mymap);
+
+			L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+                        maxZoom: 20,
+                        // attribution: '&copy; Openstreetmap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(mymap);
 
 			let searchControl = L.esri.Geocoding.geosearch().addTo(mymap);
 			let results = L.layerGroup().addTo(mymap);
@@ -155,6 +160,6 @@ window.resizeClickCard = function () {
 	}
 };
 
-console.debug('init:', performance.now());
+console.debug('init:', window.performance.now());
 
 // window.onload = initLeafMap;
