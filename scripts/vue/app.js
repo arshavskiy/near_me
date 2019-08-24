@@ -54,7 +54,7 @@ let app = new Vue({
         local: 'en_US',
         localPC: 'en-US',
         mapRadius: [500, 1000, 1500, 2000, 2500, 3000],
-        gsradius: 1000,
+        gsradius: 2000,
         selected: cardTitle => localStorage.getItem(cardTitle),
         toggleMenuOpen: false,
         maps: [
@@ -93,7 +93,7 @@ let app = new Vue({
             },
 
         ],
-        mapStyleSelected: 'Simple'
+        mapStyleSelected: 'Detailed'
     },
 
     computed: {},

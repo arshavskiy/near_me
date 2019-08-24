@@ -9,7 +9,6 @@ function updateGpsData(gpsData) {
 
 
 function setMarkersOnMapLoad() {
-
 	console.debug('map loaded', performance.now());
 	app.geoDataFull.forEach(card => {
 		let calculate = app._calculateDistance({
@@ -40,11 +39,7 @@ function setMarkersOnMapLoad() {
 };
 
 let initLeafMap = function () {
-
 	console.debug('onloadMap:', performance.now());
-
-
-
 
 	var options = {
 		enableHighAccuracy: true,
@@ -52,8 +47,7 @@ let initLeafMap = function () {
 		maximumAge: 0
 	};
 
-	function error(error){
-
+	function error(error) {
 		console.debug('gps error', error.message, performance.now());
 		window.mymap = L.map('mapid').setView([59.9319, 30.3049], 10);
 
@@ -76,7 +70,7 @@ let initLeafMap = function () {
 		loader.classList.add("hide");
 	}
 
-	function success(handle){
+	function success(handle) {
 		console.debug('gps => call to map from main:', performance.now());
 		if (app.Tlatitude != handle.coords.latitude && app.Tlongitude != handle.coords.longitude) {
 			updateGpsData(handle.coords);
@@ -88,8 +82,13 @@ let initLeafMap = function () {
 
 			L.map.onload = setMarkersOnMapLoad();
 
-			L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+			// L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+			// 	attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+			// }).addTo(mymap);
+
+			L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+				maxZoom: 20,
+				// attribution: '&copy; Openstreetmap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 			}).addTo(mymap);
 
 			let searchControl = L.esri.Geocoding.geosearch().addTo(mymap);
@@ -155,6 +154,6 @@ window.resizeClickCard = function () {
 	}
 };
 
-console.debug('init:', performance.now());
+console.debug('init:', window.performance.now());
 
 // window.onload = initLeafMap;
