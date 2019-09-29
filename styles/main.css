@@ -311,6 +311,10 @@ h1 {
     text-align: right;
 }
 
+#mapid{
+    transition: all .3s ease;
+}
+
 @media only screen and (min-width: 600px) {
     .card_holder__container {
         /* display: flex; */
@@ -318,12 +322,15 @@ h1 {
         overflow-x: scroll;
         overflow-y: scroll;
     }
+
     .menu_holder.show{
         width: 300px;
     }
+
     #mapid{
         height: 50vh;
     }
+
     .card{
         flex-grow: 1;
         width: 18vw;
