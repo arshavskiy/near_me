@@ -166,13 +166,16 @@ let app = new Vue({
     },
 
     watch: {
-        data: {
-            handle: 'geoDataFull',
-            immediate: true
+        geoDataFull: {
+            handle: item =>{
+                console.debug('changed: ' ,item)
+            },
+            immediate: true,
+            deep: true
         },
         
         mapStyleSelected: function (data) {
-            app.maps.forEach(item => {
+            app.maps.forEach( item => {
                 if (item.name === data) {
                     item.value();
                 }
