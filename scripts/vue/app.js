@@ -166,6 +166,11 @@ let app = new Vue({
     },
 
     watch: {
+        data: {
+            handle: 'geoDataFull',
+            immediate: true
+        },
+        
         mapStyleSelected: function (data) {
             app.maps.forEach(item => {
                 if (item.name === data) {
