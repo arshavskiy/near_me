@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Near... Go!</title>
+
+    <link rel="apple-touch-icon" sizes="57x57" href="./assets/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="./assets/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="./assets/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="./assets/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="./assets/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="./assets/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="./assets/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="./assets/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="./assets/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="./assets/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
+    <link rel="manifest" href="./assets/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="./assets/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" crossorigin=""></script>
+    
+    <script src="https://unpkg.com/esri-leaflet@2.2.4/dist/esri-leaflet.js" crossorigin=""></script>
+        <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.2.14/dist/esri-leaflet-geocoder.css" crossorigin="">
+        <script src="https://unpkg.com/esri-leaflet-geocoder@2.2.14/dist/esri-leaflet-geocoder.js" crossorigin=""></script>
+
+
+    <link rel="stylesheet" href="https://unpkg.com/vue-select@3.0.0/dist/vue-select.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles/card.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    <link rel="stylesheet" href="styles/loader.css">
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
+
+    <script src="./assets/leaflet-providers.js"></script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-1592909933054238",
+            enable_page_level_ads: true
+        });
+    </script>
+
+</head>
+
+<body>
+    <div id="loader"></div>
+    <main>
+        <div id="mapid"></div>
+        <div id="app-5">
+
+            <i class="far fa-compass locationBtn" @click="locate"></i>
+            <i class="fas fa-expand expendBtn" @click="expendMap"></i>
+            <!-- <div class='pointer'><< Click search button</div> -->
+
+            <section class="menu">
+                <i v-if="!toggleMenuOpen" class="fas fa-bars menu_btn" @click="toggleMenu"></i>
+                <i v-show="toggleMenuOpen" class="fas fa-bars menu_btn no_boder" @click="toggleMenu"></i>
+                <div class="menu_holder" v-bind:class="{ show: toggleMenuOpen }">
+                    <div class="menu_btn_holder">
+                        <i class="fas fa-times" style="padding: 0 5px;" @click="toggleMenu"></i>
+                    </div>
+
+                    <div style="padding:10px 0 0 10px">
+
+                        <section class="spaced mt-1">
+                            <v-select value="English" :options="options" label="language" :reduce="language => language"
+                                @input="onLanguageUpdate" />
+                        </section>
+
+
+                        <div class="spaced mt-1">
+                            <span style="line-height: 30px">Map type </span>
+                            <select v-model="mapStyleSelected" class="menu_select">
+                                <option v-for="map in maps" v-bind:value="map.name" @:click="runMap(map)">
+                                    {{ map.name }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="spaced ">
+                            <span style="line-height: 30px">Search radius </span>
+                            <select v-model="gsradius" class="menu_select">
+                                <option v-for="radius in mapRadius" v-bind:value="radius">
+                                    {{ radius }} m
+                                </option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <h4>Favorites</h4>
+                            <div class="menu_select" style="overflow: auto; height: 200px; width: 100%;">
+                                <div v-for="(place, index) in geoDataFull">
+                                    <div class="spaced" v-if="place.selected">
+                                            <span class="spaced-grow"> {{place.title}} </span>
+                                            <i v-on:click="showOnMap($event, place)" class="fas fa-map-marked-alt"></i>
+                                            <i class="fas fa-star selected-menu ml-1" 
+                                                v-bind:value="place.selected"
+                                                @click="removeFavorite(place, $event)">
+                                            </i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            
+            <section class="card_holder__container">
+                <div v-for="card in geoDataFull.slice().reverse()" :key="card.id" class="card_holder">
+                    <card-component :card=card ></card-component>      
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/vue-select@3.0.0"></script>
+    <script src="scripts/vue/comments/card.js"></script>
+
+
+    <script src="scripts/favorite_defaults.js"></script>
+    <script src="scripts/utils.js"></script>
+
+    <script src="scripts/api.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/vue/app.js"></script>
+
+</body>
+
+</html>

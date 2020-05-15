@@ -1,0 +1,23 @@
+{
+  "name": "near_me",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "vue-cli-plugin-electron-builder": "^1.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arshavskiy/near_me.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arshavskiy/near_me/issues"
+  },
+  "homepage": "https://github.com/arshavskiy/near_me#readme"
+}
