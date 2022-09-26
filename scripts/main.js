@@ -69,7 +69,7 @@ let initLeafMap = function () {
 			}
 		});
 
-		loader.classList.add("hide");
+		//loader.classList.add("hide");
 	}
 
 	function success(handle) {
