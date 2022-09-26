@@ -259,7 +259,7 @@ let app = new Vue({
             circle.addTo(mymap);
         },
 
-        run: window.run = function () {
+        run: window.run = ()=> {
 
             if (typeof mymap == 'undefined' || typeof mymap == 'null') initLeafMap();
 
@@ -466,6 +466,13 @@ let app = new Vue({
                     navigator.geolocation.getCurrentPosition(handle);
                 }, 5 * 60 * 1000);
             }
+
+            // L.Routing.control({
+            //     waypoints: [
+            //       L.latLng(57.74, 11.94),
+            //       L.latLng(57.6792, 11.949)
+            //     ]
+            //   }).addTo(mymap);
         },
 
     }

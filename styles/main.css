@@ -119,6 +119,8 @@ h1,.muted {
 h1 {
     font-size: 26px;
     font-weight: 600;
+    text-align: center;
+    color: #000;
 }
 
 .v-select{

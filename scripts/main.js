@@ -94,6 +94,10 @@ let initLeafMap = function () {
 			let searchControl = L.esri.Geocoding.geosearch().addTo(mymap);
 			let results = L.layerGroup().addTo(mymap);
 
+
+
+
+
 			searchControl.on('results', function (data) {
 				results.clearLayers();
 				for (var i = data.results.length - 1; i >= 0; i--) {
@@ -104,6 +108,8 @@ let initLeafMap = function () {
 		} else {
 			mymap.setView([handle.coords.latitude, handle.coords.longitude], 18);
 		}
+
+
 
 		mymap.on('click', function (e) {
 			console.debug(e);
@@ -120,6 +126,9 @@ let initLeafMap = function () {
 				setView: true
 			});
 		});
+
+
+		
 
 		window.run();
 	};
