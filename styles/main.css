@@ -95,6 +95,17 @@ p{
     font-size: 0.8rem;
 }
 
+#state {
+    display: flex;
+    /* align-content: center; */
+    /* align-items: center; */
+    /* align-self: center; */
+    justify-content: center;
+    margin: 1rem;
+}
+
+#state ck
+
 .btn{
     padding: 7px 20px;
     border: 1px solid;

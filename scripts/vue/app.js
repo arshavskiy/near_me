@@ -49,6 +49,8 @@ let app = new Vue({
                 localPC: 'ru-RU'
             },
         ],
+        checkBoxWiki : false,
+        checkBoxRoute : false,
         language: 'English',
         lang: 'en',
         local: 'en_US',
@@ -381,24 +383,55 @@ let app = new Vue({
                     iconAnchor: [25, -20],
                 });
 
-                L.marker([app.latitude, app.longitude], {
+                let firstMarker = L.marker([app.latitude, app.longitude], {
                     icon: locationIcon
                 }).addTo(mymap)
                     .openPopup();
 
+                window.markers.push(firstMarker);
+
                 var popup = L.popup();
 
                 function onMapClick(e) {
+
+                    app.checkBoxWiki = document.getElementById("wiki");
+                    app.checkBoxRoute = document.getElementById("route");
+                    
                     app.mapClickedlatlng = e.latlng;
 
-                    Service.getFromWiki(e.latlng).then((response) => {
-                        registerDataFromWiki(response);
-                    });
+                    if (app.checkBoxWiki.checked){
+                        let newmarker = L.marker([e.latlng.lat, e.latlng.lng], {
+                            icon: locationIcon
+                        }).addTo(mymap)
+                            .openPopup();
+    
+                        window.markers.push(newmarker);
 
-                    popup
-                        .setLatLng(e.latlng)
-                    // .setContent("You clicked the map at " + e.latlng.toString())
-                    // .openOn(mymap);
+                    }
+
+                    //one drive route
+                    if (app.checkBoxRoute.checked){
+                        L.Routing.control({
+                            waypoints: [
+                                // L.latLng(window.markers[window.markers.length-1]._latlng.lat, window.markers[window.markers.length-1]._latlng.lng),
+                                L.latLng(window.markers[0]._latlng.lat, window.markers[0]._latlng.lng),
+                                L.latLng(e.latlng.lat, e.latlng.lng)
+                            ]
+                            }).addTo(mymap);  
+                    } 
+  
+                    if (app.checkBoxWiki.checked){
+                        Service.getFromWiki(e.latlng).then(response => {
+                            registerDataFromWiki(response);
+                        });
+    
+                        popup
+                            .setLatLng(e.latlng);
+                        // .setContent("You clicked the map at " + e.latlng.toString())
+                        // .openOn(mymap);
+                    }
+
+
                 }
 
                 mymap.on('click', onMapClick);

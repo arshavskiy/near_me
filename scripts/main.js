@@ -1,5 +1,8 @@
 "use strict";
 
+window.markers = [];
+
+
 function updateGpsData(gpsData) {
 	if (app.latitude != gpsData.latitude && app.longitude != gpsData.longitude) {
 		app.latitude = gpsData.latitude || 59.9319;
