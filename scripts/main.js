@@ -104,7 +104,7 @@ let initLeafMap = function () {
 				}
 			});
 
-			Geolocation.clearWatch(window.navId); 
+			navigator.geolocation.clearWatch(window.navId); 
 
 		} else {
 			mymap.setView([handle.coords.latitude, handle.coords.longitude], 18);
