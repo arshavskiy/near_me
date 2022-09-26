@@ -104,9 +104,12 @@ p{
     margin: 1rem;
 }
 
-#state ck
+#initMapBtn{
+    margin: 1rem auto;
+    display: block;
+}
 
-.btn{
+.btn {
     padding: 7px 20px;
     border: 1px solid;
     /* top: -24px;

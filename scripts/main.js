@@ -10,7 +10,6 @@ function updateGpsData(gpsData) {
 	}
 }
 
-
 function setMarkersOnMapLoad() {
 	console.debug('map loaded', performance.now());
 	app.geoDataFull.forEach(card => {
@@ -39,7 +38,7 @@ function setMarkersOnMapLoad() {
 	});
 
 	mymap.setView([app.latitude || 59.9319, app.longitude || 30.3049], 15);
-};
+}
 
 let initLeafMap = function () {
 	console.debug('onloadMap:', performance.now());
@@ -98,9 +97,6 @@ let initLeafMap = function () {
 			let results = L.layerGroup().addTo(mymap);
 
 
-
-
-
 			searchControl.on('results', function (data) {
 				results.clearLayers();
 				for (var i = data.results.length - 1; i >= 0; i--) {
@@ -111,8 +107,6 @@ let initLeafMap = function () {
 		} else {
 			mymap.setView([handle.coords.latitude, handle.coords.longitude], 18);
 		}
-
-
 
 		mymap.on('click', function (e) {
 			console.debug(e);
@@ -131,12 +125,14 @@ let initLeafMap = function () {
 		});
 
 
-		
+		run();
+	}
 
-		window.run();
-	};
+	document.querySelector('.permission-granted-button').addEventListener('click', () => {
+		// navigator.geolocation.watchPosition(success, error, options);
+		navigator.geolocation.getCurrentPosition(success, error, options);
+	  });
 
-	navigator.geolocation.getCurrentPosition(success, error, options);
 };
 
 const DOMap = document.getElementById('mapid');
@@ -168,4 +164,3 @@ window.resizeClickCard = function () {
 
 console.debug('init:', window.performance.now());
 
-// window.onload = initLeafMap;
