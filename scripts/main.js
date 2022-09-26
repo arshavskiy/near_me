@@ -104,6 +104,8 @@ let initLeafMap = function () {
 				}
 			});
 
+			Geolocation.clearWatch(window.navId); 
+
 		} else {
 			mymap.setView([handle.coords.latitude, handle.coords.longitude], 18);
 		}
@@ -129,7 +131,7 @@ let initLeafMap = function () {
 	}
 
 	document.querySelector('.permission-granted-button').addEventListener('click', (e) => {
-		navigator.geolocation.watchPosition(success, error, options);
+		window.navId = navigator.geolocation.watchPosition(success, error, options);
 		//navigator.geolocation.getCurrentPosition(success, error, options);
 		e.path[0].remove();
 	  });
