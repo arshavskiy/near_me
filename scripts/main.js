@@ -137,7 +137,7 @@ let initLeafMap = function () {
 };
 
 const DOMap = document.getElementById('mapid');
-const loader = document.getElementById('loader');
+// const loader = document.getElementById('loader');
 
 window.resizeClickMap = function () {
 	if (DOMap && DOMap.style.height == '50vh') {

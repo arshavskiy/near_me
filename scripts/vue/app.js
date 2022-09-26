@@ -344,7 +344,7 @@ let app = new Vue({
 
                 app.drawCircle();
 
-                loader.classList.add("hide");
+                // loader.classList.add("hide");
 
             }
 
