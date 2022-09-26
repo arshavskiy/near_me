@@ -170,7 +170,7 @@ let app = new Vue({
     watch: {
         geoDataFull: {
             handle: item =>{
-                console.debug('changed: ' ,item)
+                console.debug('changed: ' ,item);
             },
             immediate: true,
             deep: true

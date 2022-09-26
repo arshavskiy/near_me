@@ -128,9 +128,10 @@ let initLeafMap = function () {
 		run();
 	}
 
-	document.querySelector('.permission-granted-button').addEventListener('click', () => {
+	document.querySelector('.permission-granted-button').addEventListener('click', (e) => {
 		// navigator.geolocation.watchPosition(success, error, options);
 		navigator.geolocation.getCurrentPosition(success, error, options);
+		e.path[0].remove();
 	  });
 
 };
@@ -164,3 +165,4 @@ window.resizeClickCard = function () {
 
 console.debug('init:', window.performance.now());
 
+initLeafMap();
