@@ -129,8 +129,8 @@ let initLeafMap = function () {
 	}
 
 	document.querySelector('.permission-granted-button').addEventListener('click', (e) => {
-		// navigator.geolocation.watchPosition(success, error, options);
-		navigator.geolocation.getCurrentPosition(success, error, options);
+		navigator.geolocation.watchPosition(success, error, options);
+		//navigator.geolocation.getCurrentPosition(success, error, options);
 		e.path[0].remove();
 	  });
 
