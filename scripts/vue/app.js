@@ -102,7 +102,7 @@ let app = new Vue({
 
     mounted: function () {
 
-        initLeafMap();
+        //initLeafMap();
 
         function addFavoriteCardToMap(){
             console.debug('app.geoDataFull', app.geoDataFull);
