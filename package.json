@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "vue-cli-plugin-electron-builder": "^1.4.0"
+    "vue-cli-plugin-electron-builder": "^2.1.1"
   },
   "devDependencies": {},
   "scripts": {
